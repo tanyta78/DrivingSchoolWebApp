@@ -1,7 +1,8 @@
-﻿namespace DrivingSchoolWebApp.Web.Areas.Identity.Data
+﻿namespace DrivingSchoolWebApp.Data
 {
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+   using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using Models;
 
     public class AppDbContext : IdentityDbContext<AppUser>
     {

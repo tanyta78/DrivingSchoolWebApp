@@ -1,4 +1,4 @@
-﻿namespace DrivingSchoolWebApp.Web.Areas.Identity.Data
+﻿namespace DrivingSchoolWebApp.Data.Models
 {
     using Microsoft.AspNetCore.Identity;
 

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Data", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Data.Models", "DrivingSchoolWebApp.Data.Models\DrivingSchoolWebApp.Data.Models.csproj", "{0C41A71C-400B-41DB-839B-B63EF75CA5C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "DrivingSchoolWebApp.Tests\Sandbox\Sandbox.csproj", "{485262DC-ACE1-4AB9-8519-B04C6C3BD677}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0C41A71C-400B-41DB-839B-B63EF75CA5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C41A71C-400B-41DB-839B-B63EF75CA5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C41A71C-400B-41DB-839B-B63EF75CA5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{485262DC-ACE1-4AB9-8519-B04C6C3BD677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{485262DC-ACE1-4AB9-8519-B04C6C3BD677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{485262DC-ACE1-4AB9-8519-B04C6C3BD677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{485262DC-ACE1-4AB9-8519-B04C6C3BD677}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

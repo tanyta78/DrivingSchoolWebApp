@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DrivingSchoolWebApp.Web.Models;
-
-namespace DrivingSchoolWebApp.Web.Controllers
+﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System.Diagnostics;
+    using Microsoft.AspNetCore.Mvc;
+    using Models;
+
     public class HomeController : Controller
     {
         public IActionResult Index()

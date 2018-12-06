@@ -3,15 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Web", "DrivingSchoolWebApp.Web\DrivingSchoolWebApp.Web.csproj", "{EDB3FD0B-3ECE-44B9-B2CD-387609CCA06E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrivingSchoolWebApp.Web", "DrivingSchoolWebApp.Web\DrivingSchoolWebApp.Web.csproj", "{EDB3FD0B-3ECE-44B9-B2CD-387609CCA06E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Data", "DrivingSchoolWebApp.Data\DrivingSchoolWebApp.Data.csproj", "{B555EAEA-9C87-4456-BB60-AAFD4D3BDF0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrivingSchoolWebApp.Data", "DrivingSchoolWebApp.Data\DrivingSchoolWebApp.Data.csproj", "{B555EAEA-9C87-4456-BB60-AAFD4D3BDF0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Data.Models", "DrivingSchoolWebApp.Data.Models\DrivingSchoolWebApp.Data.Models.csproj", "{0C41A71C-400B-41DB-839B-B63EF75CA5C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrivingSchoolWebApp.Data.Models", "DrivingSchoolWebApp.Data.Models\DrivingSchoolWebApp.Data.Models.csproj", "{0C41A71C-400B-41DB-839B-B63EF75CA5C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "DrivingSchoolWebApp.Tests\Sandbox\Sandbox.csproj", "{485262DC-ACE1-4AB9-8519-B04C6C3BD677}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "DrivingSchoolWebApp.Tests\Sandbox\Sandbox.csproj", "{485262DC-ACE1-4AB9-8519-B04C6C3BD677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Data.Common", "DrivingSchoolWebApp.Data.Common\DrivingSchoolWebApp.Data.Common.csproj", "{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrivingSchoolWebApp.Data.Common", "DrivingSchoolWebApp.Data.Common\DrivingSchoolWebApp.Data.Common.csproj", "{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{7FBE8484-194F-4E23-AF10-209D0B734E28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{8F86013B-6943-4472-9642-AAAB9FB4633B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8EE2A1FB-4264-4E92-998D-E1C4E2C30A30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E24F9285-73FC-418E-9805-D9BC85E61F44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Services.Models", "Services\DrivingSchoolWebApp.Services.Models\DrivingSchoolWebApp.Services.Models.csproj", "{2E01B84A-8156-4244-9758-73754E17B2A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Services.DataServices", "Services\DrivingSchoolWebApp.Services.DataServices\DrivingSchoolWebApp.Services.DataServices.csproj", "{3A6633E9-EEE0-4739-8861-A86E2B77A9A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivingSchoolWebApp.Services.Mapping", "Services\DrivingSchoolWebApp.Services.Mapping\DrivingSchoolWebApp.Services.Mapping.csproj", "{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +53,31 @@ Global
 		{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E01B84A-8156-4244-9758-73754E17B2A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E01B84A-8156-4244-9758-73754E17B2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E01B84A-8156-4244-9758-73754E17B2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E01B84A-8156-4244-9758-73754E17B2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6633E9-EEE0-4739-8861-A86E2B77A9A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6633E9-EEE0-4739-8861-A86E2B77A9A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6633E9-EEE0-4739-8861-A86E2B77A9A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6633E9-EEE0-4739-8861-A86E2B77A9A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDB3FD0B-3ECE-44B9-B2CD-387609CCA06E} = {8F86013B-6943-4472-9642-AAAB9FB4633B}
+		{B555EAEA-9C87-4456-BB60-AAFD4D3BDF0A} = {7FBE8484-194F-4E23-AF10-209D0B734E28}
+		{0C41A71C-400B-41DB-839B-B63EF75CA5C4} = {7FBE8484-194F-4E23-AF10-209D0B734E28}
+		{485262DC-ACE1-4AB9-8519-B04C6C3BD677} = {8EE2A1FB-4264-4E92-998D-E1C4E2C30A30}
+		{62CFC8CB-1E8B-4FFF-8A7D-A99786C223C0} = {7FBE8484-194F-4E23-AF10-209D0B734E28}
+		{2E01B84A-8156-4244-9758-73754E17B2A8} = {E24F9285-73FC-418E-9805-D9BC85E61F44}
+		{3A6633E9-EEE0-4739-8861-A86E2B77A9A3} = {E24F9285-73FC-418E-9805-D9BC85E61F44}
+		{8F6035B1-3BFE-4891-B9BE-19CB56B9AB62} = {E24F9285-73FC-418E-9805-D9BC85E61F44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EF1F1F5-02BA-4BF6-8098-432E3C60660F}

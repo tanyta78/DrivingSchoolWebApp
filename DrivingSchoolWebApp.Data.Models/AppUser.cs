@@ -1,6 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Data.Models
 {
     using System;
+    using Enums;
     using Microsoft.AspNetCore.Identity;
 
     public class AppUser : IdentityUser
@@ -15,10 +16,7 @@
 
         public string Address { get; set; }
 
-        public string Phone { get; set; }
-
         public UserType UserType { get; set; }
-
 
     }
 }

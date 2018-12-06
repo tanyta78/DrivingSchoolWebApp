@@ -1,4 +1,4 @@
-﻿namespace DrivingSchoolWebApp.Data.Models
+﻿namespace DrivingSchoolWebApp.Data.Models.Enums
 {
     public enum UserType
     {

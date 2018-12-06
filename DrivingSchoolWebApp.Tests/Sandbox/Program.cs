@@ -4,6 +4,7 @@
     using System.IO;
     using System.Text;
     using DrivingSchoolWebApp.Data;
+    using DrivingSchoolWebApp.Data.Common;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -95,7 +96,9 @@
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
 
-            // services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            // Application services
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            //services.AddScoped<IService, Service>();
         }
     }
 }

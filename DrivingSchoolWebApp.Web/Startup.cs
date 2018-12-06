@@ -1,6 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Web
 {
     using Data;
+    using Data.Common;
     using Data.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,13 @@
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //services.AddAutoMapper();
+
+            // Application services
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            //services.AddScoped<IService, Service>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

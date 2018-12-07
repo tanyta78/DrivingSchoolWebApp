@@ -6,10 +6,13 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Middlewares;
+    using Services.Mapping;
 
     public class Startup
     {
@@ -23,6 +26,11 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AutoMapperConfig.RegisterMappings(
+                //typeof(IndexViewModel).Assembly,
+                //typeof(CreateJokeInputModel).Assembly
+            );
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -34,17 +42,55 @@
                 options.UseSqlServer(
                     this.Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<AppUser>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<AppUser,AppRole>(
+                    options =>
+                    {
+                        options.Password.RequiredLength = 6;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireDigit = false;
+                    }
+                    )
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddUserStore<AppUserStore>()
+                .AddRoleStore<AppRoleStore>()
+                .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 
-            //services.AddAutoMapper();
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Identity stores
+            services.AddTransient<IUserStore<AppUser>, AppUserStore>();
+            services.AddTransient<IRoleStore<AppRole>, AppRoleStore>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Account/Login";
+                options.LogoutPath = $"/Account/Logout";
+                options.AccessDeniedPath = $"/Account/AccessDenied";
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("Admin");
+                    });
+            });
+
+
+           // services.AddAutoMapper();
 
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             //services.AddScoped<IService, Service>();
-           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,11 +110,17 @@
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
+
+            app.UseMiddleware<SeedUserRolesAndAdminMiddleware>();
+           // app.UseMiddleware<SeedDataMiddleware>();
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

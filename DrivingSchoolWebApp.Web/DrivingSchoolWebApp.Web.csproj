@@ -12,8 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DrivingSchoolWebApp.Data.Common\DrivingSchoolWebApp.Data.Common.csproj" />
     <ProjectReference Include="..\DrivingSchoolWebApp.Data.Models\DrivingSchoolWebApp.Data.Models.csproj" />
     <ProjectReference Include="..\DrivingSchoolWebApp.Data\DrivingSchoolWebApp.Data.csproj" />
+    <ProjectReference Include="..\Services\DrivingSchoolWebApp.Services.DataServices\DrivingSchoolWebApp.Services.DataServices.csproj" />
+    <ProjectReference Include="..\Services\DrivingSchoolWebApp.Services.Mapping\DrivingSchoolWebApp.Services.Mapping.csproj" />
+    <ProjectReference Include="..\Services\DrivingSchoolWebApp.Services.Models\DrivingSchoolWebApp.Services.Models.csproj" />
   </ItemGroup>
 
 </Project>

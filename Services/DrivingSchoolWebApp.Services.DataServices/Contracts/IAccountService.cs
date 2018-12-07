@@ -8,7 +8,7 @@
     {
         IdentityResult Register(RegisterViewModel user);
 
-        void Login(LoginViewModel model);
+        SignInResult Login(LoginViewModel model);
 
         void Logout();
 

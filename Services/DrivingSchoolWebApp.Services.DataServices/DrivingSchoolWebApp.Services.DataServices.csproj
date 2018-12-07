@@ -15,4 +15,10 @@
     <ProjectReference Include="..\DrivingSchoolWebApp.Services.Models\DrivingSchoolWebApp.Services.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.RazorPages">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.razorpages\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.RazorPages.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

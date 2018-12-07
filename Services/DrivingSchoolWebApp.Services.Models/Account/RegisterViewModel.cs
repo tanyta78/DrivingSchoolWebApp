@@ -41,6 +41,9 @@
         //todo add validation for date
         public DateTime BirthDate { get; set; }
 
+        //todo add validation for phone
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "You must enter an address")]
         [StringLength(50, ErrorMessage = "Address length must between 10 and 50 characters", MinimumLength = 10)]
         public string Address { get; set; }

@@ -12,6 +12,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Middlewares;
+    using Services.DataServices;
+    using Services.DataServices.Contracts;
     using Services.Mapping;
 
     public class Startup
@@ -89,6 +91,7 @@
 
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            services.AddScoped<IAccountService, AccountService>();
             //services.AddScoped<IService, Service>();
 
         }

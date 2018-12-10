@@ -1,5 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System;
+    using Data.Models.Enums;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -55,7 +57,7 @@
         // GET: Account/Register
         public IActionResult Register()
         {
-            return this.View();
+           return this.View();
         }
 
         // POST: Account/Register

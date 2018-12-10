@@ -6,6 +6,7 @@
     using Contracts;
     using Data.Common;
     using Data.Models;
+    using Data.Models.Enums;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -127,7 +128,7 @@
             }
         }
 
-        public  IActionResult Logout()
+        public IActionResult Logout()
         {
             return this.LogoutGetAsync().Result;
         }
@@ -170,7 +171,14 @@
                 }
                 else
                 {
-                    await this.userManager.AddToRoleAsync(user, "User");
+                    if (user.UserType == UserType.School)
+                    {
+                        await this.userManager.AddToRoleAsync(user, "School");
+                    }
+                    else
+                    {
+                        await this.userManager.AddToRoleAsync(user, "User");
+                    }
                 }
 
                 this.logger.LogInformation("User created a new account with password.");

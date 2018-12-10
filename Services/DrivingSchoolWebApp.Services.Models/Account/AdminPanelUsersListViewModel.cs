@@ -1,4 +1,4 @@
-﻿namespace DrivingSchoolWebApp.Web.Models.Account
+﻿namespace DrivingSchoolWebApp.Services.Models.Account
 {
     using System.Collections.Generic;
 

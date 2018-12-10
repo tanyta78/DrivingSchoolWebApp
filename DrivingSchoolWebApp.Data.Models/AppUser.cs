@@ -10,6 +10,7 @@
         public AppUser()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.IsEnabled = true;
         }
 
         public string FirstName { get; set; }
@@ -23,6 +24,8 @@
         public string Address { get; set; }
 
         public UserType UserType { get; set; }
+
+        public bool IsEnabled { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; } = new HashSet<IdentityUserRole<string>>();
 

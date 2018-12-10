@@ -1,12 +1,15 @@
 ﻿namespace DrivingSchoolWebApp.Services.DataServices
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using AutoMapper;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Data.Models.Enums;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,14 +22,16 @@
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly IMapper mapper;
         private readonly ILogger<RegisterViewModel> logger;
 
-        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager,IMapper mapper)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this.mapper = mapper;
             this.logger = logger;
         }
 
@@ -34,6 +39,12 @@
         public AppUser GetUser(string username)
         {
             var user = this.userRepository.All().FirstOrDefault(x => x.UserName == username);
+            return user;
+        }
+
+        public AppUser GetUserById(string id)
+        {
+            var user = this.userRepository.All().FirstOrDefault(x => x.Id == id);
             return user;
         }
 
@@ -52,44 +63,75 @@
 
         }
 
-        //public AuthenticationProperties ConfigureExternalLoginProperties(string provider, string redirectUrl)
-        //{
-        //    return this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        //}
+        public AuthenticationProperties ConfigureExternalLoginProperties(string provider, string redirectUrl)
+        {
+            return this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        }
 
-        //public void Demote(string id)
-        //{
-        //    var user = this.userManager.Users.Where(u => u.Id == id).FirstOrDefault();
-        //    this.userManager.RemoveFromRoleAsync(user, "Admin").GetAwaiter().GetResult();
-        //}
+        public void Demote(string id)
+        {
+            var user = this.GetUserById(id);
+            this.userManager.RemoveFromRoleAsync(user, "Admin").GetAwaiter().GetResult();
+        }
 
-        //public void Promote(string id)
-        //{
-        //    var user = this.userManager.Users.Where(u => u.Id == id).FirstOrDefault();
-        //    this.userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
-        //}
+        public void Promote(string id)
+        {
+            var user = this.GetUserById(id);
+            this.userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+        }
 
-        //public IList<AdminPanelUsersViewModel> AdminPanelUsers()
-        //{
-        //    var users = new List<AdminPanelUsersViewModel>();
-        //    foreach (var u in this.userManager.Users.ToList())
-        //    {
-        //        var user = new AdminPanelUsersViewModel
-        //        {
-        //            Username = u.UserName,
-        //            Id = u.Id
-        //        };
-        //        var roleIds = this.db.UserRoles.Where(r => r.UserId == u.Id).ToList();
+        public void Approve(string id)
+        {
+            var user = this.GetUserById(id);
+            if (user.UserType == UserType.School)
+            {
+                this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
 
-        //        foreach (var roleId in roleIds)
-        //        {
-        //            user.Role.Add(this.roleManager.Roles.Where(r => r.Id == roleId.RoleId).FirstOrDefault().Name);
-        //        }
+            }
+        }
 
-        //        users.Add(user);
-        //    }
-        //    return users;
-        //}
+        public void Enable(string id)
+        {
+            var user = this.GetUserById(id);
+            user.IsEnabled = true;
+            this.userRepository.SaveChangesAsync();
+        }
+
+        public void Disable(string id)
+        {
+            var user = this.GetUserById(id);
+            user.IsEnabled = false;
+            this.userRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers()
+        {
+            var users = new List<AdminPanelUsersViewModel>();
+
+            foreach (var userDb in this.userRepository.All().ToList())
+            {
+                var user = new AdminPanelUsersViewModel()
+                {
+                    Id = userDb.Id,
+                    IsEnabled = userDb.IsEnabled,
+                    Username = userDb.UserName,
+                    UserType = userDb.UserType
+                };
+              
+                var rolesIds = userDb.Roles.Select(x => x.RoleId).ToList();
+
+                foreach (var roleId in rolesIds)
+                {
+                    var role = this.roleManager.Roles.FirstOrDefault(r => r.Id == roleId);
+
+                    if (role != null) user.Role.Add(role.Name);
+                }
+
+                users.Add(user);
+            }
+
+            return users;
+        }
 
         public IActionResult Login(LoginViewModel model)
         {
@@ -109,6 +151,12 @@
             }
 
             var result = await this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
+
+            if (!user.IsEnabled)
+            {
+                this.logger.LogWarning("User account locked out.");
+                return this.RedirectToPage("./Lockout");
+            }
 
             if (result.Succeeded)
             {
@@ -171,14 +219,8 @@
                 }
                 else
                 {
-                    if (user.UserType == UserType.School)
-                    {
-                        await this.userManager.AddToRoleAsync(user, "School");
-                    }
-                    else
-                    {
-                        await this.userManager.AddToRoleAsync(user, "User");
-                    }
+                    await this.userManager.AddToRoleAsync(user, "User");
+
                 }
 
                 this.logger.LogInformation("User created a new account with password.");

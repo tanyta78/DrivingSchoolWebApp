@@ -1,7 +1,8 @@
 ﻿namespace DrivingSchoolWebApp.Services.DataServices.Contracts
 {
+    using System.Collections.Generic;
     using Data.Models;
-    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
     using Models.Account;
 
@@ -17,12 +18,18 @@
 
         void CreateUserExternal();
 
-        //todo AuthenticationProperties ConfigureExternalLoginProperties(string provider, string redirectUrl);
+        AuthenticationProperties ConfigureExternalLoginProperties(string provider, string redirectUrl);
 
-        //todo void Demote(string id);
+        void Demote(string id);
 
-        //todo void Promote(string id);
+        void Promote(string id);
 
-        //todo IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers();
+        void Enable(string id);
+
+        void Disable(string id);
+
+        void Approve(string id);
+        
+        IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers();
     }
 }

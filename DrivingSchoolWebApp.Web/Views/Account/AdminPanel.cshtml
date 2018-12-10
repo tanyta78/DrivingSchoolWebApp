@@ -1,4 +1,5 @@
-﻿@model DrivingSchoolWebApp.Web.Models.Account.AdminPanelUsersListViewModel
+﻿@using DrivingSchoolWebApp.Data.Models.Enums
+@model DrivingSchoolWebApp.Services.Models.Account.AdminPanelUsersListViewModel
 @{
     ViewData["Title"] = "AdminPanel";
 }
@@ -7,32 +8,47 @@
     <hr class="w-75 hr-2 chushka-bg-color" />
     <table class="table w-50 mx-auto table-hover">
         <thead>
-        <tr class="row font-weight-bold">
-            <th class="col-md-4">Username</th>
-            <th class="col-md-4">Role</th>
-            <th class="col-md-4">Action</th>
-        </tr>
+            <tr class="row font-weight-bold">
+                <th class="col-md-4">Username</th>
+                <th class="col-md-4">UserType</th>
+                <th class="col-md-4">Role</th>
+                <th class="col-md-4">Action</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr class="row">
-                <td class="col-md-4">@user.Username</td>
-                <td class="col-md-4">@user.RolesAsString</td>
-                <td class="col-md-4 row text-dark">
-                    @if (user.Role.Contains("Admin"))
-                    {
-                        <span col="4"><a asp-controller="Account" asp-action="Demote" asp-route-id="@user.Id" class="text-dark">Demote</a></span>
-                    }
-                    else
-                    {
-                        <span col="4"><a asp-controller="Account" asp-action="Promote" asp-route-id="@user.Id" class="text-dark">Promote</a></span>
-                    }
+            @foreach (var user in Model.Users)
+            {
+                <tr class="row">
+                    <td class="col-md-4">@user.Username</td>
+                    <td class="col-md-4">@user.UserType</td>
+                    <td class="col-md-4">@user.RolesAsString</td>
+                    <td class="col-md-4 row text-dark">
+                        @if (user.Role.Contains("Admin"))
+                        {
+                            <span col="4"><a asp-controller="Account" asp-action="Demote" asp-route-id="@user.Id" class="text-dark">Demote</a></span>
+                        }
+                        else
+                        {
+                            <span col="4"><a asp-controller="Account" asp-action="Promote" asp-route-id="@user.Id" class="text-dark">Promote</a></span>
+                            if (user.IsEnabled)
+                            {
+                                <span col="4"><a asp-controller="Account" asp-action="Disable" asp-route-id="@user.Id" class="text-dark">Disable</a></span>
+                            }
+                            else
+                            {
+                                <span col="4"><a asp-controller="Account" asp-action="Enable" asp-route-id="@user.Id" class="text-dark">Enable</a></span>
+
+                            }
+                            if (user.UserType == UserType.School)
+                            {
+                                <span col="4"><a asp-controller="Account" asp-action="Approve" asp-route-id="@user.Id" class="text-dark">Approve</a></span>
+                            }
+                        }
 
 
-                </td>
-            </tr>
-        }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
     <hr class="w-75 hr-2 chushka-bg-color" />

@@ -1,8 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
-    using System;
-    using Data.Models.Enums;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Models;
@@ -39,13 +38,13 @@
 
         //POST:Account/ExternalLogin
         [HttpPost]
-        //public IActionResult ExternalLogin(string provider, string returnUrl = null)
-        //{
-        //    var redirectUrl = "/Account/ExternalLogin";
-        //    AuthenticationProperties properties = this.accountService.ConfigureExternalLoginProperties(provider, redirectUrl);
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = "/Account/ExternalLogin";
+            AuthenticationProperties properties = this.accountService.ConfigureExternalLoginProperties(provider, redirectUrl);
 
-        //    return new ChallengeResult(provider, properties);
-        //}
+            return new ChallengeResult(provider, properties);
+        }
 
 
         public IActionResult ExternalLogin()
@@ -57,7 +56,7 @@
         // GET: Account/Register
         public IActionResult Register()
         {
-           return this.View();
+            return this.View();
         }
 
         // POST: Account/Register
@@ -78,26 +77,47 @@
             return this.accountService.Logout();
         }
 
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult AdminPanel()
-        //{
-        //    var users = new AdminPanelUsersListViewModel{Users = this.accountService.AdminPanelUsers()};
-        //    return this.View(users);
-        //}
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminPanel()
+        {
+            var users = new AdminPanelUsersListViewModel { Users = this.accountService.AdminPanelUsers() };
+            return this.View(users);
+        }
 
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult Demote(string id)
-        //{
-        //    this.accountService.Demote(id);
-        //    return this.RedirectToAction("AdminPanel");
-        //}
+        [Authorize(Roles = "Admin")]
+        public IActionResult Demote(string id)
+        {
+            this.accountService.Demote(id);
+            return this.RedirectToAction("AdminPanel");
+        }
 
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult Promote(string id)
-        //{
-        //    this.accountService.Promote(id);
-        //    return this.RedirectToAction("AdminPanel");
-        //}
+        [Authorize(Roles = "Admin")]
+        public IActionResult Promote(string id)
+        {
+            this.accountService.Promote(id);
+            return this.RedirectToAction("AdminPanel");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Approve(string id)
+        {
+            this.accountService.Approve(id);
+            return this.RedirectToAction("AdminPanel");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Enable(string id)
+        {
+            this.accountService.Enable(id);
+            return this.RedirectToAction("AdminPanel");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Disable(string id)
+        {
+            this.accountService.Disable(id);
+            return this.RedirectToAction("AdminPanel");
+        }
 
     }
 }

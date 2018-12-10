@@ -2,14 +2,17 @@
 {
     using System.Linq;
     using System.Security.Claims;
+    using System.Threading.Tasks;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using Models.Account;
 
-    public class AccountService : IAccountService
+    public class AccountService : PageModel, IAccountService
     {
         private readonly IRepository<AppUser> userRepository;
         private readonly UserManager<AppUser> userManager;
@@ -87,21 +90,63 @@
         //    return users;
         //}
 
-        public SignInResult Login(LoginViewModel model)
+        public IActionResult Login(LoginViewModel model)
         {
-            var user = this.GetUser(model.Username);
-            var result = this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true).Result;
-            return result;
+            return this.LoginPostAsync(model).Result;
         }
 
-        public async void Logout()
+        private async Task<IActionResult> LoginPostAsync(LoginViewModel model)
+        {
+            if (!this.ModelState.IsValid) return this.Page();
+
+            var user = this.GetUser(model.Username);
+
+            if (user == null)
+            {
+                this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return this.Page();
+            }
+
+            var result = await this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                this.logger.LogInformation("User logged in.");
+                return this.Redirect("/");
+            }
+
+            if (result.IsLockedOut)
+            {
+                this.logger.LogWarning("User account locked out.");
+                return this.RedirectToPage("./Lockout");
+            }
+            else
+            {
+                this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return this.Page();
+            }
+        }
+
+        public  IActionResult Logout()
+        {
+            return this.LogoutGetAsync().Result;
+        }
+
+        private async Task<IActionResult> LogoutGetAsync()
         {
             await this.signInManager.SignOutAsync();
+
+            return this.Redirect("/");
         }
 
-        public IdentityResult Register(RegisterViewModel model)
+        public IActionResult Register(RegisterViewModel user)
         {
+            return this.RegisterPostAsync(user).Result;
+        }
 
+        private async Task<IActionResult> RegisterPostAsync(RegisterViewModel model)
+        {
+            if (!this.ModelState.IsValid) return this.Page();
             var user = new AppUser()
             {
                 UserName = model.Username,
@@ -115,9 +160,34 @@
                 UserType = model.UserType
             };
 
-            var result = this.userManager.CreateAsync(user, model.Password).Result;
+            var result = await this.userManager.CreateAsync(user, model.Password);
 
-            return result;
+            if (result.Succeeded)
+            {
+                if (this.userRepository.All().Count() == 1)
+                {
+                    await this.userManager.AddToRoleAsync(user, "Admin");
+                }
+                else
+                {
+                    await this.userManager.AddToRoleAsync(user, "User");
+                }
+
+                this.logger.LogInformation("User created a new account with password.");
+
+                var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                await this.signInManager.SignInAsync(user, isPersistent: false);
+
+                return this.Redirect("/");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                this.ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return this.Page();
         }
     }
 }

@@ -2,15 +2,16 @@
 {
     using Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Models.Account;
 
     public interface IAccountService
     {
-        IdentityResult Register(RegisterViewModel user);
+        IActionResult Register(RegisterViewModel user);
 
-        SignInResult Login(LoginViewModel model);
+        IActionResult Login(LoginViewModel model);
 
-        void Logout();
+        IActionResult Logout();
 
         AppUser GetUser(string username);
 

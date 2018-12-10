@@ -16,34 +16,46 @@
         {
             <li class="nav-item dropdown">
                 <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Events
+                    Courses
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" asp-controller="Events" asp-action="All">All Events</a>
-                    <a class="dropdown-item" asp-controller="Events" asp-action="My">My Events</a>
-                    @if (this.User.IsInRole("Admin"))
+                    <a class="dropdown-item" asp-controller="Courses" asp-action="All">All courses</a>
+                    <a class="dropdown-item" asp-controller="Courses" asp-action="My">My courses</a>
+                    @if (this.User.IsInRole("School"))
                     {
-                        <a class="dropdown-item" asp-controller="Events" asp-action="Create">Create Event</a>
+                        <a class="dropdown-item" asp-controller="Courses" asp-action="Create">Create course</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
 
                     }
                 </div>
             </li>
-            if (this.User.IsInRole("Admin"))
+            if (this.User.IsInRole("School"))
             {
                 <li class="nav-item dropdown">
                     <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Orders
+                        Trainers and Cars
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                        <a class="dropdown-item" asp-controller="Orders" asp-action="All">All Orders</a>
+                        <a class="dropdown-item" asp-controller="Trainers" asp-action="All">All Trainers</a>
+                        <a class="dropdown-item" asp-controller="Cars" asp-action="All">All Cars</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Trainers" asp-action="Create">Create trainer</a>
+                        <a class="dropdown-item" asp-controller="Cars" asp-action="Create">Create car</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
             }
+            <li class="nav-item dropdown">
+                <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Orders and payments
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                    <a class="dropdown-item " asp-controller="Orders" asp-action="All">All Orders</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Payments" asp-action="All">All Payments</a>
+                </div>
+            </li>
+
         }
     </ul>
     @if (!this.User.Identity.IsAuthenticated)

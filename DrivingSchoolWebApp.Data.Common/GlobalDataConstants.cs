@@ -9,7 +9,8 @@
         public static readonly List<string> RolesName = new List<string>
         {
             "Admin",
-            "User"
+            "User",
+            "School"
         };
     }
 }

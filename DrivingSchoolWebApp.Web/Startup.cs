@@ -3,6 +3,7 @@
     using Data;
     using Data.Common;
     using Data.Models;
+    using AutoMapper;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@
     using Services.DataServices;
     using Services.DataServices.Contracts;
     using Services.Mapping;
+    using Services.Models.Account;
 
     public class Startup
     {
@@ -29,14 +31,14 @@
         public void ConfigureServices(IServiceCollection services)
         {
             AutoMapperConfig.RegisterMappings(
-                //typeof(IndexViewModel).Assembly,
+                typeof(LoginViewModel).Assembly
                 //typeof(CreateJokeInputModel).Assembly
             );
 
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+               // options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -65,6 +67,8 @@
 
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+           
+            services.AddAutoMapper();
 
             // Identity stores
             services.AddTransient<IUserStore<AppUser>, AppUserStore>();
@@ -87,11 +91,12 @@
             });
 
 
-           // services.AddAutoMapper();
 
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICourseService, CourseService>();
+
             //services.AddScoped<IService, Service>();
 
         }

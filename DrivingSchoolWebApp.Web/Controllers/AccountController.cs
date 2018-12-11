@@ -77,6 +77,11 @@
             return this.accountService.Logout();
         }
 
+        public IActionResult Lockout()
+        {
+            return this.View();
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult AdminPanel()
         {

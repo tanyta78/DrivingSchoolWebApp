@@ -25,7 +25,7 @@
         private readonly IMapper mapper;
         private readonly ILogger<RegisterViewModel> logger;
 
-        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager,IMapper mapper)
+        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
@@ -94,14 +94,14 @@
         {
             var user = this.GetUserById(id);
             user.IsEnabled = true;
-            this.userRepository.SaveChangesAsync();
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
         }
 
         public void Disable(string id)
         {
             var user = this.GetUserById(id);
             user.IsEnabled = false;
-            this.userRepository.SaveChangesAsync();
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
         }
 
         public IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers()
@@ -110,6 +110,12 @@
 
             foreach (var userDb in this.userRepository.All().ToList())
             {
+                var userc = this.signInManager.Context.User;
+               
+                if (userDb.UserName == userc.Identity.Name)
+                {
+                    continue;
+                }
                 var user = new AdminPanelUsersViewModel()
                 {
                     Id = userDb.Id,
@@ -117,14 +123,12 @@
                     Username = userDb.UserName,
                     UserType = userDb.UserType
                 };
-              
-                var rolesIds = userDb.Roles.Select(x => x.RoleId).ToList();
 
-                foreach (var roleId in rolesIds)
+                var rolesAsString = this.userManager.GetRolesAsync(userDb).Result;
+
+                foreach (var role in rolesAsString)
                 {
-                    var role = this.roleManager.Roles.FirstOrDefault(r => r.Id == roleId);
-
-                    if (role != null) user.Role.Add(role.Name);
+                    if (role != null) user.Role.Add(role);
                 }
 
                 users.Add(user);
@@ -150,13 +154,14 @@
                 return this.Page();
             }
 
-            var result = await this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
-
             if (!user.IsEnabled)
             {
                 this.logger.LogWarning("User account locked out.");
-                return this.RedirectToPage("./Lockout");
+                return this.Redirect("/Account/Lockout");
             }
+
+            var result = await this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
+
 
             if (result.Succeeded)
             {
@@ -167,7 +172,7 @@
             if (result.IsLockedOut)
             {
                 this.logger.LogWarning("User account locked out.");
-                return this.RedirectToPage("./Lockout");
+                return this.RedirectToPage("Lockout");
             }
             else
             {
@@ -178,6 +183,7 @@
 
         public IActionResult Logout()
         {
+
             return this.LogoutGetAsync().Result;
         }
 

@@ -31,8 +31,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             AutoMapperConfig.RegisterMappings(
-                typeof(LoginViewModel).Assembly
-                //typeof(CreateJokeInputModel).Assembly
+                typeof(AdminPanelUsersViewModel).Assembly,
+                typeof(AppUser).Assembly
             );
 
             services.Configure<CookiePolicyOptions>(options =>

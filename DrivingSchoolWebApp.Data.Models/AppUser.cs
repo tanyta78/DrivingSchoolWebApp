@@ -11,6 +11,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.IsEnabled = true;
+            this.IsApproved = false;
         }
 
         public string FirstName { get; set; }
@@ -26,6 +27,8 @@
         public UserType UserType { get; set; }
 
         public bool IsEnabled { get; set; }
+
+        public bool IsApproved { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; } = new HashSet<IdentityUserRole<string>>();
 

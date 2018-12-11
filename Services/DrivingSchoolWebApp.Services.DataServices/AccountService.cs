@@ -86,8 +86,9 @@
             if (user.UserType == UserType.School)
             {
                 this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
-
+                //todo add create school
             }
+           
         }
 
         public void Enable(string id)
@@ -121,7 +122,8 @@
                     Id = userDb.Id,
                     IsEnabled = userDb.IsEnabled,
                     Username = userDb.UserName,
-                    UserType = userDb.UserType
+                    UserType = userDb.UserType,
+                    IsApproved = userDb.IsApproved
                 };
 
                 var rolesAsString = this.userManager.GetRolesAsync(userDb).Result;
@@ -226,6 +228,20 @@
                 else
                 {
                     await this.userManager.AddToRoleAsync(user, "User");
+
+                    if (user.UserType == UserType.Customer)
+                    {
+                        user.IsApproved = true;
+                        //todo add create customer
+                    }
+                    if (user.UserType == UserType.Trainer)
+                    {
+                        user.IsApproved = true;
+
+                        //todo add create trainer
+                        //not login after creation redirect to list or detail view of trainer
+                        return this.Redirect("/Trainers/All");
+                    }
 
                 }
 

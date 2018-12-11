@@ -1,7 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Account
 {
     using System.Collections.Generic;
-    using System.Linq;
     using AutoMapper;
     using Data.Models;
     using Data.Models.Enums;
@@ -16,6 +15,8 @@
         public UserType UserType { get; set; }
 
         public bool IsEnabled { get; set; }
+
+        public bool IsApproved { get; set; }
 
         public List<string> Role { get; set; } = new List<string>();
 

@@ -1,9 +1,9 @@
-﻿namespace DrivingSchoolWebApp.Data.Models
+﻿namespace DrivingSchoolWebApp.Services.Models.Car
 {
-    using Common;
-    using Enums;
+    using Data.Models;
+    using Data.Models.Enums;
 
-    public class Car : BaseModel<int>
+    public class CarDetailsViewModel
     {
         public string Model { get; set; }
 
@@ -15,9 +15,6 @@
 
         public byte[] Image { get; set; }
 
-        public bool InUse { get; set; } = true;
-
-        public string VIN { get; set; }
-
+       
     }
 }

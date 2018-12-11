@@ -39,7 +39,7 @@
                                 <span col="2"><a asp-controller="Account" asp-action="Enable" asp-route-id="@user.Id" class="text-dark btn btn-outline-success">Enable</a></span>
 
                             }
-                            if (user.UserType == UserType.School && !user.Role.Contains("School"))
+                            if (!user.IsApproved)
                             {
                                 <span col="2"><a asp-controller="Account" asp-action="Approve" asp-route-id="@user.Id" class="text-dark btn btn-outline-info">Approve</a></span>
                             }

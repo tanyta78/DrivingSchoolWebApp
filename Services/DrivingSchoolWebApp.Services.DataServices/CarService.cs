@@ -6,7 +6,7 @@
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
-    using DrivingSchoolWebApp.Services.Models.Car;
+    using Models.Car;
     using Mapping;
 
     public class CarService : ICarService
@@ -42,7 +42,7 @@
 
        public void Edit(CreateCarInputModel model)
         {
-            throw new System.NotImplementedException();
+            //todo change schoolId, inUse, Image
         }
 
         public TViewModel GetCarById<TViewModel>(int id)

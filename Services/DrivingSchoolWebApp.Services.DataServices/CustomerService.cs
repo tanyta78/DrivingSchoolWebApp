@@ -5,8 +5,8 @@
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
-    using DrivingSchoolWebApp.Services.Models.Customer;
     using Mapping;
+    using Models.Customer;
 
     public class CustomerService : ICustomerService
     {
@@ -25,10 +25,10 @@
 
         public int Create(CustomerViewModel model)
         {
-           var customer = new Customer()
-           {
-               User = model.User
-           };
+            var customer = new Customer()
+            {
+                User = model.User
+            };
 
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();
@@ -38,7 +38,7 @@
 
         public void Delete(int id)
         {
-            //todo find user and set isEnabled to false check this
+            //todo find user and set isEnabled to false =>check this
             var customer = this.GetCustomerById<Customer>(id);
             var user = customer.User;
             user.IsEnabled = false;
@@ -48,7 +48,7 @@
 
         public void Edit(CustomerViewModel model)
         {
-           //todo decide model and what to change?!? do not change userId
+            //todo decide model and what to change?!? do not change userId
             //maybe you do not need this
         }
 

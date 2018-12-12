@@ -23,15 +23,17 @@
         private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly IMapper mapper;
+        private readonly ISchoolService schoolService;
         private readonly ILogger<RegisterViewModel> logger;
 
-        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper)
+        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper,ISchoolService schoolService)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
+            this.schoolService = schoolService;
             this.logger = logger;
         }
 
@@ -83,12 +85,25 @@
         public void Approve(string id)
         {
             var user = this.GetUserById(id);
-            if (user.UserType == UserType.School)
-            {
-                this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
-                //todo add create school
-            }
+            //todo check for null
+            if (user.UserType != UserType.School) return;
+            this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
            
+            this.schoolService.Create(user);
+            user.IsApproved = true;
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
+        }
+
+        public void RemoveApproval(string id)
+        {
+            var user = this.GetUserById(id);
+            //todo check for null
+            this.userManager.RemoveFromRoleAsync(user, "School").GetAwaiter().GetResult();
+            user.UserType = UserType.Customer;
+            user.IsApproved = false;
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
         }
 
         public void Enable(string id)

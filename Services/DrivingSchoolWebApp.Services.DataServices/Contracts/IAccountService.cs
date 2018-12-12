@@ -29,6 +29,8 @@
         void Disable(string id);
 
         void Approve(string id);
+
+        void RemoveApproval(string id);
         
         IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers();
     }

@@ -1,15 +1,11 @@
-﻿namespace DrivingSchoolWebApp.Data.Models
+﻿namespace DrivingSchoolWebApp.Services.Models.School
 {
     using System.Collections.Generic;
-    using Common;
+    using Data.Models;
+    using Mapping;
 
-    public class School : BaseModel<int>
+    public class CreateSchoolInputModel:IMapFrom<School>
     {
-        public School()
-        {
-            this.IsActive = true;
-        }
-
         public AppUser Manager { get; set; }
 
         public string TradeMark { get; set; }

@@ -18,10 +18,16 @@
 
         public double Rating { get; set; }
 
+        public int SchoolId { get; set; }
+
         public virtual School School { get; set; }
 
+        public int TrainerId { get; set; }
+        
         public virtual Trainer Trainer { get; set; }
 
+        public int CarId { get; set; }
+        
         public virtual Car Car { get; set; }
 
         public virtual IEnumerable<Order> Students { get; set; } = new HashSet<Order>();

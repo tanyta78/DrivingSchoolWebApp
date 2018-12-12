@@ -6,7 +6,9 @@
 
     public class Payment:BaseModel<int>
     {
-        public Order Order { get; set; }
+        public int OrderId { get; set; }
+
+        public virtual Order Order { get; set; }
 
         public DateTime PaidOn { get; set; }
 

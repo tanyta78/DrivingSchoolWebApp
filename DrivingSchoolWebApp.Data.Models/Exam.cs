@@ -6,9 +6,13 @@
 
     public class Exam:BaseModel<int>
     {
-        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
+        
+        public virtual Customer Customer { get; set; }
 
-        public Course Course { get; set; }
+        public int CourseId { get; set; }
+        
+        public virtual Course Course { get; set; }
 
         public DateTime Date { get; set; }
 

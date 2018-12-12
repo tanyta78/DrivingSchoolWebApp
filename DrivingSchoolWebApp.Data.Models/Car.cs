@@ -11,7 +11,9 @@
 
         public Transmission Transmission { get; set; }
 
-        public School Owner { get; set; }
+        public int OwnerId { get; set; }
+
+        public virtual School Owner { get; set; }
 
         public byte[] Image { get; set; }
 

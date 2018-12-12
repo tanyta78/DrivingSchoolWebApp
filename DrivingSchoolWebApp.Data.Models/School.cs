@@ -10,7 +10,9 @@
             this.IsActive = true;
         }
 
-        public AppUser Manager { get; set; }
+        public string ManagerId { get; set; }
+
+        public virtual AppUser Manager { get; set; }
 
         public string TradeMark { get; set; }
 

@@ -5,7 +5,9 @@
 
     public class Customer : BaseModel<int>
     {
-        public AppUser User { get; set; }
+        public string UserId { get; set; }
+
+        public virtual AppUser User { get; set; }
 
         public IEnumerable<Order> CoursesOrdered { get; set; } = new HashSet<Order>();
 

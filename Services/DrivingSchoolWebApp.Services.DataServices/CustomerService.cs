@@ -33,6 +33,7 @@
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
+            //todo in controller redirect to login
             return customer.Id;
         }
 

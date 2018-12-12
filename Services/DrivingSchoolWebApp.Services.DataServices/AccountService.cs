@@ -247,15 +247,17 @@
                     if (user.UserType == UserType.Customer)
                     {
                         user.IsApproved = true;
+                        this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
                         //todo add create customer
+                        return this.RedirectToAction("Create", "Customers", user.Id);
                     }
                     if (user.UserType == UserType.Trainer)
                     {
                         user.IsApproved = true;
-
+                        this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
                         //todo add create trainer
-                        //not login after creation redirect to list or detail view of trainer
-                        return this.Redirect("/Trainers/All");
+                        return this.RedirectToAction("Hire", "Trainers", user.Id);
+
                     }
 
                 }

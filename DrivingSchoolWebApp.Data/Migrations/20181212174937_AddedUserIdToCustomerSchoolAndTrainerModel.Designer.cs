@@ -4,14 +4,16 @@ using DrivingSchoolWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DrivingSchoolWebApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181212174937_AddedUserIdToCustomerSchoolAndTrainerModel")]
+    partial class AddedUserIdToCustomerSchoolAndTrainerModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -341,11 +343,9 @@ namespace DrivingSchoolWebApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("AvailableLessonDay");
+
                     b.Property<DateTime>("AvailableStartTime");
-
-                    b.Property<DateTime>("HireDate");
-
-                    b.Property<bool>("IsAvailable");
 
                     b.Property<int>("SchoolId");
 

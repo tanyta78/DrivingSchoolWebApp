@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
-    using System.Threading.Tasks;
     using AutoMapper;
     using Contracts;
     using Data.Common;
@@ -11,12 +10,10 @@
     using Data.Models.Enums;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using Models.Account;
 
-    public class AccountService : PageModel, IAccountService
+    public class AccountService : IAccountService
     {
         private readonly IRepository<AppUser> userRepository;
         private readonly UserManager<AppUser> userManager;
@@ -26,7 +23,7 @@
         private readonly ISchoolService schoolService;
         private readonly ILogger<RegisterViewModel> logger;
 
-        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper,ISchoolService schoolService)
+        public AccountService(IRepository<AppUser> userRepository, UserManager<AppUser> userManager, ILogger<RegisterViewModel> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper, ISchoolService schoolService)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
@@ -88,7 +85,7 @@
             //todo check for null
             if (user.UserType != UserType.School) return;
             this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
-           
+
             this.schoolService.Create(user);
             user.IsApproved = true;
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
@@ -127,7 +124,7 @@
             foreach (var userDb in this.userRepository.All().ToList())
             {
                 var userc = this.signInManager.Context.User;
-               
+
                 if (userDb.UserName == userc.Identity.Name)
                 {
                     continue;
@@ -154,71 +151,20 @@
             return users;
         }
 
-        public IActionResult Login(LoginViewModel model)
+        public Microsoft.AspNetCore.Identity.SignInResult Login(AppUser user, string password)
         {
-            return this.LoginPostAsync(model).Result;
+            return this.signInManager.PasswordSignInAsync(user, password, false, lockoutOnFailure: true).GetAwaiter().GetResult();
         }
 
-        private async Task<IActionResult> LoginPostAsync(LoginViewModel model)
+        public void Logout()
         {
-            if (!this.ModelState.IsValid) return this.Page();
+            this.signInManager.SignOutAsync().GetAwaiter().GetResult();
 
-            var user = this.GetUser(model.Username);
-
-            if (user == null)
-            {
-                this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return this.Page();
-            }
-
-            if (!user.IsEnabled)
-            {
-                this.logger.LogWarning("User account locked out.");
-                return this.Redirect("/Account/Lockout");
-            }
-
-            var result = await this.signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
-
-
-            if (result.Succeeded)
-            {
-                this.logger.LogInformation("User logged in.");
-                return this.Redirect("/");
-            }
-
-            if (result.IsLockedOut)
-            {
-                this.logger.LogWarning("User account locked out.");
-                return this.RedirectToPage("Lockout");
-            }
-            else
-            {
-                this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return this.Page();
-            }
+            ////return this.Redirect("/");
         }
 
-        public IActionResult Logout()
+        public IdentityResult Register(RegisterViewModel model)
         {
-
-            return this.LogoutGetAsync().Result;
-        }
-
-        private async Task<IActionResult> LogoutGetAsync()
-        {
-            await this.signInManager.SignOutAsync();
-
-            return this.Redirect("/");
-        }
-
-        public IActionResult Register(RegisterViewModel user)
-        {
-            return this.RegisterPostAsync(user).Result;
-        }
-
-        private async Task<IActionResult> RegisterPostAsync(RegisterViewModel model)
-        {
-            if (!this.ModelState.IsValid) return this.Page();
             var user = new AppUser()
             {
                 UserName = model.Username,
@@ -232,51 +178,33 @@
                 UserType = model.UserType
             };
 
-            var result = await this.userManager.CreateAsync(user, model.Password);
+            var result = this.userManager.CreateAsync(user, model.Password).GetAwaiter().GetResult();
 
-            if (result.Succeeded)
+            if (!result.Succeeded) return result;
+
+            if (this.userRepository.All().Count() == 1)
             {
-                if (this.userRepository.All().Count() == 1)
-                {
-                    await this.userManager.AddToRoleAsync(user, "Admin");
-                }
-                else
-                {
-                    await this.userManager.AddToRoleAsync(user, "User");
+                this.userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+            }
+            else
+            {
+                this.userManager.AddToRoleAsync(user, "User").GetAwaiter().GetResult();
 
-                    if (user.UserType == UserType.Customer)
-                    {
-                        user.IsApproved = true;
-                        this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
-                        //todo add create customer
-                        return this.RedirectToAction("Create", "Customers", user.Id);
-                    }
-                    if (user.UserType == UserType.Trainer)
-                    {
-                        user.IsApproved = true;
-                        this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
-                        //todo add create trainer
-                        return this.RedirectToAction("Hire", "Trainers", user.Id);
-
-                    }
-
-                }
-
-                this.logger.LogInformation("User created a new account with password.");
-
-                var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                await this.signInManager.SignInAsync(user, isPersistent: false);
-
-                return this.Redirect("/");
             }
 
-            foreach (var error in result.Errors)
+            if (user.UserType != UserType.School)
             {
-                this.ModelState.AddModelError(string.Empty, error.Description);
+                user.IsApproved = true;
+                this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
             }
 
-            return this.Page();
+            this.logger.LogInformation("User created a new account with password.");
+
+            var code = this.userManager.GenerateEmailConfirmationTokenAsync(user).GetAwaiter().GetResult();
+
+            return result;
         }
+
     }
 }

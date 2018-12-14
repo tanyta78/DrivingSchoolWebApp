@@ -23,18 +23,17 @@
             return customers;
         }
 
-        public int Create(CustomerViewModel model)
+        public Customer Create(AppUser user)
         {
             var customer = new Customer()
             {
-                User = model.User
+                User = user
             };
 
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            //todo in controller redirect to login
-            return customer.Id;
+           return customer;
         }
 
         public void Delete(int id)

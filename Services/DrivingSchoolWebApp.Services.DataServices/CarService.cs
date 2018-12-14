@@ -25,14 +25,14 @@
             return this.carRepository.All().ToList();
         }
 
-        public int Create(CreateCarInputModel model)
+        public Car Create(CreateCarInputModel model)
         {
             var car = this.mapper.Map<Car>(model);
 
             this.carRepository.AddAsync(car).GetAwaiter().GetResult();
             this.carRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return car.Id;
+            return car;
         }
 
         public void Delete(CreateCarInputModel model)

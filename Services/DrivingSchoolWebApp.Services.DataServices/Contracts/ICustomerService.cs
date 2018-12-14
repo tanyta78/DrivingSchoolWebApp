@@ -12,7 +12,7 @@
 
         TViewModel GetCustomerByUserId<TViewModel>(string userId);
 
-        int Create(CustomerViewModel model);
+        Customer Create(AppUser user);
 
         void Edit(CustomerViewModel model);
 

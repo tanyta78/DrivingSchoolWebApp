@@ -16,5 +16,8 @@
 
         TViewModel GetSchoolById<TViewModel>(int id);
 
+        TViewModel GetSchoolByManagerName<TViewModel>(string username);
+
+
     }
 }

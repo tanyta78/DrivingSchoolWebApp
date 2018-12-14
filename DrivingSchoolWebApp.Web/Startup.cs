@@ -95,6 +95,10 @@
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ITrainerService, TrainerService>();
+            services.AddScoped<ISchoolService, SchoolService>();
+            services.AddScoped<ICarService, CarService>();
             services.AddScoped<ICourseService, CourseService>();
 
             //services.AddScoped<IService, Service>();

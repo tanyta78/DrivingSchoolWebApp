@@ -4,7 +4,6 @@
     using System.Linq;
     using Contracts;
     using Data.Common;
-    using Data.Models.Enums;
     using DrivingSchoolWebApp.Data.Models;
     using Mapping;
     using Models.School;
@@ -45,7 +44,7 @@
             var school = this.GetSchoolById<School>(id);
             school.IsActive = false;
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
-           
+
             //change manager usertype to customer and remove user from role school and isApproved set to false=> ONLY with admin rights or approvement
             //do this in controller and call account service
         }
@@ -60,6 +59,14 @@
         {
             var school = this.schoolRepository.All()
                              .Where(x => x.Id == id)
+                             .To<TViewModel>().FirstOrDefault();
+            return school;
+        }
+
+        public TViewModel GetSchoolByManagerName<TViewModel>(string username)
+        {
+            var school = this.schoolRepository.All()
+                             .Where(x => x.Manager.UserName == username)
                              .To<TViewModel>().FirstOrDefault();
             return school;
         }

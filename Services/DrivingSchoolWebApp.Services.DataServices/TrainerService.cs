@@ -15,7 +15,7 @@
             this.trainerRepository = trainerRepository;
         }
 
-        public int Hire(string userId, int schoolId)
+        public Trainer Hire(string userId, int schoolId)
         {
             var trainer = new Trainer()
             {
@@ -26,7 +26,7 @@
             this.trainerRepository.AddAsync(trainer).GetAwaiter().GetResult();
             this.trainerRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return trainer.Id;
+            return trainer;
         }
 
         public void Delete(int id)

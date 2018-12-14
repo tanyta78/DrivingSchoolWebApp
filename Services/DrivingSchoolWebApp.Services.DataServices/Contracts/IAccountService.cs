@@ -3,16 +3,17 @@
     using System.Collections.Generic;
     using Data.Models;
     using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Identity;
     using Models.Account;
+    using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
     public interface IAccountService
     {
-        IActionResult Register(RegisterViewModel user);
+        IdentityResult Register(RegisterViewModel user);
 
-        IActionResult Login(LoginViewModel model);
+        SignInResult Login(AppUser user, string password);
 
-        IActionResult Logout();
+        void Logout();
 
         AppUser GetUser(string username);
 
@@ -31,7 +32,7 @@
         void Approve(string id);
 
         void RemoveApproval(string id);
-        
+
         IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers();
     }
 }

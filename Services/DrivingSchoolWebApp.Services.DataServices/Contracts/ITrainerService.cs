@@ -1,10 +1,11 @@
 ﻿namespace DrivingSchoolWebApp.Services.DataServices.Contracts
 {
     using System.Collections.Generic;
+    using Data.Models;
 
     public interface ITrainerService
     {
-        int Hire(string userId, int schoolId);
+        Trainer Hire(string userId, int schoolId);
 
         void Edit();
 

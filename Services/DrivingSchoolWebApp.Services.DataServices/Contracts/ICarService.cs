@@ -10,7 +10,7 @@
 
         TViewModel GetCarById<TViewModel>(int id);
 
-        int Create(CreateCarInputModel model);
+        Car Create(CreateCarInputModel model);
 
         void Edit(CreateCarInputModel model);
 

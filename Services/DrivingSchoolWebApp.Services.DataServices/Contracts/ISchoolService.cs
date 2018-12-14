@@ -6,13 +6,13 @@
 
     public interface ISchoolService
     {
-        int Create(AppUser manager);
+        School Create(AppUser manager); 
 
         void Edit(CreateSchoolInputModel model);
 
         void Delete(int id);
 
-        IEnumerable<School> AllActiveSchools();
+        IEnumerable<TViewModel> AllActiveSchools<TViewModel>();
 
         TViewModel GetSchoolById<TViewModel>(int id);
 

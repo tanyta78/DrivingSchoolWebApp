@@ -17,13 +17,13 @@
             this.schoolRepository = schoolRepository;
         }
 
-        public IEnumerable<School> AllActiveSchools()
+        public IEnumerable<TViewModel> AllActiveSchools<TViewModel>()
         {
-            return this.schoolRepository.All().Where(s => s.IsActive);
+            return this.schoolRepository.All().Where(s => s.IsActive).To<TViewModel>();
         }
 
         //only admin
-        public int Create(AppUser manager)
+        public School Create(AppUser manager)
         {
             //to check manager is in role school 
             var school = new School()
@@ -34,7 +34,7 @@
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school.Id;
+            return school;
         }
 
         public void Delete(int id)

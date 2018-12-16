@@ -7,6 +7,12 @@
 
     public class Order : BaseModel<int>
     {
+        public Order()
+        {
+            this.IsCourseCompleted = false;
+            this.OrderStatus = OrderStatus.AwaitingPayment;
+        }
+
         public int CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
@@ -14,6 +20,8 @@
         public int CourseId { get; set; }
 
         public virtual Course Course { get; set; }
+
+        public decimal ActualPriceWhenOrder { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
 

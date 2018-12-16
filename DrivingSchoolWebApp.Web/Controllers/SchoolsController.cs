@@ -1,6 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
-    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.School;
@@ -15,7 +15,7 @@
         }
 
         // GET: Schools
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var schoolsApproved = this.schoolService.AllActiveSchools<SchoolViewModel>();
             var model = new SchoolListViewModel()
@@ -25,18 +25,24 @@
             return this.View(model);
         }
 
+        // GET: Schools/Manage
+        public IActionResult Manage()
+        {
+            var username = this.User.Identity.Name;
+            var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username);
+            
+            return this.View(school);
+        }
+
         // GET: Schools/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             var school = this.schoolService.GetSchoolById<SchoolViewModel>(id);
-
-            //todo check for null
-
             return this.View(school);
         }
 
         // GET: Schools/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return this.View();
         }
@@ -44,22 +50,21 @@
         // POST: Schools/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(CreateSchoolInputModel model)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                return this.View(model);
+            }
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            var school = this.schoolService.Create(model.Manager);
+
+            //todo decide where to redirect
+            return this.RedirectToAction("Details", "Schools", school.Id);
         }
 
         // GET: Schools/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return this.View();
         }
@@ -67,22 +72,21 @@
         // POST: Schools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(EditSchoolInputModel model)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                return this.View(model);
+            }
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            var school = this.schoolService.Edit(model);
+
+            //todo decide where to redirect
+            return this.RedirectToAction("Details", "Schools", school.Id);
         }
 
         // GET: Schools/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return this.View();
         }
@@ -90,18 +94,11 @@
         // POST: Schools/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize("Admin")]
+        public IActionResult Delete(int id, string username)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            this.schoolService.Delete(id);
+            return this.RedirectToAction(nameof(Index));
         }
     }
 }

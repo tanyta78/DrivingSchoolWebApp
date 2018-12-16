@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Data.Models
 {
+    using System.Collections.Generic;
     using Common;
     using Enums;
 
@@ -20,6 +21,8 @@
         public bool InUse { get; set; } = true;
 
         public string VIN { get; set; }
+
+        public IEnumerable<Course> CoursesInvolved { get; set; }
 
     }
 }

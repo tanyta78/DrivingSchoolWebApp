@@ -8,7 +8,9 @@
     {
         School Create(AppUser manager); 
 
-        void Edit(CreateSchoolInputModel model);
+        School Edit(EditSchoolInputModel model);
+
+        School ChangeManager(int schoolId, AppUser newManager);
 
         void Delete(int id);
 

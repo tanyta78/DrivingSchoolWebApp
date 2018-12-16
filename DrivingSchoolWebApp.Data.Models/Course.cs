@@ -16,6 +16,7 @@
 
         public bool IsFinished { get; set; }
 
+        //todo set rating to calculated property from feedback not in db
         public double Rating { get; set; }
 
         public int SchoolId { get; set; }

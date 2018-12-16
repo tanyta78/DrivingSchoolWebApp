@@ -76,8 +76,10 @@
             var name = car.Owner.TradeMark + model.VIN;
             var account = Helpers.SetCloudinary();
             var imageUrl = await Helpers.UploadImage(account, model.CarImage, name);
+            car.ImageUrl = imageUrl;
 
             this.carRepository.Update(car);
+            await this.carRepository.SaveChangesAsync();
 
             return car;
         }

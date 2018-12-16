@@ -32,5 +32,6 @@
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
 
         public bool IsCourseCompleted { get; set; }
+
     }
 }

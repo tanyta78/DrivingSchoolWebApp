@@ -4,8 +4,13 @@
     using Common;
     using Enums;
 
-    public class Payment:BaseModel<int>
+    public class Payment : BaseModel<int>
     {
+        public Payment()
+        {
+            this.PaidOn = DateTime.UtcNow;
+        }
+
         public int OrderId { get; set; }
 
         public virtual Order Order { get; set; }

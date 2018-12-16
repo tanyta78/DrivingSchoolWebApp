@@ -42,5 +42,10 @@
         {
             this.context.Dispose();
         }
+
+        public void Update(TEntity entity)
+        {
+             this.dbSet.Update(entity);
+        }
     }
 }

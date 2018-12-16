@@ -15,7 +15,7 @@
 
         public virtual School Owner { get; set; }
 
-        public byte[] Image { get; set; }
+        public string ImageUrl { get; set; }
 
         public bool InUse { get; set; } = true;
 

@@ -1,6 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Services.DataServices.Contracts
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Data.Models;
     using Models.Car;
 
@@ -10,11 +11,15 @@
 
         TViewModel GetCarById<TViewModel>(int id);
 
-        Car Create(CreateCarInputModel model);
+        IEnumerable<TViewModel> GetCarsByOwnerTradeMark<TViewModel>(string trademark);
 
-        void Edit(CreateCarInputModel model);
+        IEnumerable<TViewModel> GetCarsBySchoolId<TViewModel>(int schoolId);
+        
+        Task<Car> Create(CreateCarInputModel model);
 
-        void Delete(CreateCarInputModel model);
+        Task<Car> Edit(EditCarInputModel model);
+
+        Task Delete(int id);
 
     }
 }

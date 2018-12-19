@@ -14,10 +14,12 @@
         Task<Lesson> Create(CreateLessonInputModel model);
 
         Task<Lesson> Edit(EditLessonInputModel model);
-        
+
         Task Delete(int id);
 
         IEnumerable<TViewModel> GetLessonsByCourseIdAndCustomerId<TViewModel>(int customerId, int courseId);
+
+        IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId);
 
         IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId);
 

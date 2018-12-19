@@ -8,9 +8,9 @@
     {
         IEnumerable<Customer> All();
 
-        TViewModel GetCustomerById<TViewModel>(int id);
+        Customer GetCustomerById(int id);
 
-        TViewModel GetCustomerByUserId<TViewModel>(string userId);
+        Customer GetCustomerByUserId(string userId);
 
         Customer Create(AppUser user);
 

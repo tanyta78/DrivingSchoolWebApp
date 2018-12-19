@@ -11,11 +11,11 @@
     public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
-        private readonly TrainerService trainerService;
+        private readonly ITrainerService trainerService;
         private readonly ICustomerService customerService;
         private readonly ISchoolService schoolService;
 
-        public AccountController(IAccountService accountService, TrainerService trainerService, ICustomerService customerService, ISchoolService schoolService)
+        public AccountController(IAccountService accountService, ITrainerService trainerService, ICustomerService customerService, ISchoolService schoolService)
         {
             this.accountService = accountService;
             this.trainerService = trainerService;

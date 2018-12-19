@@ -6,6 +6,7 @@
 
     public class CustomerViewModel:IMapFrom<Customer>
     {
+        public int Id { get; set; }
         //todo make changes to model
         public AppUser User { get; set; }
 

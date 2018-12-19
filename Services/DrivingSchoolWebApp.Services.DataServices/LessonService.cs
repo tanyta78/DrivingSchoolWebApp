@@ -1,4 +1,4 @@
-﻿namespace DrivingSchoolWebApp.Services.DataServices.Contracts
+﻿namespace DrivingSchoolWebApp.Services.DataServices
 {
     using System;
     using System.Collections.Generic;
@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Contracts;
     using Data.Common;
     using Data.Models;
     using Mapping;
@@ -49,6 +50,13 @@
             return lessons;
         }
 
+        public IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId)
+        {
+            var lessons = this.lessonRepository.All().Where(x => x.CustomerId== customerId).ProjectTo<TViewModel>().ToList();
+            
+            return lessons;
+        }
+
         public IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId)
         {
             var lessons = this.lessonRepository.All().Where(x => x.Course.TrainerId==trainerId).ProjectTo<TViewModel>().ToList();
@@ -78,13 +86,16 @@
             }
 
             lesson.Status = model.Status;
+            lesson.StartTime = model.StartTime;
             lesson.EndTime = model.EndTime;
             lesson.ThemeColor = model.ThemeColor;
             lesson.IsFullDay = model.IsFullDay;
             lesson.Description = model.Description;
-
+           
             this.lessonRepository.Update(lesson);
             await this.lessonRepository.SaveChangesAsync();
+
+            return lesson;
         }
 
         public async Task Delete(int id)

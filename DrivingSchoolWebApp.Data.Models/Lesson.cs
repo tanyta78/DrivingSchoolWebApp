@@ -6,6 +6,11 @@
 
     public class Lesson : BaseModel<int>
     {
+        public Lesson()
+        {
+            this.Status = LessonStatus.Scheduled;
+        }
+
         public int CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
@@ -16,10 +21,17 @@
 
         public LessonStatus Status { get; set; }
 
-        public DateTime DateOfLesson { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public DateTime StartTime { get; set; }
 
-        public int Duration { get; set; }
+        public string ThemeColor { get; set; }
+
+        public bool IsFullDay { get; set; }
+
+        public string Subject => this.Course.Category.ToString() + " - " + this.Customer.User.Nickname;
+
+        public string Description { get; set; }
+
     }
 }

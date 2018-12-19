@@ -22,7 +22,7 @@
 
         public string VIN { get; set; }
 
-        public IEnumerable<Course> CoursesInvolved { get; set; }
+        public IEnumerable<Course> CoursesInvolved { get; set; } = new HashSet<Course>();
 
     }
 }

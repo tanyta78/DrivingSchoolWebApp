@@ -6,6 +6,11 @@
 
     public class Exam:BaseModel<int>
     {
+        public Exam()
+        {
+            this.Type = ExamType.Inside;
+        }
+
         public int CustomerId { get; set; }
         
         public virtual Customer Customer { get; set; }

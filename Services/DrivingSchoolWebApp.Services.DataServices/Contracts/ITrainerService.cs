@@ -14,5 +14,8 @@
         IEnumerable<TViewModel> TrainersBySchool<TViewModel>(int schoolId);
 
         TViewModel GetTrainerById<TViewModel>(int id);
+      
+        IEnumerable<TViewModel> AvailableTrainersBySchoolNotParticipateInCourse<TViewModel>(int schoolId);
+
     }
 }

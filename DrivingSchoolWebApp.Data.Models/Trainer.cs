@@ -28,6 +28,6 @@
 
         public DateTime AvailableStartTime { get; set; }
 
-        public IEnumerable<Course> CoursesInvolved { get; set; }
+        public IEnumerable<Course> CoursesInvolved { get; set; } = new HashSet<Course>();
     }
 }

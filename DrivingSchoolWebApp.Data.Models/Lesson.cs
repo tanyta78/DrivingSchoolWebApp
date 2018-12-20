@@ -6,6 +6,8 @@
 
     public class Lesson : BaseModel<int>
     {
+        private string subject;
+
         public Lesson()
         {
             this.Status = LessonStatus.Scheduled;
@@ -29,7 +31,7 @@
 
         public bool IsFullDay { get; set; }
 
-        public string Subject => this.Course.Category.ToString() + " - " + this.Customer.User.Nickname;
+        public string Subject  { get; set; }
 
         public string Description { get; set; }
 

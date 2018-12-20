@@ -14,11 +14,11 @@
     using Microsoft.AspNetCore.Identity;
     using Models.Lesson;
 
-    public class LessonService :BaseService, ILessonService
+    public class LessonService : BaseService, ILessonService
     {
         private readonly IRepository<Lesson> lessonRepository;
 
-        public LessonService(IRepository<Lesson> lessonRepository,UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public LessonService(IRepository<Lesson> lessonRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
         {
             this.lessonRepository = lessonRepository;
         }
@@ -45,29 +45,38 @@
 
         public IEnumerable<TViewModel> GetLessonsByCourseIdAndCustomerId<TViewModel>(int customerId, int courseId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.CustomerId== customerId && x.CourseId==courseId).ProjectTo<TViewModel>().ToList();
-            
+            var lessons = this.lessonRepository.All().Where(x => x.CustomerId == customerId && x.CourseId == courseId).ProjectTo<TViewModel>().ToList();
+
             return lessons;
         }
 
         public IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.CustomerId== customerId).ProjectTo<TViewModel>().ToList();
-            
+            var lessons = this.lessonRepository.All().Where(x => x.CustomerId == customerId).ProjectTo<TViewModel>().ToList();
+
             return lessons;
         }
 
         public IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.Course.TrainerId==trainerId).ProjectTo<TViewModel>().ToList();
-            
+            var lessons = this.lessonRepository.All().Where(x => x.Course.TrainerId == trainerId).ProjectTo<TViewModel>().ToList();
+
             return lessons;
         }
 
         public async Task<Lesson> Create(CreateLessonInputModel model)
         {
-            var lesson = this.Mapper.Map<Lesson>(model);
-            
+            var lesson = new Lesson()
+            {
+                CourseId = model.CourseId,
+                CustomerId = model.CustomerId,
+                Description = model.Description,
+                Subject = model.Subject,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+                IsFullDay = model.IsFullDay
+            };
+
             await this.lessonRepository.AddAsync(lesson);
             await this.lessonRepository.SaveChangesAsync();
 
@@ -91,7 +100,7 @@
             lesson.ThemeColor = model.ThemeColor;
             lesson.IsFullDay = model.IsFullDay;
             lesson.Description = model.Description;
-           
+
             this.lessonRepository.Update(lesson);
             await this.lessonRepository.SaveChangesAsync();
 
@@ -128,6 +137,21 @@
             return isCreator || hasRights;
         }
 
+        public object Save(FullCalendarInputModel model)
+        {
 
+            if (model.Id != 0)
+            {
+                var lessonEditModel = this.Mapper.Map<EditLessonInputModel>(model);
+                var editedLesson = this.Edit(lessonEditModel).GetAwaiter().GetResult();
+            }
+            else
+            {
+               var lessonCreateModel = this.Mapper.Map<CreateLessonInputModel>(model);
+               var lesson = this.Create(lessonCreateModel).GetAwaiter().GetResult();
+            }
+
+            return new { success = true};
+        }
     }
 }

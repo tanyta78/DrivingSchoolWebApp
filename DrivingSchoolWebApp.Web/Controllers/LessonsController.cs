@@ -2,15 +2,14 @@
 {
     using System.Linq;
     using System.Security.Claims;
-    using Data.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
-    using Services.Models.Customer;
     using Services.Models.Lesson;
 
     public class LessonsController : BaseController
     {
+
         private readonly ILessonService lessonService;
         private readonly ICustomerService customerService;
 
@@ -23,14 +22,25 @@
         // GET: Lessons
         public ActionResult Index()
         {
-          return this.View("Schedule");
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = this.customerService.GetCustomerByUserId(userId);
+            var courseId = 0;
+            if (customer.CoursesOrdered.Count() != 0)
+            {
+                courseId = customer.CoursesOrdered.FirstOrDefault().Id;
+
+            }
+
+            this.ViewBag.CourseId = courseId;
+            this.ViewBag.CustomerId = customer.Id;
+            return this.View("CustomerSchedule");
         }
 
         // GET: Lessons/GetMyEvents
         public ActionResult GetMyEvents()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-          
+
             var customerId = this.customerService.GetCustomerByUserId(userId).Id;
             var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
             return this.Json(lessons);
@@ -61,6 +71,23 @@
 
             var lesson = this.lessonService.Create(model);
             return this.RedirectToAction("Details", "Lessons", lesson.Id);
+
+
+        }
+        // POST: Lessons/Save
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(FullCalendarInputModel model)
+        {
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.Json(new { success = false, error = true });
+            }
+
+            var result = this.lessonService.Save(model);
+
+            return this.Json(result);
 
         }
 

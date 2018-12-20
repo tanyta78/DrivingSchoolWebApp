@@ -4,7 +4,7 @@
     using Data.Models;
     using Mapping;
 
-    public class CreateLessonInputModel : IMapFrom<Lesson>
+    public class CreateLessonInputModel : IMapFrom<Lesson>, IMapFrom<FullCalendarInputModel>, IMapTo<Lesson>
     {
         public int CustomerId { get; set; }
 
@@ -20,5 +20,6 @@
 
         public string Description { get; set; }
 
+        public string Subject { get; set; }
     }
 }

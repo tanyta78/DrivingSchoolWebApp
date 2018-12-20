@@ -87,7 +87,7 @@
 
             var result = this.lessonService.Save(model);
 
-            return this.Json(result);
+            return this.RedirectToAction(nameof(Index));
 
         }
 

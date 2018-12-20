@@ -7,6 +7,7 @@
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Models.Customer;
 
     public class CustomerService : BaseService, ICustomerService
@@ -55,13 +56,23 @@
 
         public Customer GetCustomerById(int id)
         {
-            var customer = this.customerRepository.All().FirstOrDefault(c => c.Id == id);
+            var customer = this.customerRepository.All()
+                               .Include(c=>c.CoursesOrdered)
+                               .Include(c=>c.ExamsTaken)
+                               .Include(c=>c.Feedbacks)
+                               .Include(c=>c.LessonsTaken)
+                               .FirstOrDefault(c => c.Id == id);
             return customer;
         }
 
         public Customer GetCustomerByUserId(string userId)
         {
-            var customer = this.customerRepository.All().FirstOrDefault(c => c.User.Id == userId);
+            var customer = this.customerRepository.All()
+                               .Include(c=>c.CoursesOrdered)
+                               .Include(c=>c.ExamsTaken)
+                               .Include(c=>c.Feedbacks)
+                               .Include(c=>c.LessonsTaken)
+                               .FirstOrDefault(c => c.User.Id == userId);
             return customer;
         }
 

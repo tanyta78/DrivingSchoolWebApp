@@ -114,7 +114,7 @@
                 if (model.UserType == UserType.Trainer)
                 {
                     var managerName = this.User.Identity.Name;
-                    var school = this.schoolService.GetSchoolByManagerName<School>(managerName);
+                    var school = this.schoolService.GetSchoolByManagerName(managerName);
 
                     //todo check fo null===
                     this.trainerService.Hire(user.Id,school.Id);

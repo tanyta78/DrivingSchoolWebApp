@@ -12,7 +12,6 @@
             this.IsCourseCompleted = false;
             this.OrderStatus = OrderStatus.AwaitingPayment;
             this.OrderedOn = DateTime.UtcNow;
-            this.ActualPriceWhenOrder = this.Course.Price;
         }
 
         public int CustomerId { get; set; }

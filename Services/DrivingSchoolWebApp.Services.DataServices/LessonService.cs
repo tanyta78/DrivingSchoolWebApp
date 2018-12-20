@@ -32,7 +32,8 @@
 
         public TViewModel GetLessonById<TViewModel>(int lessonId)
         {
-            var lesson = this.lessonRepository.All().Where(x => x.Id == lessonId)
+            var lesson = this.lessonRepository.All()
+                             .Where(x => x.Id == lessonId)
                              .To<TViewModel>().FirstOrDefault();
 
             if (lesson == null)
@@ -66,6 +67,7 @@
 
         public async Task<Lesson> Create(CreateLessonInputModel model)
         {
+            //todo check who can add lessons from full calendar!!! now customers can - only for test functionality
             var lesson = new Lesson()
             {
                 CourseId = model.CourseId,

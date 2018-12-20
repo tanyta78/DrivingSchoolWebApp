@@ -16,9 +16,9 @@
 
         IEnumerable<TViewModel> AllActiveSchools<TViewModel>();
 
-        TViewModel GetSchoolById<TViewModel>(int id);
+        School GetSchoolById(int id);
 
-        TViewModel GetSchoolByManagerName<TViewModel>(string username);
+        School GetSchoolByManagerName(string username);
 
 
     }

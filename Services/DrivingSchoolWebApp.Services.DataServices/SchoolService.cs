@@ -45,7 +45,7 @@
         {
             //todo 
             //change school isActive to false
-            var school = this.GetSchoolById<School>(id);
+            var school = this.GetSchoolById(id);
             school.IsActive = false;
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
@@ -56,7 +56,7 @@
         public School Edit(EditSchoolInputModel model)
         {
             //todo can change office address, trade mark
-            var school = this.GetSchoolById<School>(model.Id);
+            var school = this.GetSchoolById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             
             if (!this.HasRightsToEditOrDelete(model.Id, username))
@@ -74,7 +74,7 @@
         public School ChangeManager(int schoolId,AppUser newManager)
         {
             //todo change manager must change manager usertype to customer and remove user from role school => ONLY with admin rights or approvement=> do this in controller with user service or account service
-            var school = this.GetSchoolById<School>(schoolId);
+            var school = this.GetSchoolById(schoolId);
 
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
@@ -96,11 +96,11 @@
             return school;
         }
 
-        public TViewModel GetSchoolById<TViewModel>(int id)
+        public School GetSchoolById(int id)
         {
-            var school = this.schoolRepository.All()
-                             .Where(x => x.Id == id)
-                             .To<TViewModel>().FirstOrDefault();
+            var school = this.schoolRepository
+                             .All()
+                             .FirstOrDefault(x => x.Id == id);
 
            if (school == null)
             {
@@ -111,11 +111,10 @@
             return school;
         }
 
-        public TViewModel GetSchoolByManagerName<TViewModel>(string username)
+        public School GetSchoolByManagerName(string username)
         {
             var school = this.schoolRepository.All()
-                             .Where(x => x.Manager.UserName == username)
-                             .To<TViewModel>().FirstOrDefault();
+                             .FirstOrDefault(x => x.Manager.UserName == username);
 
             if (school == null)
             {
@@ -127,7 +126,7 @@
 
         private bool HasRightsToEditOrDelete(int schoolId, string username)
         {
-            var school = this.GetSchoolById<School>(schoolId);
+            var school = this.GetSchoolById(schoolId);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and car for null; to add include if needed

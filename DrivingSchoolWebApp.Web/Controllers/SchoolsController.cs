@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -29,7 +30,8 @@
         public IActionResult Manage()
         {
             var username = this.User.Identity.Name;
-            var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username);
+            var school = this.schoolService.GetSchoolByManagerName(username);
+           //todo map view model
             
             return this.View(school);
         }
@@ -37,7 +39,9 @@
         // GET: Schools/Details/5
         public IActionResult Details(int id)
         {
-            var school = this.schoolService.GetSchoolById<SchoolViewModel>(id);
+            var school = this.schoolService.GetSchoolById(id);
+            //todo map view model
+
             return this.View(school);
         }
 

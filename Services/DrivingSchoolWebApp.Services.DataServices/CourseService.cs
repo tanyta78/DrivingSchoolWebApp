@@ -41,7 +41,7 @@
 
         public async Task Delete(int id)
         {
-            var course = this.GetCourseById<Course>(id);
+            var course = this.GetCourseById(id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
             if (!this.HasRightsToEditOrDelete(id, username))
@@ -57,8 +57,8 @@
         public async Task<Course> Edit(EditCourseInputModel model)
         {
             //todo check model validation in controller?!?
-            //todo change price, description, minlessons,trainerId, carId
-            var course = this.GetCourseById<Course>(model.Id);
+            //todo change price, description, min lessons,trainerId, carId
+            var course = this.GetCourseById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
             if (!this.HasRightsToEditOrDelete(model.Id, username))
@@ -122,7 +122,7 @@
 
         private bool HasRightsToEditOrDelete(int courseId, string username)
         {
-            var course = this.GetCourseById<Course>(courseId);
+            var course = this.GetCourseById(courseId);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and car for null; to add include if needed
@@ -133,6 +133,19 @@
             var isManager = username == course.School.Manager.UserName;
 
             return isManager || hasRights;
+        }
+
+        private Course GetCourseById(int courseId)
+        {
+            var course = this.courseRepository.All()
+                .FirstOrDefault(x => x.Id == courseId);
+
+            if (course == null)
+            {
+                throw new ArgumentException("No course with id in db");
+            }
+
+            return course;
         }
     }
 }

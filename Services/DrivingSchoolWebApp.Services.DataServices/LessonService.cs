@@ -25,7 +25,7 @@
 
         public IEnumerable<Lesson> All()
         {
-            var lessons = this.lessonRepository.All();
+            var lessons = this.lessonRepository.All().ToList();
 
             return lessons;
         }
@@ -87,7 +87,7 @@
 
         public async Task<Lesson> Edit(EditLessonInputModel model)
         {
-            var lesson = this.GetLessonById<Lesson>(model.Id);
+            var lesson = this.GetLessonById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
             if (!this.HasRightsToEditOrDelete(model.Id, username))
@@ -111,7 +111,7 @@
 
         public async Task Delete(int id)
         {
-            var lesson = this.GetLessonById<Lesson>(id);
+            var lesson = this.GetLessonById(id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
             if (!this.HasRightsToEditOrDelete(id, username))
@@ -126,7 +126,7 @@
 
         private bool HasRightsToEditOrDelete(int lessonId, string username)
         {
-            var lesson = this.GetLessonById<Lesson>(lessonId);
+            var lesson = this.GetLessonById(lessonId);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and lesson for null; to add include if needed
@@ -137,6 +137,20 @@
             var isCreator = username == lesson.Course.School.Manager.UserName;
 
             return isCreator || hasRights;
+        }
+
+        private Lesson GetLessonById(int lessonId)
+        {
+            var lesson = this.lessonRepository
+                .All()
+                .FirstOrDefault(x => x.Id == lessonId);
+
+            if (lesson == null)
+            {
+                throw new ArgumentException("No course with id in db");
+            }
+
+            return lesson;
         }
 
         public object Save(FullCalendarInputModel model)

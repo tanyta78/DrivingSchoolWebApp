@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Identity;
     using Models.School;
 
-    public class SchoolService : BaseService,ISchoolService
+    public class SchoolService : BaseService, ISchoolService
     {
         private readonly IRepository<School> schoolRepository;
 
@@ -58,7 +58,7 @@
             //todo can change office address, trade mark
             var school = this.GetSchoolById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-            
+
             if (!this.HasRightsToEditOrDelete(model.Id, username))
             {
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -71,7 +71,7 @@
             return school;
         }
 
-        public School ChangeManager(int schoolId,AppUser newManager)
+        public School ChangeManager(int schoolId, AppUser newManager)
         {
             //todo change manager must change manager usertype to customer and remove user from role school => ONLY with admin rights or approvement=> do this in controller with user service or account service
             var school = this.GetSchoolById(schoolId);
@@ -102,12 +102,12 @@
                              .All()
                              .FirstOrDefault(x => x.Id == id);
 
-           if (school == null)
+            if (school == null)
             {
                 throw new ArgumentException("No school with id in db");
             }
 
-           
+
             return school;
         }
 
@@ -138,12 +138,5 @@
 
             return isManager || hasRights;
         }
-
-
-
-
     }
-
-
-
 }

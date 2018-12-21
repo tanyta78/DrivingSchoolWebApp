@@ -45,7 +45,7 @@
 
         public async Task Delete(int id)
         {
-            var car = this.GetCarById<Car>(id);
+            var car = this.GetCarById(id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
             if (!this.HasRightsToEditOrDelete(id, username))
@@ -62,7 +62,7 @@
         {
             //todo check model validation in controller?!?
             //todo change inUse, Image, VIN
-            var car = this.GetCarById<Car>(model.Id);
+            var car = this.GetCarById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             
             if (!this.HasRightsToEditOrDelete(model.Id, username))
@@ -113,7 +113,7 @@
 
         private bool HasRightsToEditOrDelete(int carId, string username)
         {
-            var car = this.GetCarById<Car>(carId);
+            var car = this.GetCarById(carId);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and car for null; to add include if needed
@@ -124,6 +124,19 @@
             var isOwner = username == car.Owner.Manager.UserName;
 
             return isOwner || hasRights;
+        }
+
+        private Car GetCarById(int id)
+        {
+            var car = this.carRepository.All()
+               .FirstOrDefault(x => x.Id == id);
+
+            if (car == null)
+            {
+                throw new ArgumentException("No car with id in db");
+            }
+
+            return car;
         }
     }
 }

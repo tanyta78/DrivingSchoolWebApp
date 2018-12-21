@@ -1,7 +1,8 @@
-﻿namespace DrivingSchoolWebApp.Services.DataServices.Contracts
+﻿namespace DrivingSchoolWebApp.Services.DataServices
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Contracts;
     using Data.Common;
     using Data.Models;
     using Mapping;

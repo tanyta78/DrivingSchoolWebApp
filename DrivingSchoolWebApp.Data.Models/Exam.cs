@@ -9,6 +9,7 @@
         public Exam()
         {
             this.Type = ExamType.Inside;
+            this.Status = LessonStatus.Scheduled;
         }
 
         public int CustomerId { get; set; }

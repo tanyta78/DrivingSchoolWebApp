@@ -74,7 +74,7 @@
 
         public async Task Delete(int id)
         {
-            var feedback = this.GetFeedbackById<Feedback>(id);
+            var feedback = this.GetFeedbackById(id);
 
             if (!this.HasRightsToEditOrDelete(id))
             {
@@ -87,7 +87,7 @@
 
         private bool HasRightsToEditOrDelete(int feedbackId)
         {
-            var feedback = this.GetFeedbackById<Feedback>(feedbackId);
+            var feedback = this.GetFeedbackById(feedbackId);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
@@ -99,6 +99,19 @@
             var isCreator = username == feedback.Customer.User.UserName;
 
             return isCreator || isAdmin;
+        }
+
+        private Feedback GetFeedbackById(int feedbackId)
+        {
+            var feedback = this.feedbackRepository.All()
+                .FirstOrDefault(x => x.Id == feedbackId);
+
+            if (feedback == null)
+            {
+                throw new ArgumentException("No feedback with id in db");
+            }
+
+            return feedback;
         }
     }
 }

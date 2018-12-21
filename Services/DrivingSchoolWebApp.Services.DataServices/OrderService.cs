@@ -41,7 +41,7 @@
 
             return order;
         }
-
+        
         public IEnumerable<TViewModel> GetOrdersByCustomerId<TViewModel>(int customerId)
         {
             var orders = this.orderRepository.All().Where(x => x.CustomerId == customerId).ProjectTo<TViewModel>().ToList();
@@ -82,7 +82,7 @@
 
         public async Task<Order> ChangeStatus(int id, OrderStatus newStatus)
         {
-            var order = this.GetOrderById<Order>(id);
+            var order = this.GetOrderById(id);
 
             if (!this.HasRightsToEditOrDelete(id) || order.OrderStatus==OrderStatus.Cancelled)
             {
@@ -99,7 +99,7 @@
 
         public async Task<Order> CancelOrder(int id)
         {
-            var order = this.GetOrderById<Order>(id);
+            var order = this.GetOrderById(id);
 
             if (!this.HasRightsToEditOrDelete(id))
             {
@@ -116,7 +116,7 @@
 
         public async Task Delete(int id)
         {
-            var order = this.GetOrderById<Order>(id);
+            var order = this.GetOrderById(id);
 
             if (!this.HasRightsToEditOrDelete(id))
             {
@@ -129,7 +129,7 @@
 
         private bool HasRightsToEditOrDelete(int orderId)
         {
-            var order = this.GetOrderById<Order>(orderId);
+            var order = this.GetOrderById(orderId);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
@@ -141,6 +141,19 @@
             var isCreator = username == order.Customer.User.UserName;
 
             return isCreator || isAdmin;
+        }
+
+        private Order GetOrderById(int orderId)
+        {
+            var order = this.orderRepository.All()
+                .FirstOrDefault(x => x.Id == orderId);
+
+            if (order == null)
+            {
+                throw new ArgumentException("No order with id in db");
+            }
+
+            return order;
         }
     }
 }

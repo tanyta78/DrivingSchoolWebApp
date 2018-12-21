@@ -137,9 +137,10 @@
 
             var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
+            var isAdmin = roles.Any(x => x == "Admin");
+            var isCreator = username == order.Customer.User.UserName;
 
-            return hasRights;
+            return isCreator || isAdmin;
         }
     }
 }

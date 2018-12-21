@@ -15,4 +15,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exam\" />
+    <Folder Include="Certificate\" />
+  </ItemGroup>
+
 </Project>

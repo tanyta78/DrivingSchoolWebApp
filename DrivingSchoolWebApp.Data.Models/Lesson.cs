@@ -6,9 +6,7 @@
 
     public class Lesson : BaseModel<int>
     {
-        private string subject;
-
-        public Lesson()
+       public Lesson()
         {
             this.Status = LessonStatus.Scheduled;
         }

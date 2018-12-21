@@ -1,0 +1,36 @@
+﻿<li class="nav-item dropdown">
+    <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Courses and schools
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" asp-controller="Courses" asp-action="All">All courses</a>
+        <a class="dropdown-item" asp-controller="Schools" asp-action="All">All schools</a>
+    </div>
+</li>
+<li class="nav-item dropdown">
+    <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Orders and payments
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+        <a class="dropdown-item " asp-controller="Orders" asp-action="My">My Orders</a>
+        <a class="dropdown-item " asp-controller="Feedbacks" asp-action="My">My feedbacks</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" asp-controller="Payments" asp-action="My">My Payments</a>
+        <a class="dropdown-item" asp-controller="Payments" asp-action="Create">Make Payment</a>
+
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link text-dark font-weight-bold" asp-controller="Lessons" asp-action="Index">Schedule(All Lessons)</a>
+</li>
+<li class="nav-item dropdown">
+    <a class="nav-link text-dark font-weight-bold dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Exams and Certificates
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+        <a class="dropdown-item" asp-controller="Exams" asp-action="All">All exams</a>
+        <a class="dropdown-item" asp-controller="Certificates" asp-action="All">All certificates</a>
+    </div>
+</li>
+
+

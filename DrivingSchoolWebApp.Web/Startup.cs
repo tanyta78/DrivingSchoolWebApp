@@ -96,13 +96,17 @@
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IExamService, ExamService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<ISchoolService, SchoolService>();
             services.AddScoped<ITrainerService, TrainerService>();
+
             //services.AddScoped<IService, Service>();
 
         }

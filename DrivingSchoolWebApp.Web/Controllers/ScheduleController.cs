@@ -1,111 +1,71 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Data.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Services.DataServices.Contracts;
     using Services.Models.Lesson;
 
-    public class LessonsController : BaseController
+    [Produces("application/json")]
+    [Route("api/[controller]")]
+    public class ScheduleController : BaseController
     {
-
         private readonly ILessonService lessonService;
         private readonly ICustomerService customerService;
 
-        public LessonsController(ILessonService lessonService, ICustomerService customerService)
+        public ScheduleController(ILessonService lessonService, ICustomerService customerService)
         {
             this.lessonService = lessonService;
             this.customerService = customerService;
         }
 
-        // GET: Lessons
-        public ActionResult Index()
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = this.customerService.GetCustomerByUserId(userId);
-            var courseId = 0;
-            if (customer.CoursesOrdered.Count() != 0)
-            {
-                courseId = customer.CoursesOrdered.FirstOrDefault().Id;
-
-            }
-
-            this.ViewBag.CourseId = courseId;
-            this.ViewBag.CustomerId = customer.Id;
-            return this.View("CustomerSchedule");
-        }
-
         // GET: Lessons/GetMyEvents
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Lesson>), 200)]
         public ActionResult GetMyEvents()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var customerId = this.customerService.GetCustomerByUserId(userId).Id;
             var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
-            var result = this.Json(new {success = true, lessons});
-            return result;
+            return this.Ok(lessons);
         }
 
-        // GET: Lessons/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Lesson), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
             var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(id);
-            return this.View(lesson);
-        }
 
-        // GET: Lessons/Create
-        public ActionResult Create()
-        {
-            return this.View();
-        }
-
-        // POST: Lessons/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateLessonInputModel model)
-        {
-            if (!this.ModelState.IsValid)
+            if (lesson == null)
             {
-                return this.View(model);
+                return this.NotFound();
             }
 
-            var lesson = this.lessonService.Create(model);
-            return this.RedirectToAction("Details", "Lessons", lesson.Id);
-
-
-        }
-        // POST: Lessons/Save
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Save(FullCalendarInputModel model)
-        {
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.Json(new { success = false, error = true });
-            }
-
-            var result = this.lessonService.Save(model);
-
-            return this.RedirectToAction(nameof(Index));
-
+            return this.Ok(lesson);
         }
 
         // POST: Lessons/Save
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveAjax(FullCalendarInputModel model)
+        [ProducesResponseType(typeof(Lesson), 201)]
+        [ProducesResponseType(400)]
+        public ActionResult SaveAjax([FromBody]FullCalendarInputModel model)
         {
-
             if (!this.ModelState.IsValid)
             {
-                return this.Json(new { success = false, error = true });
+                return this.BadRequest(this.ModelState);
             }
 
             var result = this.lessonService.Save(model);
 
-            return this.Json(new { success = true, responseText = "Success" });
+            return this.CreatedAtAction(nameof(GetByIdAsync),
+                new { id = model.Id }, model);
 
         }
 

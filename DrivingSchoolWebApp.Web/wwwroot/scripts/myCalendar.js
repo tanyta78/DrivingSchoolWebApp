@@ -7,7 +7,9 @@
         events = [];
         $.ajax({
             type: "GET",
-            url: "/Lessons/GetMyEvents",
+            url: "/api/Schedule/GetMyEvents",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
             success: function (data) {
                 $.each(data,
                     function (i, v) {
@@ -25,7 +27,7 @@
                 generateCalender(events);
             },
             error: function (error) {
-                alert("failed");
+                alert("failed to get events "+ error.message);
             }
         });
     }
@@ -165,6 +167,8 @@
 
         var dataInput = {
             Id: $("#Id").val(),
+            CustomerId:$("#CustomerId").val(),
+            CourseId:$("#CourseId").val(),
             Subject: $("#Subject").val().trim(),
             StartTime: $("#StartTime").val().trim(),
             EndTime: $("#IsFullDay").is(":checked") ? null : $("#EndTime").val().trim(),
@@ -181,7 +185,7 @@
         var dataWithAntiforgeryToken = $.extend(inputData, { '__RequestVerificationToken': token });
         $.ajax({
             type: "POST",
-            url: "/Lessons/Save",
+            url: "/api/Schedule/SaveAjax",
             data: dataWithAntiforgeryToken,
             success: function (data) {
 
@@ -189,8 +193,8 @@
                     $("#myModalSave").modal("hide");
 
             },
-            error: function () {
-                alert("Failed");
+            error: function (e) {
+                alert(e.message);
             }
         });
     }

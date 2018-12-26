@@ -42,7 +42,7 @@
         }
 
         //only admin
-        public School Create(CreateSchoolInputModel model)
+        public int Create(CreateSchoolInputModel model)
         {
             //todo check manager is in role school 
             var school = new School()
@@ -55,7 +55,7 @@
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school;
+            return school.Id;
         }
 
         public void Delete(int id)
@@ -70,7 +70,7 @@
             //do this in controller and call account service
         }
 
-        public School Edit(EditSchoolInputModel model)
+        public int Edit(EditSchoolInputModel model)
         {
             //todo can change office address, trade mark
             var school = this.GetSchoolById(model.Id);
@@ -85,10 +85,10 @@
             school.TradeMark = model.TradeMark;
 
             this.schoolRepository.Update(school);
-            return school;
+            return school.Id;
         }
 
-        public School ChangeManager(int schoolId, AppUser newManager)
+        public int ChangeManager(int schoolId, AppUser newManager)
         {
             //todo change manager must change manager usertype to customer and remove user from role school => ONLY with admin rights or approvement=> do this in controller with user service or account service
             var school = this.GetSchoolById(schoolId);
@@ -110,14 +110,20 @@
             school.ManagerId = user.Id;
 
             this.schoolRepository.Update(school);
-            return school;
+            return school.Id;
         }
 
-        public School GetSchoolById(int id)
+        public TViewModel GetSchoolById<TViewModel>(int id)
+        {
+            var school = this.GetSchoolById(id);
+            return this.Mapper.Map<TViewModel>(school);
+        }
+
+        private School GetSchoolById(int schoolId)
         {
             var school = this.schoolRepository
-                             .All()
-                             .FirstOrDefault(x => x.Id == id);
+                .All()
+                .FirstOrDefault(x => x.Id == schoolId);
 
             if (school == null)
             {
@@ -128,7 +134,13 @@
             return school;
         }
 
-        public School GetSchoolByManagerName(string username)
+        public TViewModel GetSchoolByManagerName<TViewModel>(string username)
+        {
+            var school = this.GetSchoolByManagerName(username);
+            return this.Mapper.Map<TViewModel>(school);
+        }
+
+        private School GetSchoolByManagerName(string username)
         {
             var school = this.schoolRepository.All()
                              .FirstOrDefault(x => x.Manager.UserName == username);

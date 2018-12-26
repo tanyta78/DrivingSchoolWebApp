@@ -14,6 +14,8 @@
 
         public string OfficeAddress { get; set; }
 
+        public string Phone { get; set; }
+        
         public bool IsActive { get; set; }
 
         public virtual IEnumerable<Course> CoursesOffered { get; set; } = new HashSet<Course>();

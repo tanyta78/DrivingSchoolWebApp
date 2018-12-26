@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.Administration.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -33,9 +34,8 @@
         // GET: Administration/ManageSchools/Details/5
         public IActionResult Details(int id)
         {
-            var school = this.schoolService.GetSchoolById(id);
-            //todo map view model
-
+            var school = this.schoolService.GetSchoolById<SchoolViewModel>(id);
+           
             return this.View(school);
         }
 
@@ -56,13 +56,13 @@
                 return this.View(model);
             }
 
-            var school = this.schoolService.Create(model);
+            var schoolId = this.schoolService.Create(model);
 
             //set user role
             this.accountService.SetRole("School", model.ManagerId);
 
             //todo decide where to redirect
-            return this.RedirectToAction("Details", "Schools", school.Id);
+            return this.RedirectToAction("Details", "ManageSchools", schoolId);
         }
 
         // GET: Administration/ManageSchools/Edit/5
@@ -81,10 +81,10 @@
                 return this.View(model);
             }
 
-            var school = this.schoolService.Edit(model);
+            var schoolId = this.schoolService.Edit(model);
 
             //todo decide where to redirect
-            return this.RedirectToAction("Details", "Schools", school.Id);
+            return this.RedirectToAction("Details", "ManageSchools", schoolId);
         }
 
         // GET: Administration/ManageSchools/Delete/5
@@ -100,6 +100,24 @@
         public IActionResult Delete(int id, string username)
         {
             this.schoolService.Delete(id);
+            return this.RedirectToAction(nameof(this.Index));
+        }
+
+        // GET: Administration/ManageSchools/ChangeManager/5
+        public IActionResult ChangeManager(int id)
+        {
+            this.ViewBag.UsersIds = this.accountService.AllNonManager();
+            return this.View();
+        }
+
+        // POST: Administration/ManageSchools/ChangeManager/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize("Admin")]
+        public IActionResult ChangeManager(int id, string username)
+        {
+            var user = this.accountService.GetUser(username);
+            this.schoolService.ChangeManager(id,user);
             return this.RedirectToAction(nameof(this.Index));
         }
     }

@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Account;
+    using Services.Models.School;
 
     public class AccountController : BaseController
     {
@@ -112,7 +113,7 @@
                 if (model.UserType == UserType.Trainer)
                 {
                     var managerName = this.User.Identity.Name;
-                    var school = this.schoolService.GetSchoolByManagerName(managerName);
+                    var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
 
                     //todo check fo null===
                     this.trainerService.Hire(user.Id, school.Id);

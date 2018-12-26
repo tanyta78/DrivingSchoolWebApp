@@ -45,9 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\SchoolManage\Controllers\" />
-    <Folder Include="Areas\SchoolManage\Data\" />
-    <Folder Include="Areas\SchoolManage\Models\" />
     <Folder Include="Areas\SchoolManage\Views\" />
     <Folder Include="Views\Schools\" />
   </ItemGroup>

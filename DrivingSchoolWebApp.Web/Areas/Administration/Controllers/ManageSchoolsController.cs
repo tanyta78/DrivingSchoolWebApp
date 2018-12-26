@@ -1,41 +1,36 @@
-﻿namespace DrivingSchoolWebApp.Web.Controllers
+﻿namespace DrivingSchoolWebApp.Web.Areas.Administration.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.School;
+    using Web.Controllers;
+    using X.PagedList;
 
-    public class SchoolsController : BaseController
+    public class ManageSchoolsController : BaseController
     {
         private readonly ISchoolService schoolService;
+        private readonly IAccountService accountService;
 
-        public SchoolsController(ISchoolService schoolService)
+        public ManageSchoolsController(ISchoolService schoolService, IAccountService accountService)
         {
             this.schoolService = schoolService;
+            this.accountService = accountService;
         }
 
-        // GET: Schools
-        public IActionResult Index()
+        // GET: Administration/ManageSchools
+        public IActionResult Index(int? page)
         {
             var schoolsApproved = this.schoolService.AllActiveSchools<SchoolViewModel>();
-            var model = new SchoolListViewModel()
-            {
-                ActiveSchools = schoolsApproved
-            };
+
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            IPagedList<SchoolViewModel> model = schoolsApproved.ToPagedList(pageNumber, 5); // will only contain 5 products max because of the pageSize
+
             return this.View(model);
         }
 
-        // GET: Schools/Manage
-        public IActionResult Manage()
-        {
-            var username = this.User.Identity.Name;
-            var school = this.schoolService.GetSchoolByManagerName(username);
-           //todo map view model
-            
-            return this.View(school);
-        }
 
-        // GET: Schools/Details/5
+        // GET: Administration/ManageSchools/Details/5
         public IActionResult Details(int id)
         {
             var school = this.schoolService.GetSchoolById(id);
@@ -44,13 +39,14 @@
             return this.View(school);
         }
 
-        // GET: Schools/Create
+        // GET: Administration/ManageSchools/Create
         public IActionResult Create()
         {
+            this.ViewBag.UsersIds = this.accountService.AllNonManager();
             return this.View();
         }
 
-        // POST: Schools/Create
+        // POST: Administration/ManageSchools/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateSchoolInputModel model)
@@ -60,19 +56,22 @@
                 return this.View(model);
             }
 
-            var school = this.schoolService.Create(model.Manager);
+            var school = this.schoolService.Create(model);
+
+            //set user role
+            this.accountService.SetRole("School", model.ManagerId);
 
             //todo decide where to redirect
             return this.RedirectToAction("Details", "Schools", school.Id);
         }
 
-        // GET: Schools/Edit/5
+        // GET: Administration/ManageSchools/Edit/5
         public IActionResult Edit(int id)
         {
             return this.View();
         }
 
-        // POST: Schools/Edit/5
+        // POST: Administration/ManageSchools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EditSchoolInputModel model)
@@ -88,13 +87,13 @@
             return this.RedirectToAction("Details", "Schools", school.Id);
         }
 
-        // GET: Schools/Delete/5
+        // GET: Administration/ManageSchools/Delete/5
         public IActionResult Delete(int id)
         {
             return this.View();
         }
 
-        // POST: Schools/Delete/5
+        // POST: Administration/ManageSchools/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize("Admin")]

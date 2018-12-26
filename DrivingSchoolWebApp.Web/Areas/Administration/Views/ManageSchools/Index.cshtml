@@ -1,0 +1,51 @@
+﻿@model IPagedList<DrivingSchoolWebApp.Services.Models.School.SchoolViewModel>
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>All Active Schools</h2>
+
+<p>
+    <a area="Schools" asp-controller="ManageSchools" asp-action="Create">Create New School</a>
+</p>
+
+<div class="container d-flex justify-content-center w-75">
+    <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }})
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>School TradeMark</th>
+            <th>School OfficeAddress</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var index = 0; index < Model.Count(); index++)
+        {
+            var school = Model[index];
+            var realIndex = index + 1 + (Model.PageNumber - 1) * Model.PageSize;
+            <tr>
+                <td class="col-md-1">@realIndex</td>
+                <td>@school.TradeMark</td>
+                <td>@school.OfficeAddress</td>
+                <td>
+                    <a area="Schools" asp-controller="ManageSchools" asp-action="Details" asp-route-id="@school.Id" class="btn btn-info text-dark">Details</a>
+                    <a area="Schools" asp-controller="ManageSchools" asp-action="Edit" asp-route-id="@school.Id" class="btn btn-warning text-dark">Edit</a>
+                    <a area="Schools" asp-controller="ManageSchools" asp-action="Delete" asp-route-id="@school.Id" class="btn btn-danger text-dark">Delete</a>
+                  </td>
+            </tr>
+        }
+    </tbody>
+</table>

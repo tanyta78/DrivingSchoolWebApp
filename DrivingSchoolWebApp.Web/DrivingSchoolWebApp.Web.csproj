@@ -10,9 +10,11 @@
     <PackageReference Include="jQuery.Fullcalendar" Version="3.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" PrivateAssets="All" />
     <PackageReference Include="Modernizr" Version="2.8.3" />
     <PackageReference Include="Moment.js" Version="2.23.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +45,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\SchoolManage\Controllers\" />
+    <Folder Include="Areas\SchoolManage\Data\" />
+    <Folder Include="Areas\SchoolManage\Models\" />
+    <Folder Include="Areas\SchoolManage\Views\" />
     <Folder Include="Views\Schools\" />
   </ItemGroup>
 

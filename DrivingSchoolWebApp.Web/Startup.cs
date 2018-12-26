@@ -43,8 +43,12 @@
             });
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(
-                    this.Configuration.GetConnectionString("DefaultConnection")));
+                {
+                    options.UseSqlServer(
+                        this.Configuration.GetConnectionString("DefaultConnection"))
+                        .UseLazyLoadingProxies();
+            }
+                    );
 
             services.AddIdentity<AppUser,AppRole>(
                     options =>
@@ -138,7 +142,7 @@
             {
                 routes.MapRoute(
                     name: "areas",
-                    template: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
+                    template: "{area:exists}/{controller=Manage}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     name: "default",

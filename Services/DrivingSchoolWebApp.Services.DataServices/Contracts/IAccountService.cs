@@ -31,8 +31,15 @@
 
         void Approve(string id);
 
+        void SetRole(string role, string userId);
+
+        void RemoveRole(string role, string userId);
+        
         void RemoveApproval(string id);
 
         IEnumerable<AdminPanelUsersViewModel> AdminPanelUsers();
+
+        IEnumerable<SchoolManageUsersViewModel> AllNonManager();
+
     }
 }

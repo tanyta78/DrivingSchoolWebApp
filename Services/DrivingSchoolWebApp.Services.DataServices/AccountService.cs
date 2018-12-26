@@ -69,14 +69,12 @@
 
         public void Demote(string id)
         {
-            var user = this.GetUserById(id);
-            this.userManager.RemoveFromRoleAsync(user, "Admin").GetAwaiter().GetResult();
+           this.RemoveRole("Admin",id);
         }
 
         public void Promote(string id)
         {
-            var user = this.GetUserById(id);
-            this.userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+           this.SetRole("Admin",id);
         }
 
         public void Approve(string id)
@@ -84,20 +82,33 @@
             var user = this.GetUserById(id);
             //todo check for null
             if (user.UserType != UserType.School) return;
-            this.userManager.AddToRoleAsync(user, "School").GetAwaiter().GetResult();
+            this.SetRole("School", id);
 
-            this.schoolService.Create(user);
+            this.schoolService.ApproveSchool(user);
             user.IsApproved = true;
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
         }
 
+
+        public void SetRole(string role, string userId)
+        {
+            var user = this.GetUserById(userId);
+            this.userManager.AddToRoleAsync(user, role).GetAwaiter().GetResult();
+        }
+
+        public void RemoveRole(string role, string userId)
+        {
+            var user = this.GetUserById(userId);
+            this.userManager.RemoveFromRoleAsync(user, role).GetAwaiter().GetResult();
+        }
+
+
         public void RemoveApproval(string id)
         {
             var user = this.GetUserById(id);
-            //todo check for null
-            this.userManager.RemoveFromRoleAsync(user, "School").GetAwaiter().GetResult();
-            user.UserType = UserType.Customer;
+            this.RemoveRole("School",id);
+            //let  user.UserType  to school to be available to create by choosing from admin new school;
             user.IsApproved = false;
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
@@ -144,6 +155,29 @@
                 {
                     if (role != null) user.Role.Add(role);
                 }
+
+                users.Add(user);
+            }
+
+            return users;
+        }
+
+        public IEnumerable<SchoolManageUsersViewModel> AllNonManager()
+        {
+            var users = new List<SchoolManageUsersViewModel>();
+
+            //get all users which has school type, but not approved 
+            var usersNonManagerWithSchollType = this.userRepository.All()
+                .Where(u => u.UserType == UserType.School && u.IsApproved == false && u.IsEnabled);
+
+            foreach (var userDb in usersNonManagerWithSchollType)
+            {
+
+                var user = new SchoolManageUsersViewModel()
+                {
+                    Id = userDb.Id,
+                    Username = userDb.UserName,
+                };
 
                 users.Add(user);
             }

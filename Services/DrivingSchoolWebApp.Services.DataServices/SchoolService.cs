@@ -27,12 +27,29 @@
         }
 
         //only admin
-        public School Create(AppUser manager)
+        public School ApproveSchool(AppUser manager)
         {
             //todo check manager is in role school 
             var school = new School()
             {
                 Manager = manager
+            };
+
+            this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
+            this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
+            return school;
+        }
+
+        //only admin
+        public School Create(CreateSchoolInputModel model)
+        {
+            //todo check manager is in role school 
+            var school = new School()
+            {
+                ManagerId = model.ManagerId,
+                OfficeAddress = model.OfficeAddress,
+                TradeMark = model.TradeMark
             };
 
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();

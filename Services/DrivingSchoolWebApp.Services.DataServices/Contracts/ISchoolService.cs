@@ -6,8 +6,10 @@
 
     public interface ISchoolService
     {
-        School Create(AppUser manager); 
+        School ApproveSchool(AppUser manager); 
 
+        School Create(CreateSchoolInputModel model); 
+        
         School Edit(EditSchoolInputModel model);
 
         School ChangeManager(int schoolId, AppUser newManager);

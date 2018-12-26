@@ -1,9 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
-    using Data.Models;
     using Data.Models.Enums;
     using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Account;
@@ -108,7 +106,7 @@
                 if (model.UserType == UserType.Customer)
                 {
                     this.customerService.Create(user);
-                    
+
                 }
 
                 if (model.UserType == UserType.Trainer)
@@ -117,12 +115,12 @@
                     var school = this.schoolService.GetSchoolByManagerName(managerName);
 
                     //todo check fo null===
-                    this.trainerService.Hire(user.Id,school.Id);
+                    this.trainerService.Hire(user.Id, school.Id);
                     //todo add schoolid if is needed in path
                     return this.RedirectToAction("All", "Trainers");
                 }
 
-                return this.RedirectToAction("Login","Account");
+                return this.RedirectToAction("Login", "Account");
             }
 
             foreach (var error in result.Errors)
@@ -144,47 +142,6 @@
             return this.View();
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult AdminPanel()
-        {
-            var users = new AdminPanelUsersListViewModel { Users = this.accountService.AdminPanelUsers() };
-            return this.View(users);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Demote(string id)
-        {
-            this.accountService.Demote(id);
-            return this.RedirectToAction("AdminPanel");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Promote(string id)
-        {
-            this.accountService.Promote(id);
-            return this.RedirectToAction("AdminPanel");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Approve(string id)
-        {
-            this.accountService.Approve(id);
-            return this.RedirectToAction("AdminPanel");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Enable(string id)
-        {
-            this.accountService.Enable(id);
-            return this.RedirectToAction("AdminPanel");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Disable(string id)
-        {
-            this.accountService.Disable(id);
-            return this.RedirectToAction("AdminPanel");
-        }
 
     }
 }

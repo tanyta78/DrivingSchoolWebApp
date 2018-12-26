@@ -108,6 +108,7 @@
         public IActionResult ChangeManager(int id)
         {
             this.ViewBag.UsersIds = this.accountService.AllNonManager();
+            var school = this.schoolService.GetSchoolById<ChangeManagerSchoolViewModel>(id);
             return this.View();
         }
 
@@ -115,10 +116,19 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize("Admin")]
-        public IActionResult ChangeManager(int id, string username)
+        public IActionResult ChangeManager(ChangeManagerSchoolViewModel model)
         {
-            var user = this.accountService.GetUser(username);
-            this.schoolService.ChangeManager(id, user);
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var newManager = this.accountService.GetUser(model.ManagerId);
+            this.schoolService.ChangeManager(model.Id, newManager);
+
+            this.accountService.RemoveApproval(model.ManagerId);
+            this.accountService.Approve(model.NewManagerId);
+
             return this.RedirectToAction(nameof(this.Index));
         }
     }

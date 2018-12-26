@@ -92,13 +92,10 @@
 
         public int ChangeManager(int schoolId, AppUser newManager)
         {
-            //todo change manager must change manager usertype to customer and remove user from role school => ONLY with admin rights or approvement=> do this in controller with user service or account service
-            var school = this.GetSchoolById(schoolId);
+           var school = this.GetSchoolById(schoolId);
 
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-            //todo check user and car for null; to add include if needed
 
             var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
@@ -109,7 +106,7 @@
                 throw new OperationCanceledException("You do not have rights for this operation!");
             }
 
-            school.ManagerId = user.Id;
+            school.ManagerId = newManager.Id;
 
             this.schoolRepository.Update(school);
             return school.Id;

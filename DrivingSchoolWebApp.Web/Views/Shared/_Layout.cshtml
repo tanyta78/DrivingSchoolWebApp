@@ -23,7 +23,7 @@
 
     <div class="container-fluid">
         <header>
-            <nav class="navbar navbar-expand-lg chushka-bg-color">
+            <nav class="navbar navbar-expand-lg app-bg-color">
                 <span class="navbar-brand text-dark font-weight-bold">DrivingSchoolApp</span>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -37,13 +37,7 @@
         <main class="mt-3 mb-5 ">
             @RenderBody()
         </main>
-        <footer>
-            <div class="container-fluid chushka-bg-color w-85">
-                <div class="p-2 text-center">
-                    &copy; CopyRight Eventures Inc. 2016-2018. All rights reserved.
-                </div>
-            </div>
-        </footer>
+        <partial name="_FooterPartial"/>
     </div>
     <environment include="Development">
         <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
@@ -52,6 +46,9 @@
         <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script type="application/x-javascript">
+            addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+                   function hideURLbar(){ window.scrollTo(0,1); } </script>
         <script type="text/javascript" src="~/lib/fullcalendar/fullcalendar.js"></script>
     </environment>
     <environment exclude="Development">

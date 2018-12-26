@@ -12,19 +12,19 @@
             return this.View();
         }
 
-        public IActionResult About()
-        {
-            this.ViewData["Message"] = "Your application description page.";
+        //public IActionResult About()
+        //{
+        //    this.ViewData["Message"] = "Your application description page.";
 
-            return this.View();
-        }
+        //    return this.View();
+        //}
 
-        public IActionResult Contact()
-        {
-            this.ViewData["Message"] = "Your contact page.";
+        //public IActionResult Contact()
+        //{
+        //    this.ViewData["Message"] = "Your contact page.";
 
-            return this.View();
-        }
+        //    return this.View();
+        //}
 
         public IActionResult Privacy()
         {

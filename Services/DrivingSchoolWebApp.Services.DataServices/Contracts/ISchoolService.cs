@@ -6,7 +6,7 @@
 
     public interface ISchoolService
     {
-        School ApproveSchool(AppUser manager); 
+        void ApproveSchool(AppUser manager); 
 
         int Create(CreateSchoolInputModel model); 
         

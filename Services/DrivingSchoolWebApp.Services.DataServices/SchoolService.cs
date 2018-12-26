@@ -27,9 +27,14 @@
         }
 
         //only admin
-        public School ApproveSchool(AppUser manager)
+        public void ApproveSchool(AppUser manager)
         {
-            //todo check manager is in role school 
+            var roles = this.UserManager.GetRolesAsync(manager).GetAwaiter().GetResult();
+            if (!roles.Contains("School"))
+            {
+                return;
+            }
+
             var school = new School()
             {
                 Manager = manager
@@ -38,7 +43,6 @@
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school;
         }
 
         //only admin
@@ -73,7 +77,6 @@
 
         public int Edit(EditSchoolInputModel model)
         {
-            //todo can change office address, trade mark
             var school = this.GetSchoolById(model.Id);
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
@@ -92,7 +95,7 @@
 
         public int ChangeManager(int schoolId, AppUser newManager)
         {
-           var school = this.GetSchoolById(schoolId);
+            var school = this.GetSchoolById(schoolId);
 
             var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();

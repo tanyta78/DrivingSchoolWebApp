@@ -52,7 +52,7 @@
             if (result.Succeeded)
             {
                 // this.logger.LogInformation("User logged in.");
-                //todo redirect ot different area depending on user role - user, school,admin
+                //todo redirect to different area depending on user role - user, school,admin
                 return this.Redirect("/");
             }
 

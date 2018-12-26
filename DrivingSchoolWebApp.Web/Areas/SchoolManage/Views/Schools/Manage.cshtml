@@ -1,10 +1,10 @@
 ﻿@model DrivingSchoolWebApp.Services.Models.School.SchoolViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Manage";
 }
 
-<h2>Details</h2>
+<h2>Manage</h2>
 
 <div class="card" style="width: 18rem;">
     <img class="card-img-top" src="" alt="Card image cap">
@@ -18,11 +18,12 @@
         <li class="list-group-item">@Model.Phone</li>
     </ul>
     <div class="card-body">
-        <a asp-controller="ManageSchools" asp-action="Edit" asp-route-id="@Model.Id" class="card-link">Edit school details</a>
-        <a asp-controller="ManageSchools" asp-action="Delete" asp-route-id="@Model.Id" class="card-link">Delete school</a>
+        <a asp-controller="Schools" asp-action="Edit" asp-route-id="@Model.Id" class="card-link">Edit school details</a>
+        <a asp-controller="Cars" asp-action="Add" asp-route-id="@Model.Id" class="card-link">Add new car</a>
+        <a asp-controller="Trainers" asp-action="Add" asp-route-id="@Model.Id" class="card-link">Add a trainer</a>
     </div>
 </div>
   
 <div>
-   <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a>
 </div>

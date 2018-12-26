@@ -1,6 +1,5 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.SchoolManage.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.School;
@@ -15,22 +14,22 @@
             this.schoolService = schoolService;
         }
 
-      // GET: Schools/Manage
+        // GET: SchoolManage/Schools/Manage
         public IActionResult Manage()
         {
             var username = this.User.Identity.Name;
-            var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(username);
-           //todo map view model
-            
+            var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username);
+
             return this.View(school);
         }
 
-       
+
 
         // GET: Schools/Edit/5
         public IActionResult Edit(int id)
         {
-            return this.View();
+            var school = this.schoolService.GetSchoolById<EditSchoolInputModel>(id);
+            return this.View(school);
         }
 
         // POST: Schools/Edit/5
@@ -49,6 +48,6 @@
             return this.RedirectToAction("Manage", "Schools", schoolId);
         }
 
-        
+
     }
 }

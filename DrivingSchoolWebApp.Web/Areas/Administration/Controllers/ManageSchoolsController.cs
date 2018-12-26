@@ -1,6 +1,5 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.Administration.Controllers
 {
-    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -35,7 +34,7 @@
         public IActionResult Details(int id)
         {
             var school = this.schoolService.GetSchoolById<SchoolViewModel>(id);
-           
+
             return this.View(school);
         }
 
@@ -68,7 +67,8 @@
         // GET: Administration/ManageSchools/Edit/5
         public IActionResult Edit(int id)
         {
-            return this.View();
+            var school = this.schoolService.GetSchoolById<EditSchoolInputModel>(id);
+            return this.View(school);
         }
 
         // POST: Administration/ManageSchools/Edit/5
@@ -90,7 +90,8 @@
         // GET: Administration/ManageSchools/Delete/5
         public IActionResult Delete(int id)
         {
-            return this.View();
+            var school = this.schoolService.GetSchoolById<DeleteSchoolViewModel>(id);
+            return this.View(school);
         }
 
         // POST: Administration/ManageSchools/Delete/5
@@ -117,7 +118,7 @@
         public IActionResult ChangeManager(int id, string username)
         {
             var user = this.accountService.GetUser(username);
-            this.schoolService.ChangeManager(id,user);
+            this.schoolService.ChangeManager(id, user);
             return this.RedirectToAction(nameof(this.Index));
         }
     }

@@ -49,7 +49,8 @@
             {
                 ManagerId = model.ManagerId,
                 OfficeAddress = model.OfficeAddress,
-                TradeMark = model.TradeMark
+                TradeMark = model.TradeMark,
+                Phone = model.Phone
             };
 
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
@@ -83,6 +84,7 @@
 
             school.OfficeAddress = model.OfficeAddress;
             school.TradeMark = model.TradeMark;
+            school.Phone = model.Phone;
 
             this.schoolRepository.Update(school);
             return school.Id;

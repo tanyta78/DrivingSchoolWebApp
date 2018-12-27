@@ -8,8 +8,7 @@
     {
         public Trainer()
         {
-            this.HireDate = DateTime.UtcNow;
-            this.IsAvailable = true;
+           this.IsAvailable = true;
         }
 
         public string UserId { get; set; }
@@ -20,7 +19,7 @@
 
         public virtual School School { get; set; }
 
-        public DateTime HireDate { get; set; }
+        public DateTime HireDate { get; set; } 
 
         public bool IsAvailable { get; set; }
 

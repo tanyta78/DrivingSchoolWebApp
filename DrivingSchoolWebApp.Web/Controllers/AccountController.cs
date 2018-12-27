@@ -5,21 +5,15 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Account;
-    using Services.Models.School;
 
     public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
-        private readonly ITrainerService trainerService;
-        private readonly ICustomerService customerService;
-        private readonly ISchoolService schoolService;
 
-        public AccountController(IAccountService accountService, ITrainerService trainerService, ICustomerService customerService, ISchoolService schoolService)
+
+        public AccountController(IAccountService accountService)
         {
             this.accountService = accountService;
-            this.trainerService = trainerService;
-            this.customerService = customerService;
-            this.schoolService = schoolService;
         }
 
         // GET: Account/Login
@@ -106,19 +100,19 @@
 
                 if (model.UserType == UserType.Customer)
                 {
-                    this.customerService.Create(user);
+                    return this.RedirectToAction("Create", "Customers", user.Id);
 
                 }
 
                 if (model.UserType == UserType.Trainer)
                 {
-                    var managerName = this.User.Identity.Name;
-                    var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
+                    //var managerName = this.User.Identity.Name;
+                    //var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
 
-                    //todo check fo null===
-                    this.trainerService.Hire(user.Id, school.Id);
-                    //todo add schoolid if is needed in path
-                    return this.RedirectToAction("All", "Trainers");
+                    ////todo check fo null===
+                    //this.trainerService.Hire(user.Id, school.Id);
+                    ////todo add schoolid if is needed in path
+                    return this.RedirectToAction("Create", "Trainers", user.Id);
                 }
 
                 return this.RedirectToAction("Login", "Account");

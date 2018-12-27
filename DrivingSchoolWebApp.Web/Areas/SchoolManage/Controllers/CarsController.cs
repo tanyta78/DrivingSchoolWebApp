@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Services.DataServices.Contracts;
     using Services.Models.Car;
     using Services.Models.School;
@@ -20,7 +19,7 @@
             this.schoolService = schoolService;
         }
 
-        // GET: Cars/All
+        // GET: SchoolsManage/Cars/All
         public ActionResult All(int? page)
         {
             var schoolId = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(this.User.Identity.Name).Id;
@@ -32,7 +31,7 @@
             return this.View(model);
         }
 
-        // GET: Cars/Details/5
+        // GET: SchoolsManage/Cars/Details/5
         public ActionResult Details(int id)
         {
             var car = this.carService.GetCarById<CarDetailsViewModel>(id);
@@ -40,73 +39,78 @@
             return this.View(car);
         }
 
-        // GET: Cars/Create
+        // GET: SchoolsManage/Cars/Create
         public ActionResult Create()
         {
+            var schoolId = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(this.User.Identity.Name).Id;
+            this.ViewBag.SchoolId = schoolId;
             return this.View();
         }
 
-        // POST: Cars/Create
+        // POST: SchoolsManage/Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateCarInputModel model)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                return this.View(model);
+            }
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            var carId = this.carService.Create(model);
+
+            return this.RedirectToAction("Details", "Cars", carId);
+
         }
 
-        // GET: Cars/Edit/5
+        // GET: SchoolsManage/Cars/Edit/5
         public ActionResult Edit(int id)
         {
-            return this.View();
+            var carModel = this.carService.GetCarById<EditCarInputModel>(id);
+
+            return this.View(carModel);
         }
 
-        // POST: Cars/Edit/5
+        // POST: SchoolsManage/Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EditCarInputModel model)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                return this.View(model);
+            }
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            var carId = this.carService.Edit(model);
+
+            return this.RedirectToAction("Details", "Cars", carId);
         }
 
-        // GET: Cars/Delete/5
+        // GET: SchoolsManage/Cars/Delete/5
         public ActionResult Delete(int id)
         {
-            return this.View();
+            var carModel = this.carService.GetCarById<CarDetailsViewModel>(id);
+
+            return this.View(carModel);
         }
 
-        // POST: Cars/Delete/5
+        // POST: SchoolsManage/Cars/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                this.carService.Delete(id).GetAwaiter().GetResult();
 
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(this.All));
             }
             catch
             {
                 return this.View();
             }
         }
+
+        //todo Implement change owner for car . Maybe with isInUse prop=?
     }
 }

@@ -11,7 +11,7 @@
 <h2>All Active Schools</h2>
 
 <p>
-    <a asp-area="Schools" asp-controller="ManageSchools" asp-action="Create">Create New School</a>
+    <a asp-area="Administration" asp-controller="ManageSchools" asp-action="Create">Create New School</a>
 </p>
 
 <div class="container d-flex justify-content-center w-75">
@@ -41,10 +41,10 @@
                 <td>@school.TradeMark</td>
                 <td>@school.OfficeAddress</td>
                 <td>
-                    <a asp-area="Schools" asp-controller="ManageSchools" asp-action="Details" asp-route-id="@school.Id" class="btn btn-info text-dark">Details</a>
-                    <a asp-area="Schools" asp-controller="ManageSchools" asp-action="Edit" asp-route-id="@school.Id" class="btn btn-warning text-dark">Edit</a>
-                    <a asp-area="Schools" asp-controller="ManageSchools" asp-action="ChangeManager" asp-route-id="@school.Id" class="btn btn-warning text-dark">Change Manager</a>
-                    <a asp-area="Schools" asp-controller="ManageSchools" asp-action="Delete" asp-route-id="@school.Id" class="btn btn-danger text-dark">Delete</a>
+                    <a asp-area="Administration" asp-controller="ManageSchools" asp-action="Details" asp-route-id="@school.Id" class="btn btn-info text-dark">Details</a>
+                    <a asp-area="Administration" asp-controller="ManageSchools" asp-action="Edit" asp-route-id="@school.Id" class="btn btn-warning text-dark">Edit</a>
+                    <a asp-area="Administration" asp-controller="ManageSchools" asp-action="ChangeManager" asp-route-id="@school.Id" class="btn btn-warning text-dark">Change Manager</a>
+                    <a asp-area="Administration" asp-controller="ManageSchools" asp-action="Delete" asp-route-id="@school.Id" class="btn btn-danger text-dark">Delete</a>
                   </td>
             </tr>
         }

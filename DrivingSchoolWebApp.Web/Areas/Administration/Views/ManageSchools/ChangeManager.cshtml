@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ChangeManager">
+        <form asp-area="Administration" asp-controller="ManageSchools" asp-action="ChangeManager" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input hidden="hidden" asp-for="Id" class="form-control" />
             <input hidden="hidden" asp-for="ManagerId"/>

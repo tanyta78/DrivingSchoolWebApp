@@ -1,0 +1,42 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Car.EditCarInputModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>EditCarInputModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-area="SchoolManage" asp-controller="Cars" asp-action="Edit" asp-route="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CarImage" class="control-label"></label>
+                <input type="file" asp-for="CarImage" class="form-control" value="@Model.CarImage" />
+                <span asp-validation-for="CarImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="InUse" /> @Html.DisplayNameFor(model => model.InUse)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="VIN" class="control-label"></label>
+                <input asp-for="VIN" class="form-control" value="@Model.VIN" />
+                <span asp-validation-for="VIN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="SchoolManage" asp-controller="Cars" asp-action="All">Back to All Cars List</a>
+</div>
+

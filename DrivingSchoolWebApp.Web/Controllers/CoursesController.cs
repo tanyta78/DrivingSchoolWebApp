@@ -32,7 +32,7 @@
         }
 
         // GET: Courses/Create
-        public ActionResult Create()
+        public ActionResult Create(int? trainerId)
         {
             return View();
         }

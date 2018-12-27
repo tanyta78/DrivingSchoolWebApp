@@ -6,6 +6,7 @@
     using Services.Models.School;
     using Services.Models.Trainer;
     using Web.Controllers;
+    using X.PagedList;
 
     public class TrainersController : BaseController
     {
@@ -19,27 +20,37 @@
         }
 
         // GET: Trainers/All
-        public ActionResult All()
+        public ActionResult All(int? page)
         {
             var managerName = this.User.Identity.Name;
             var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
-            var trainers = this.trainerService.TrainersBySchoolId<TrainersViewModel>(school.Id);
-            return this.View(trainers);
+            var trainers = this.trainerService.TrainersBySchoolId<AllTrainerViewModel>(school.Id);
+
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            IPagedList<AllTrainerViewModel> model = trainers.ToPagedList(pageNumber, 5); // will only contain 5 products max because of the pageSize
+
+            return this.View(model);
         }
 
         // GET: Trainers/Available
-        public ActionResult Available()
+        public ActionResult Available(int? page)
         {
             var managerName = this.User.Identity.Name;
             var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
-            var trainers = this.trainerService.AvailableTrainersBySchoolIdNotParticipateInCourse<TrainersViewModel>(school.Id);
-            return this.View(trainers);
+            var trainers = this.trainerService.AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(school.Id);
+
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            IPagedList<AvailableTrainerViewModel> model = trainers.ToPagedList(pageNumber, 5); // will only contain 5 products max because of the pageSize
+
+            return this.View(model);
         }
 
         // GET: Trainers/Details/5
         public ActionResult Details(int id)
         {
-            return this.View();
+            var trainer = this.trainerService.GetTrainerById<DetailsTrainerViewModel>(id);
+
+            return this.View(trainer);
         }
 
         // GET: Trainers/Create
@@ -77,13 +88,17 @@
         //[ValidateAntiForgeryToken]
         //public ActionResult Edit(int id, IFormCollection collection)
         //{
-            
+
         //}
 
         // GET: Trainers/Delete/5
         public ActionResult Delete(int id)
         {
-            return this.View();
+            var trainer = this.trainerService.GetTrainerById<DeleteTrainerViewModel>(id);
+
+            //return this.View(trainer);
+            return this.RedirectToAction("All");
+
         }
 
         // POST: Trainers/Delete/5
@@ -91,7 +106,8 @@
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            
+            this.trainerService.Delete(id);
+            return this.RedirectToAction("All");
         }
     }
 }

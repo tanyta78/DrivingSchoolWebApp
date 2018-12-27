@@ -1,0 +1,49 @@
+﻿@model IPagedList<DrivingSchoolWebApp.Services.Models.Trainer.AvailableTrainerViewModel>
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All Available Trainers</h2>
+
+<div class="container d-flex justify-content-center w-75">
+    <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("All", new { page }), new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }})
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Trainer Nickname</th>
+        <th>Trainer Address</th>
+        <th>Trainer Phone</th>   
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (var index = 0; index < Model.Count(); index++)
+    {
+        var trainer = Model[index];
+        var realIndex = index + 1 + (Model.PageNumber - 1) * Model.PageSize;
+        <tr>
+            <td class="col-md-1">@realIndex</td>
+            <td>@trainer.UserNickname</td>
+            <td>@trainer.UserAddress</td>
+            <td>@trainer.UserPhoneNumber</td>
+           
+            <td>
+                <a asp-area="" asp-controller="Courses" asp-action="Create" asp-route-trainerId="@trainer.Id" class="btn btn-info text-dark">Create Course with this trainer</a>
+                <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-warning text-dark">Edit</a>
+                <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Delete" asp-route-id="@trainer.Id" class="btn btn-danger text-dark">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

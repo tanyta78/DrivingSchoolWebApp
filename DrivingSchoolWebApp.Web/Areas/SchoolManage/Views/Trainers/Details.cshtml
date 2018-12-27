@@ -1,0 +1,27 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Trainer.DetailsTrainerViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="card-deck">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Trainer Nickname:@Model.UserNickname</h5>
+            <p class="card-text">Trainer address: @Model.UserAddress</p>
+            <p class="card-text">Trainer phone: @Model.UserPhoneNumber</p>
+            <p class="card-text">School trademark: @Model.SchoolTradeMark</p>
+            <p class="card-text"><small class="text-muted">Hire Date: @Model.HireDate</small></p>
+            <p class="card-text"><small class="text-muted">Available from: @Model.AvailableLessonDay</small></p>
+        </div>
+        <div class="card-footer">
+            <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Edit</a>
+            <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-dark">Delete</a>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="All">Back to List</a>
+</div>

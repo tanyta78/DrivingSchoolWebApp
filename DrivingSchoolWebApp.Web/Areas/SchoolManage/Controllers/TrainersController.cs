@@ -18,10 +18,22 @@
             this.schoolService = schoolService;
         }
 
-        // GET: Trainers
-        public ActionResult Index()
+        // GET: Trainers/All
+        public ActionResult All()
         {
-            return this.View();
+            var managerName = this.User.Identity.Name;
+            var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
+            var trainers = this.trainerService.TrainersBySchoolId<TrainersViewModel>(school.Id);
+            return this.View(trainers);
+        }
+
+        // GET: Trainers/Available
+        public ActionResult Available()
+        {
+            var managerName = this.User.Identity.Name;
+            var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
+            var trainers = this.trainerService.AvailableTrainersBySchoolIdNotParticipateInCourse<TrainersViewModel>(school.Id);
+            return this.View(trainers);
         }
 
         // GET: Trainers/Details/5
@@ -45,40 +57,28 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateTrainerInputModel model)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            if (!this.ModelState.IsValid) return this.View();
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            this.trainerService.Hire(model);
+
+            return this.RedirectToAction("All", "Trainers");
         }
 
-        // GET: Trainers/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return this.View();
-        }
+        //todo Decide how to change trainer user profile. Or add new properties in trainer model to proceed edit.
+        //// GET: Trainers/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    
+        //    return this.View();
+        //}
 
-        // POST: Trainers/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
+        //// POST: Trainers/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+            
+        //}
 
         // GET: Trainers/Delete/5
         public ActionResult Delete(int id)
@@ -91,16 +91,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
+            
         }
     }
 }

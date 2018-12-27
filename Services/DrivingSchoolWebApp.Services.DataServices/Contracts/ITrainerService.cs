@@ -2,20 +2,21 @@
 {
     using System.Collections.Generic;
     using Data.Models;
+    using Models.Trainer;
 
     public interface ITrainerService
     {
-        Trainer Hire(string userId, int schoolId);
+        Trainer Hire(CreateTrainerInputModel model);
 
         void Edit();
 
         void Delete(int id);
 
-        IEnumerable<TViewModel> TrainersBySchool<TViewModel>(int schoolId);
+        IEnumerable<TViewModel> TrainersBySchoolId<TViewModel>(int schoolId);
 
         TViewModel GetTrainerById<TViewModel>(int id);
       
-        IEnumerable<TViewModel> AvailableTrainersBySchoolNotParticipateInCourse<TViewModel>(int schoolId);
+        IEnumerable<TViewModel> AvailableTrainersBySchoolIdNotParticipateInCourse<TViewModel>(int schoolId);
 
     }
 }

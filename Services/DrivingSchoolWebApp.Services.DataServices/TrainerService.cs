@@ -6,6 +6,7 @@
     using Data.Common;
     using Data.Models;
     using Mapping;
+    using Models.Trainer;
 
     public class TrainerService : ITrainerService
     {
@@ -16,12 +17,13 @@
             this.trainerRepository = trainerRepository;
         }
 
-        public Trainer Hire(string userId, int schoolId)
+        public Trainer Hire(CreateTrainerInputModel model)
         {
             var trainer = new Trainer()
             {
-                UserId = userId,
-                SchoolId = schoolId
+                UserId = model.UserId,
+                SchoolId = model.SchoolId,
+                HireDate = model.HireDate
             };
 
             this.trainerRepository.AddAsync(trainer).GetAwaiter().GetResult();
@@ -50,7 +52,7 @@
             return trainer;
         }
 
-        public IEnumerable<TViewModel> AvailableTrainersBySchoolNotParticipateInCourse<TViewModel>(int schoolId)
+        public IEnumerable<TViewModel> AvailableTrainersBySchoolIdNotParticipateInCourse<TViewModel>(int schoolId)
         {
             var trainers = this.trainerRepository.All()
                                .Where(x => x.SchoolId == schoolId && !x.CoursesInvolved.Any() && x.IsAvailable)
@@ -59,7 +61,7 @@
             return trainers;
         }
 
-        public IEnumerable<TViewModel> TrainersBySchool<TViewModel>(int schoolId)
+        public IEnumerable<TViewModel> TrainersBySchoolId<TViewModel>(int schoolId)
         {
             var trainers = this.trainerRepository.All()
                                .Where(x => x.SchoolId == schoolId)

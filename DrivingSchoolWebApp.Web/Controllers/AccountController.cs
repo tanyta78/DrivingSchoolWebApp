@@ -137,6 +137,26 @@
             return this.View();
         }
 
+        //todo Protect thie route for admins and schools changing his trainers user profiles
+        // GET: Account/UpdateUserProfile/5
+        public IActionResult UpdateUserProfile(string userId)
+        {
+            var userModel = this.accountService.GetUserById<EditUserProfileInputModel>(userId);
+
+            return this.View(userModel);
+        }
+
+        // POST: Account/UpdateUserProfile/5
+        [HttpPost]
+        public IActionResult UpdateUserProfile(EditUserProfileInputModel model)
+        {
+            if (!this.ModelState.IsValid) return this.View(model);
+
+            this.accountService.UpdateUserProfile(model);
+            
+            return this.RedirectToAction("Index", "Home");
+
+        }
 
     }
 }

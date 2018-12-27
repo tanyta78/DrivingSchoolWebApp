@@ -17,9 +17,15 @@
 
         AppUser GetUser(string username);
 
+        TViewModel GetUserById<TViewModel>(string id);
+
+        AppUser GetUserById(string id);
+        
         void CreateUserExternal();
 
         AuthenticationProperties ConfigureExternalLoginProperties(string provider, string redirectUrl);
+
+        void UpdateUserProfile(EditUserProfileInputModel model);
 
         void Demote(string id);
 

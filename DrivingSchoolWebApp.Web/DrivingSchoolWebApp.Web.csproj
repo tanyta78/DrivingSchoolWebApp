@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Schools\**" />
+    <Content Remove="Views\Schools\**" />
+    <EmbeddedResource Remove="Views\Schools\**" />
+    <None Remove="Views\Schools\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="jQuery.Fullcalendar" Version="3.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -46,10 +53,6 @@
     <Content Update="Views\Shared\_SchoolNavigation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Schools\" />
   </ItemGroup>
 
 </Project>

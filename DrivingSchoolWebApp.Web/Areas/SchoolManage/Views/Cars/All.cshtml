@@ -1,0 +1,47 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<DrivingSchoolWebApp.Services.Models.Car.CarViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All</h2>
+
+<p>
+    <a asp-area="Schools" asp-controller="Cars" asp-action="Create">Create New Car</a>
+</p>
+
+<div class="container d-flex justify-content-center w-75">
+    <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("All", new { page }), new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }})
+</div>
+
+<div class="card-deck">
+    @for (var index = 0; index < Model.Count(); index++)
+    {
+        var car = Model[index];
+
+        <div class="card">
+            <img class="card-img-top w-100" src="@car.ImageUrl" style="height: 250px; width: 100px" alt="@car.Make _ @car.Model">
+
+            <div class="card-body">
+                <h5 class="card-title">@car.Title</h5>
+                <p class="card-text">Car make: @car.Make</p>
+                <p class="card-text">Car model: @car.Model</p>
+                <p class="card-text">Car transmission: @car.Transmission.ToString()</p>
+                <p class="card-text"><small class="text-muted">@car.OwnerTradeMark @car.OwnerPhone</small></p>
+            </div>
+            <div class="card-footer">
+                <a area="Schools" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-info text-dark">Details</a>
+                <a area="Schools" asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning text-dark">Edit</a>
+                <a area="Schools" asp-controller="Cars" asp-action="ChangeOwner" asp-route-id="@car.Id" class="btn btn-warning text-dark">Change Owner</a>
+                <a area="Schools" asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger text-dark">Delete</a>
+            </div>
+        </div>
+    }
+</div>

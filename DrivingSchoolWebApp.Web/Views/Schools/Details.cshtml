@@ -1,0 +1,77 @@
+﻿@model DrivingSchoolWebApp.Services.Models.School.DetailsSchoolViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DetailsSchoolViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManagerNickName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManagerNickName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TradeMark)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TradeMark)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OfficeAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OfficeAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoursesOfferedCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoursesOfferedCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TrainersCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TrainersCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrdersCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrdersCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnedCarsCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OwnedCarsCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a href="javascript:history.go(-1)">Return to previous page</a>
+</div>

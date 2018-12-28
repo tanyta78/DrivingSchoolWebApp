@@ -58,4 +58,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Schools\All.cshtml" />
+    <None Include="Views\Schools\Details.cshtml" />
+  </ItemGroup>
+
 </Project>

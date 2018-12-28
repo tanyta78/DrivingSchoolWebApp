@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DrivingSchoolWebApp.Services.Models.School.AllSchoolViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All Schools</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TradeMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfficeAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TradeMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficeAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

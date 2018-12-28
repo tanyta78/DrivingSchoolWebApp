@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
@@ -23,7 +24,7 @@
 
         public IEnumerable<TViewModel> AllActiveSchools<TViewModel>()
         {
-            return this.schoolRepository.All().Where(s => s.IsActive).To<TViewModel>();
+            return this.schoolRepository.All().Where(s => s.IsActive).ProjectTo<TViewModel>();
         }
 
         //only admin

@@ -25,12 +25,9 @@
             return customers;
         }
 
-        public Customer Create(AppUser user)
+        public Customer Create(CreateCustomerInputModel model)
         {
-            var customer = new Customer()
-            {
-                User = user
-            };
+            var customer = this.Mapper.Map<Customer>(model);
 
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();

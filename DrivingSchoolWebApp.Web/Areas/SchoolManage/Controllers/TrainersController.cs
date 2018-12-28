@@ -53,7 +53,7 @@
             return this.View(trainer);
         }
 
-        // GET: Trainers/Create
+        // GET: Trainers/Create/2
         public ActionResult Create(string userId)
         {
             var managerName = this.User.Identity.Name;
@@ -63,7 +63,7 @@
             return this.View();
         }
 
-        // POST: Trainers/Create
+        // POST: Trainers/Create/2
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateTrainerInputModel model)

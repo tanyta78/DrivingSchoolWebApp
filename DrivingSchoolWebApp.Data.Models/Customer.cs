@@ -2,12 +2,19 @@
 {
     using System.Collections.Generic;
     using Common;
+    using Enums;
 
     public class Customer : BaseModel<int>
     {
         public string UserId { get; set; }
 
         public virtual AppUser User { get; set; }
+
+        public Gender Gender { get; set; }
+
+        public AgeGroup AgeGroup { get; set; }
+
+        public EducationLevel EducationLevel { get; set; }
 
         public virtual IEnumerable<Order> CoursesOrdered { get; set; } = new HashSet<Order>();
 

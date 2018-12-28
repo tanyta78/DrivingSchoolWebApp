@@ -57,7 +57,7 @@
                 return this.View(model);
             }
 
-            var carId = this.carService.Create(model);
+            var carId = this.carService.Create(model).GetAwaiter().GetResult().Id;
 
             return this.RedirectToAction("Details", "Cars", carId);
 

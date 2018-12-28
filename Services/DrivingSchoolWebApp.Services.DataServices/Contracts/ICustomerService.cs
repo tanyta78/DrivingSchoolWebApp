@@ -12,7 +12,7 @@
 
         Customer GetCustomerByUserId(string userId);
 
-        Customer Create(AppUser user);
+        Customer Create(CreateCustomerInputModel model);
 
         void Edit(CustomerViewModel model);
 

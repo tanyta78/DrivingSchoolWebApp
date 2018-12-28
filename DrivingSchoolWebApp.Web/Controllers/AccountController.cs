@@ -100,7 +100,11 @@
 
                 if (model.UserType == UserType.Customer)
                 {
-                    return this.RedirectToAction("Create", "Customers", user.Id);
+                    var loginResult = this.accountService.Login(user, model.Password);
+                    if (loginResult.Succeeded)
+                    {
+                        return this.RedirectToAction("Create", "Customers", user.Id);
+                    }
 
                 }
 
@@ -153,7 +157,7 @@
             if (!this.ModelState.IsValid) return this.View(model);
 
             this.accountService.UpdateUserProfile(model);
-            
+
             return this.RedirectToAction("Index", "Home");
 
         }

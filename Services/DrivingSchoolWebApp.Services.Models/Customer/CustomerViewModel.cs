@@ -2,13 +2,20 @@
 {
     using System.Collections.Generic;
     using Data.Models;
+    using Data.Models.Enums;
     using Mapping;
 
     public class CustomerViewModel:IMapFrom<Customer>
     {
         public int Id { get; set; }
-        //todo make changes to model
+     
         public AppUser User { get; set; }
+
+        public Gender Gender { get; set; }
+
+        public AgeGroup AgeGroup { get; set; }
+
+        public EducationLevel EducationLevel { get; set; }
 
         public IEnumerable<Order> CoursesOrdered { get; set; } = new HashSet<Order>();
 

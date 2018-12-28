@@ -6,9 +6,13 @@
 
     public interface ICustomerService
     {
-        IEnumerable<Customer> All();
+        IEnumerable<TViewModel> All<TViewModel>();
+
+        TViewModel GetCustomerById<TViewModel>(int id);
 
         Customer GetCustomerById(int id);
+
+        TViewModel GetCustomerByUserId<TViewModel>(string userId);
 
         Customer GetCustomerByUserId(string userId);
 

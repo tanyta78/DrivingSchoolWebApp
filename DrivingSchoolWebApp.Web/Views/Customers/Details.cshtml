@@ -1,0 +1,30 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Customer.DetailsCustomerViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Customer Details</h2>
+
+<div>
+    <div class="card-deck">
+        <div class="card">
+            @*todo add user avatarUrl and update view with options to edit profile if admin or own
+                <img class="card-img-top w-100" src="@Model.AvatarUrl" style="height: 250px; width: 100px" alt="@Model.UserNickName">*@
+
+            <div class="card-body">
+                <h5 class="card-title">@Model.UserNickName</h5>
+                <p class="card-text">Address: @Model.UserAddress</p>
+                <p class="card-text">Phone: @Model.UserPhoneNumber</p>
+                <p class="card-text">Gender: @Model.Gender</p>
+                <p class="card-text">Age Group: @Model.AgeGroup</p>
+                <p class="card-text">Education: @Model.EducationLevel</p>
+                </div>
+            <div class="card-footer">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+

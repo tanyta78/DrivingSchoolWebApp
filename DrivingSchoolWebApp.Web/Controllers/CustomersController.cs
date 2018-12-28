@@ -23,7 +23,9 @@
         // GET: Customers/Details/5
         public ActionResult Details(int id)
         {
-            return this.View();
+            var customer = this.customerService.GetCustomerById<DetailsCustomerViewModel>(id);
+           
+            return this.View(customer);
         }
 
         // GET: Customers/Create/2
@@ -48,50 +50,50 @@
             return this.RedirectToAction("Index", "Home");
         }
 
-        // GET: Customers/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return this.View();
-        }
+         // TODO: Add update logic here for edit and delete customer . Update service.
+        //// GET: Customers/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return this.View();
+        //}
 
-        // POST: Customers/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //// POST: Customers/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
+        //        return this.RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return this.View();
+        //    }
+        //}
 
-        // GET: Customers/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return this.View();
-        }
+        //// GET: Customers/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return this.View();
+        //}
 
-        // POST: Customers/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //// POST: Customers/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add delete logic here
 
-                return this.RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
+        //        return this.RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return this.View();
+        //    }
+        //}
     }
 }

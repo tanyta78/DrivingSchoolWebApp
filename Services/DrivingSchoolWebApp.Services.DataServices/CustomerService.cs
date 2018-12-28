@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
+    using Mapping;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Models.Customer;
@@ -51,6 +53,18 @@
             //maybe you do not need this
         }
 
+        public IEnumerable<TViewModel> All<TViewModel>()
+        {
+            var customers = this.customerRepository.All().ProjectTo<TViewModel>().ToList();
+            return customers;
+        }
+
+        public TViewModel GetCustomerById<TViewModel>(int id)
+        {
+            var customer = this.customerRepository.All().Where(c => c.Id == id).To<TViewModel>().FirstOrDefault();
+            return customer;
+        }
+
         public Customer GetCustomerById(int id)
         {
             var customer = this.customerRepository.All()
@@ -62,6 +76,12 @@
             return customer;
         }
 
+        public TViewModel GetCustomerByUserId<TViewModel>(string userId)
+        {
+            var customer = this.customerRepository.All().Where(c => c.UserId == userId).To<TViewModel>().FirstOrDefault();
+            return customer;
+        }
+
         public Customer GetCustomerByUserId(string userId)
         {
             var customer = this.customerRepository.All()
@@ -69,7 +89,7 @@
                                .Include(c=>c.ExamsTaken)
                                .Include(c=>c.Feedbacks)
                                .Include(c=>c.LessonsTaken)
-                               .FirstOrDefault(c => c.User.Id == userId);
+                               .FirstOrDefault(c => c.UserId == userId);
             return customer;
         }
 

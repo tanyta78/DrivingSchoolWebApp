@@ -12,6 +12,8 @@
 
         TViewModel GetCourseById<TViewModel>(int courseId);
 
+        IEnumerable<TViewModel> GetAllCourses<TViewModel>();
+        
         IEnumerable<TViewModel> GetCoursesByTrainerId<TViewModel>(int trainerId);
 
         IEnumerable<TViewModel> GetCoursesByCarId<TViewModel>(int carId);

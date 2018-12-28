@@ -92,6 +92,12 @@
             return course;
         }
 
+        public IEnumerable<TViewModel> GetAllCourses<TViewModel>()
+        {
+            var courses = this.courseRepository.All().ProjectTo<TViewModel>().ToList();
+            return courses;
+        }
+
         public IEnumerable<TViewModel> GetCoursesByCarId<TViewModel>(int carId)
         {
             var courses = this.courseRepository.All().Where(x => x.CarId== carId).ProjectTo<TViewModel>().ToList();

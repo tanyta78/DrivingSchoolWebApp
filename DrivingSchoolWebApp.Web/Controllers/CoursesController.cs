@@ -100,30 +100,35 @@
         // GET: Courses/Edit/5
         public ActionResult Edit(int id)
         {
+            var username = this.User.Identity.Name;
+            var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
+            this.ViewBag.Trainers =this.trainerService
+                .AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(
+                    schoolId);
+            this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);
             return this.View();
         }
 
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EditCourseInputModel model)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                return this.View(model);
+            }
 
-                return this.RedirectToAction("All");
-            }
-            catch
-            {
-                return this.View();
-            }
+            var course = this.courseService.Edit(model);
+            return this.RedirectToAction("Details", "Courses", course.Id);
         }
 
         // GET: Courses/Delete/5
         public ActionResult Delete(int id)
         {
-            return this.View();
+            var course = this.courseService.GetCourseById<DeleteCourseViewModel>(id);
+
+            return this.View(course);
         }
 
         // POST: Courses/Delete/5
@@ -133,9 +138,9 @@
         {
             try
             {
-                // TODO: Add delete logic here
+                this.courseService.Delete(id).GetAwaiter().GetResult();
 
-                return this.RedirectToAction("All");
+                return this.RedirectToAction(nameof(this.All));
             }
             catch
             {

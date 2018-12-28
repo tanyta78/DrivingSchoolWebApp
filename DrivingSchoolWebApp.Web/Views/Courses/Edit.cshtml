@@ -1,0 +1,57 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Course.EditCourseInputModel
+
+@{
+    ViewData["Title"] = "Edit";
+    var trainersList = ViewBag.Trainers;
+    var carsList = ViewBag.Cars;
+}
+
+<h2>Edit Course</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Courses" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" value="@Model.Price"/>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" >@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumLessonsCount" class="control-label"></label>
+                <input asp-for="MinimumLessonsCount" class="form-control" value="@Model.MinimumLessonsCount"/>
+                <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrainerId" class="control-label"></label>
+                <select asp-for="TrainerId"
+                        asp-items="@(new SelectList(trainersList,"Id","UserNickName",@Model.TrainerId))">
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarId" class="control-label"></label>
+                <select asp-for="CarId"
+                        asp-items="@(new SelectList(carsList,"Id","Title"))">
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="CarId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="javascript:history.go(-1)">Return to previous page</a>
+</div>
+

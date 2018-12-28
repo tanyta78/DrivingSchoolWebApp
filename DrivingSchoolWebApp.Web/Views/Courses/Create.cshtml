@@ -13,7 +13,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Courses" asp-action="Create">
+        <form asp-controller="Courses" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
@@ -26,17 +26,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" placeholder="Price..." />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" placeholder="Description..."></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MinimumLessonsCount" class="control-label"></label>
-                <input asp-for="MinimumLessonsCount" class="form-control" />
+                <input asp-for="MinimumLessonsCount" class="form-control" placeholder="Minimum lessons"/>
                 <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -73,6 +73,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="javascript:history.go(-1)">Return to previous page</a>
 </div>
 

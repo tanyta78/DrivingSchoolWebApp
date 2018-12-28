@@ -1,0 +1,35 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Course.DetailsCourseViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Course Details</h2>
+
+<div class="card-deck">
+    <div class="card">
+        <img class="card-img-top w-100" src="@Model.CarImageUrl" style="height: 250px; width: 100px" alt="@Model.CarMake _ @Model.CarModel">
+
+        <div class="card-body">
+            <h5 class="card-title">@Model.SchoolTradeMark _ @Model.Category</h5>
+            <p class="card-text">Course Description: @Model.Description</p>
+            <p class="card-text">Minimum lessons: @Model.MinimumLessonsCount</p>
+            <p class="card-text">Price: @Model.Price</p>
+            <p class="card-text">Rating: @Model.Rating</p>
+
+            <p class="card-text">Car info: @Model.CarMake - @Model.CarModel  - @Model.CarTransmission - @Model.CarVIN </p>
+            <p class="card-text">Trainer: @Model.TrainerNickName</p>
+            <p class="card-text"><small class="text-muted">Students participated @Model.StudentsCount</small></p>
+            <p class="card-text"><small class="text-muted">Given Feedback Count @Model.AllFeedbacksCount</small></p>
+            <p class="card-text"><small class="text-muted">Taken Exams @Model.ExamsTakenCount</small></p>
+        </div>
+        <div class="card-footer">
+            <a asp-controller="Schools" asp-action="Details" asp-route-id="@Model.SchoolId" class="btn btn-warning text-dark">School Info</a>
+            <a asp-controller="Orders" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Order</a>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a href="javascript:history.go(-1)">Return to previous page</a>
+</div>

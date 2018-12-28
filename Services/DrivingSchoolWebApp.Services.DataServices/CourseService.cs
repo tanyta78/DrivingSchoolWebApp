@@ -54,7 +54,7 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task<Course> Edit(EditCourseInputModel model)
+       public async Task<Course> Edit(EditCourseInputModel model)
         {
             //todo check model validation in controller?!?
             //todo change price, description, min lessons,trainerId, carId
@@ -115,6 +115,13 @@
         public IEnumerable<TViewModel> GetCoursesBySchoolId<TViewModel>(int schoolId)
         {
             var courses = this.courseRepository.All().Where(x => x.SchoolId== schoolId).ProjectTo<TViewModel>().ToList();
+            
+            return courses;
+        }
+
+        public IEnumerable<TViewModel> GetCoursesBySchoolIdAndCategory<TViewModel>(int schoolId, Category category)
+        {
+            var courses = this.courseRepository.All().Where(x => x.SchoolId== schoolId && x.Category== category).ProjectTo<TViewModel>().ToList();
             
             return courses;
         }

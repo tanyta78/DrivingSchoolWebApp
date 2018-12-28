@@ -50,10 +50,23 @@
             return this.View(courses);
         }
 
+        // POST: Courses/Offered
+        [HttpPost]
+        public ActionResult Offered(string category)
+        {
+            var username = this.User.Identity.Name;
+            var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
+            var courses = this.courseService.GetCoursesBySchoolIdAndCategory<OfferedCoursesViewModel>(schoolId,Enum.Parse<Category>(category));
+
+            return this.View(courses);
+        }
+
         // GET: Courses/Details/5
         public ActionResult Details(int id)
         {
-            return this.View();
+            var course = this.courseService.GetCourseById<DetailsCourseViewModel>(id);
+
+            return this.View(course);
         }
 
         // GET: Courses/Create

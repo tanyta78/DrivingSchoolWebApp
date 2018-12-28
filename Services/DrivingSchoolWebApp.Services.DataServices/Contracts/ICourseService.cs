@@ -27,5 +27,7 @@
         Task<Course> Edit(EditCourseInputModel model);
 
         Task Delete(int id);
+
+        IEnumerable<TViewModel> GetCoursesBySchoolIdAndCategory<TViewModel>(int schoolId, Category category);
     }
 }

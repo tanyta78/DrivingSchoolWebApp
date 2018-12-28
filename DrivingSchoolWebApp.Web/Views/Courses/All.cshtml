@@ -37,6 +37,7 @@
                     </div>
                     <div class="card-footer">
                         <a small class="text-muted card-link" asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">Go to Course</a>
+                        <a asp-controller="Orders" asp-action="Create" asp-route-id="@course.Id" class="btn btn-warning text-dark">Order</a>
                     </div>
                 </div>
             </div>

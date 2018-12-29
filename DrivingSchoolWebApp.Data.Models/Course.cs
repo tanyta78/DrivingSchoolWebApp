@@ -31,6 +31,8 @@
         
         public virtual Car Car { get; set; }
 
+        public string Info => this.Category+" category "+this.Trainer.User.Nickname+" as trainer"+this.School.TradeMark+" school"+this.Car.Model+" "+this.Car.Model + " " + this.Car.Make + " " + this.Car.Transmission;
+
         public virtual IEnumerable<Order> Students { get; set; } = new HashSet<Order>();
 
         public virtual IEnumerable<Feedback> AllFeedbacks { get; set; } = new HashSet<Feedback>();

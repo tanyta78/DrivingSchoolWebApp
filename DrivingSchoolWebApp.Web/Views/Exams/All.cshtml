@@ -1,0 +1,74 @@
+﻿@using DrivingSchoolWebApp.Data.Models.Enums
+@model IEnumerable<DrivingSchoolWebApp.Services.Models.Exam.AllExamsViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All exams</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseInfo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @if (User.IsInRole("School"))
+                    {
+                        <form asp-controller="Exams" asp-action="Cancel" asp-route-id="@item.Id">
+                            <input type="submit" value="Cancel exam"/>
+                        </form>
+                        <form asp-controller="Exams" asp-action="Finish" asp-route-id="@item.Id">
+                            <input type="submit" value="Finish exam"/>
+                        </form>
+                    }
+                    @if (User.IsInRole("Customer") && item.Status == LessonStatus.Finished)
+                    {
+                        <a asp-controller="Certificates" asp-action="Details" asp-route-examId="@item.Id">View Certificate</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

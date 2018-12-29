@@ -1,0 +1,65 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Order.DetailsOrderViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DetailsOrderViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerFullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerFullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseSchoolTradeMark)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseSchoolTradeMark)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseCategory)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseCategory)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoursePrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoursePrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentsMade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentsMade)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="All">Back to List</a>
+</div>

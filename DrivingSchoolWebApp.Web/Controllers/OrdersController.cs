@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Course;
@@ -54,7 +53,7 @@
             return this.View(order);
         }
 
-      
+
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -73,59 +72,55 @@
                 };
                 var order = this.orderService.Create(model).GetAwaiter().GetResult();
 
-                return this.RedirectToAction("Details","Orders",order.Id);
+                return this.RedirectToAction("Details", "Orders", order.Id);
             }
             catch (Exception error)
             {
                 //todo handle exceptions with filter and log it
-                return this.View("_Error",error);
+                return this.View("_Error", error);
             }
         }
 
-        // GET: Orders/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return this.View();
-        }
-
-        // POST: Orders/Edit/5
+        // POST: Orders/Cancel/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Cancel(int id)
         {
             try
             {
-                // TODO: Add update logic here
+                var order = this.orderService.CancelOrder(id).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
-            catch
+            catch (Exception error)
             {
-                return this.View();
+                //todo handle exceptions with filter and log it
+                return this.View("_Error", error);
             }
         }
 
-        // GET: Orders/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return this.View();
-        }
+        // TODO: Decide who can delete order. Does it needed?
+        //// GET: Orders/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return this.View();
+        //}
 
-        // POST: Orders/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //// POST: Orders/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        
 
-                return this.RedirectToAction(nameof(All));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
+        //        return this.RedirectToAction(nameof(All));
+        //    }
+        //    catch
+        //    {
+        //        return this.View();
+        //    }
+        //}
     }
 }

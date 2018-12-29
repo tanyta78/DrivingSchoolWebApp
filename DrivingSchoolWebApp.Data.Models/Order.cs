@@ -35,5 +35,7 @@
 
         public bool IsCourseCompleted { get; set; }
 
+        public bool IsFullyPaid => this.PaymentsMade == this.ActualPriceWhenOrder;
+
     }
 }

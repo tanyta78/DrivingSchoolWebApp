@@ -9,5 +9,7 @@
 
         public int CourseId { get; set; }
 
+        public decimal ActualPriceWhenOrder { get; set; }
+
     }
 }

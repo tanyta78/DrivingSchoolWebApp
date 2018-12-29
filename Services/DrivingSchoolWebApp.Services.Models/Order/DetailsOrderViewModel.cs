@@ -21,7 +21,7 @@
 
         public string CourseDescription { get; set; }
 
-        public string CoursePrice { get; set; }
+        public decimal CoursePrice { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
 

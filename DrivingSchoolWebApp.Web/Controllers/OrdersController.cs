@@ -68,7 +68,8 @@
                 var model = new CreateOrderInputModel()
                 {
                     CourseId = courseId,
-                    CustomerId = customerId
+                    CustomerId = customerId,
+                    ActualPriceWhenOrder = course.Price
                 };
                 var order = this.orderService.Create(model).GetAwaiter().GetResult();
 

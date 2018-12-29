@@ -27,6 +27,7 @@
             var courseId = 0;
             if (customer.CoursesOrdered.Count() != 0)
             {
+                //?!?!
                 courseId = customer.CoursesOrdered.FirstOrDefault().Id;
 
             }

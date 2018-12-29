@@ -19,6 +19,8 @@
 
         IEnumerable<TViewModel> GetLessonsByCourseIdAndCustomerId<TViewModel>(int customerId, int courseId);
 
+        IEnumerable<TViewModel> GetLessonsByOrderId<TViewModel>(int orderId);
+
         IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId);
 
         IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId);

@@ -22,18 +22,18 @@
         // GET: Lessons
         public ActionResult Index()
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = this.customerService.GetCustomerByUserId(userId);
-            var courseId = 0;
-            if (customer.CoursesOrdered.Count() != 0)
-            {
-                //?!?!
-                courseId = customer.CoursesOrdered.FirstOrDefault().Id;
+            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var customer = this.customerService.GetCustomerByUserId(userId);
+            //var courseId = 0;
+            //if (customer.CoursesOrdered.Count() != 0)
+            //{
+            //    //?!?!
+            //    courseId = customer.CoursesOrdered.FirstOrDefault().Id;
 
-            }
+            //}
 
-            this.ViewBag.CourseId = courseId;
-            this.ViewBag.CustomerId = customer.Id;
+            //this.ViewBag.CourseId = courseId;
+            //this.ViewBag.CustomerId = customer.Id;
             return this.View("CustomerSchedule");
         }
 
@@ -55,10 +55,15 @@
             return this.View(lesson);
         }
 
-        // GET: Lessons/Create
+        // GET: Lessons/Create/4
         public ActionResult Create(int orderId)
         {
-            return this.View();
+            var model = new CreateLessonInputModel()
+            {
+                OrderId = orderId
+            };
+
+            return this.View(model);
         }
 
         // POST: Lessons/Create
@@ -71,7 +76,7 @@
                 return this.View(model);
             }
 
-            var lesson = this.lessonService.Create(model);
+            var lesson = this.lessonService.Create(model).GetAwaiter().GetResult();
             return this.RedirectToAction("Details", "Lessons", lesson.Id);
 
 

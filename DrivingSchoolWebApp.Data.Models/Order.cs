@@ -33,6 +33,8 @@
 
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
 
+        public virtual IEnumerable<Lesson> LessonsTaken { get; set; } = new HashSet<Lesson>();
+
         public bool IsCourseCompleted { get; set; }
 
         public bool IsFullyPaid => this.PaymentsMade == this.ActualPriceWhenOrder;

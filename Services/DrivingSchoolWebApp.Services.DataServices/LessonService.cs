@@ -46,21 +46,28 @@
 
         public IEnumerable<TViewModel> GetLessonsByCourseIdAndCustomerId<TViewModel>(int customerId, int courseId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.CustomerId == customerId && x.CourseId == courseId).ProjectTo<TViewModel>().ToList();
+            var lessons = this.lessonRepository.All().Where(x => x.Order.CustomerId == customerId && x.Order.CourseId == courseId).ProjectTo<TViewModel>().ToList();
+
+            return lessons;
+        }
+
+        public IEnumerable<TViewModel> GetLessonsByOrderId<TViewModel>(int orderId)
+        { 
+            var lessons = this.lessonRepository.All().Where(x => x.OrderId==orderId).ProjectTo<TViewModel>().ToList();
 
             return lessons;
         }
 
         public IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.CustomerId == customerId).ProjectTo<TViewModel>().ToList();
+            var lessons = this.lessonRepository.All().Where(x => x.Order.CustomerId == customerId).ProjectTo<TViewModel>().ToList();
 
             return lessons;
         }
 
         public IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId)
         {
-            var lessons = this.lessonRepository.All().Where(x => x.Course.TrainerId == trainerId).ProjectTo<TViewModel>().ToList();
+            var lessons = this.lessonRepository.All().Where(x => x.Order.Course.TrainerId == trainerId).ProjectTo<TViewModel>().ToList();
 
             return lessons;
         }
@@ -70,8 +77,7 @@
             //todo check who can add lessons from full calendar!!! now customers can - only for test functionality
             var lesson = new Lesson()
             {
-                CourseId = model.CourseId,
-                CustomerId = model.CustomerId,
+                OrderId = model.OrderId,
                 Description = model.Description,
                 Subject = model.Subject,
                 StartTime = model.StartTime,
@@ -134,7 +140,7 @@
             var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
             var hasRights = roles.Any(x => x == "Admin");
-            var isCreator = username == lesson.Course.School.Manager.UserName;
+            var isCreator = username == lesson.Order.Course.School.Manager.UserName;
 
             return isCreator || hasRights;
         }
@@ -163,11 +169,11 @@
             }
             else
             {
-               var lessonCreateModel = this.Mapper.Map<CreateLessonInputModel>(model);
-               var lesson = this.Create(lessonCreateModel).GetAwaiter().GetResult();
+                var lessonCreateModel = this.Mapper.Map<CreateLessonInputModel>(model);
+                var lesson = this.Create(lessonCreateModel).GetAwaiter().GetResult();
             }
 
-            return new { success = true};
+            return new { success = true };
         }
     }
 }

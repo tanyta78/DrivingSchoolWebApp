@@ -71,7 +71,6 @@
                                .Include(c=>c.CoursesOrdered)
                                .Include(c=>c.ExamsTaken)
                                .Include(c=>c.Feedbacks)
-                               .Include(c=>c.LessonsTaken)
                                .FirstOrDefault(c => c.Id == id);
             return customer;
         }
@@ -88,8 +87,7 @@
                                .Include(c=>c.CoursesOrdered)
                                .Include(c=>c.ExamsTaken)
                                .Include(c=>c.Feedbacks)
-                               .Include(c=>c.LessonsTaken)
-                               .FirstOrDefault(c => c.UserId == userId);
+                              .FirstOrDefault(c => c.UserId == userId);
             return customer;
         }
 

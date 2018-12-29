@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DrivingSchoolWebApp.Services.Models.Order.AllOrdersViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseSchoolTradeMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseCategory)
+            </th>
+           <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+           <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseSchoolTradeMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseCategory)
+                </td>
+               <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+               @if (User.IsInRole("Customer"))
+                {
+                    <td>
+                        <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
+                        |
+                        <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@item.Id" method="post">
+                            <input type="submit" name="Cancel Order" value="Cancel Order" />
+                        </form>>
+                        |
+                        <a asp-controller="Payments" asp-action="Create" asp-route-id="@item.Id"> Make payment</a>
+                    </td>
+                }
+
+                else if (User.IsInRole("School"))
+                {
+                    <td>
+                        <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
+                        |
+                        <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId">Customer Info</a>
+                    </td>
+
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Common;
     using Enums;
 
@@ -27,6 +28,8 @@
         public OrderStatus OrderStatus { get; set; }
 
         public DateTime OrderedOn { get; set; }
+
+        public decimal PaymentsMade => this.Payments.Sum(p => p.Amount);
 
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
 

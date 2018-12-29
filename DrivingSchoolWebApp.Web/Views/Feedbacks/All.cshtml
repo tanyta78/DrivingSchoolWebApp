@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DrivingSchoolWebApp.Services.Models.Feedback.AllFeedbackViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+           <th>
+                @Html.DisplayNameFor(model => model.CustomerFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerFullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a asp-controller="Courses" asp-action="Details" asp-route-id="@item.CourseId"> View course info</a>
+                <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId"> Contact with customer</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

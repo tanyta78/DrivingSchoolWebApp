@@ -42,15 +42,17 @@
                 </td>
                @if (User.IsInRole("Customer"))
                 {
-                    <td>
-                        <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
-                        |
-                        <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@item.Id" method="post">
-                            <input type="submit" name="Cancel Order" value="Cancel Order" />
-                        </form>>
-                        |
-                        <a asp-controller="Payments" asp-action="Create" asp-route-id="@item.Id"> Make payment</a>
-                    </td>
+               <td>
+                   <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
+                   |
+                   <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@item.Id" method="post">
+                       <input type="submit" name="Cancel Order" value="Cancel Order" />
+                   </form>>
+                   |
+                   <a asp-controller="Payments" asp-action="Create" asp-route-id="@item.Id"> Make payment</a>
+                   |
+                   <a asp-controller="Feedbacks" asp-action="Create" asp-route-orderId="@item.Id"> Give feedback</a>
+               </td>
                 }
 
                 else if (User.IsInRole("School"))
@@ -60,7 +62,9 @@
                         |
                         <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId">Customer Info</a>
                         |
-                        <a asp-controller="Lessons" asp-action="Create" asp-route-orderId="@item.Id">Customer Info</a>
+                        <a asp-controller="Lessons" asp-action="Create" asp-route-orderId="@item.Id">Create lesson</a>
+                        |
+                        <a asp-controller="Exams" asp-action="Create" asp-route-orderId="@item.Id">Create Exam</a>
                     </td>
 
                 }

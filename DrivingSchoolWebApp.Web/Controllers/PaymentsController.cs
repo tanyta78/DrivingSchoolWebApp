@@ -48,7 +48,9 @@
         // GET: Payments/Details/5
         public ActionResult Details(int id)
         {
-            return this.View();
+            var payment = this.paymentService.GetPaymentById<DetailsPaymentViewModel>(id);
+
+            return this.View(payment);
         }
 
         // GET: Payments/Create/5

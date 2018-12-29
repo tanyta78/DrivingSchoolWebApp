@@ -1,0 +1,46 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Payment.DetailsPaymentViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+   <hr />
+    <dl class="dl-horizontal">
+       <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderOrderStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderOrderStatus)
+        </dd>
+       <dt>
+            @Html.DisplayNameFor(model => model.OrderCustomerFullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderCustomerFullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCourseSchoolTradeMark)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderCourseSchoolTradeMark)
+        </dd>
+    </dl>
+</div>
+<div>
+  <a asp-action="All">Back to List</a>
+</div>

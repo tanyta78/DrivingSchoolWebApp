@@ -8,15 +8,11 @@
     {
         public int Id { get; set; }
 
-        public int OrderId { get; set; }
-
         public decimal Amount { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
 
         public OrderStatus OrderOrderStatus { get; set; }
-
-        public int OrderCustomerId { get; set; }
 
         public string OrderCustomerFullName { get; set; }
 

@@ -37,7 +37,7 @@
             var car = new Car
             {
                 Make = model.Make,
-                Model = model.CarModel,
+                CarModel = model.CarModel,
                 OwnerId = model.OwnerId,
                 VIN = model.VIN,
                 Transmission = model.Transmission,

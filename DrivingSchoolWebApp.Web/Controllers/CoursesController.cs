@@ -56,7 +56,7 @@
         {
             var username = this.User.Identity.Name;
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
-            var courses = this.courseService.GetCoursesBySchoolIdAndCategory<OfferedCoursesViewModel>(schoolId,Enum.Parse<Category>(category));
+            var courses = this.courseService.GetCoursesBySchoolIdAndCategory<OfferedCoursesViewModel>(schoolId, Enum.Parse<Category>(category));
 
             return this.View(courses);
         }
@@ -76,7 +76,7 @@
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
             this.ViewBag.SchoolId = schoolId;
             this.ViewBag.TrainerId = trainerId;
-            this.ViewBag.Trainers =this.trainerService
+            this.ViewBag.Trainers = this.trainerService
                 .AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(
                     schoolId);
             this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);
@@ -93,8 +93,15 @@
                 return this.View(model);
             }
 
-            var course = this.courseService.Create(model);
-            return this.RedirectToAction("Details", "Courses", course.Id);
+            try
+            {
+                var course = this.courseService.Create(model).GetAwaiter().GetResult();
+                return this.RedirectToAction("Details", "Courses", new { Area = "", id = course.Id });
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // GET: Courses/Edit/5
@@ -102,7 +109,7 @@
         {
             var username = this.User.Identity.Name;
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
-            this.ViewBag.Trainers =this.trainerService
+            this.ViewBag.Trainers = this.trainerService
                 .AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(
                     schoolId);
             this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);

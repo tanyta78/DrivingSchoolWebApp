@@ -116,7 +116,7 @@
                     ////todo check fo null===
                     //this.trainerService.Hire(user.Id, school.Id);
                     ////todo add schoolid if is needed in path
-                    return this.RedirectToAction("Create", "Trainers", user.Id);
+                    return this.RedirectToAction("Create", "Trainers",  new {Area = "SchoolManage", userId = user.Id});
                 }
 
                 return this.RedirectToAction("Login", "Account");

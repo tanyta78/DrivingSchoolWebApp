@@ -31,7 +31,16 @@
 
         public async Task<Course> Create(CreateCourseInputModel model)
         {
-            var course = this.Mapper.Map<Course>(model);
+            var course = new Course
+            {
+                Category = model.Category,
+                Description = model.Description,
+                MinimumLessonsCount = model.MinimumLessonsCount,
+                Price = model.Price,
+                TrainerId = model.TrainerId,
+                CarId = model.CarId,
+                SchoolId = model.SchoolId
+            };
             
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();

@@ -24,6 +24,8 @@
 
         public string Address { get; set; }
 
+        public override string PhoneNumber { get; set; }
+        
         public UserType UserType { get; set; }
 
         public bool IsEnabled { get; set; }

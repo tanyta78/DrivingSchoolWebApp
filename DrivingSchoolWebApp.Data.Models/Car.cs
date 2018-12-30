@@ -6,7 +6,7 @@
 
     public class Car : BaseModel<int>
     {
-        public string Model { get; set; }
+        public string CarModel { get; set; }
 
         public string Make { get; set; }
 

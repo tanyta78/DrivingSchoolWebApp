@@ -14,7 +14,7 @@
 
         public string Description { get; set; }
 
-        public double Rating { get; set; }
+        //public double Rating { get; set; }
         
         public int MinimumLessonsCount { get; set; }
 
@@ -24,7 +24,7 @@
 
         public string CarMake { get; set; }
 
-        public string CarModel { get; set; }
+        public string CarCarModel { get; set; }
 
         public string CarTransmission { get; set; }
 

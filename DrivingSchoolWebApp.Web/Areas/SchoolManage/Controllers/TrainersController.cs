@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.SchoolManage.Controllers
 {
+    using System;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -49,9 +50,17 @@
         // GET: Trainers/Details/5
         public ActionResult Details(int id)
         {
-            var trainer = this.trainerService.GetTrainerById<DetailsTrainerViewModel>(id);
+            try
+            {
+                var trainer = this.trainerService.GetTrainerById<DetailsTrainerViewModel>(id);
 
-            return this.View(trainer);
+                return this.View(trainer);
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
+           
         }
 
         // GET: Trainers/Create/2

@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Services.DataServices
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
@@ -68,6 +69,12 @@
         public TViewModel GetCustomerById<TViewModel>(int id)
         {
             var customer = this.customerRepository.All().Where(c => c.Id == id).To<TViewModel>().FirstOrDefault();
+
+            if (customer == null)
+            {
+                throw new ArgumentException("No customer with id in db");
+            }
+
             return customer;
         }
 
@@ -78,12 +85,23 @@
                                .Include(c => c.ExamsTaken)
                                .Include(c => c.Feedbacks)
                                .FirstOrDefault(c => c.Id == id);
+            if (customer == null)
+            {
+                throw new ArgumentException("No customer with id in db");
+            }
+
             return customer;
         }
 
         public TViewModel GetCustomerByUserId<TViewModel>(string userId)
         {
             var customer = this.customerRepository.All().Where(c => c.UserId == userId).To<TViewModel>().FirstOrDefault();
+
+            if (customer == null)
+            {
+                throw new ArgumentException("No customer with id in db");
+            }
+
             return customer;
         }
 
@@ -94,6 +112,12 @@
                                .Include(c => c.ExamsTaken)
                                .Include(c => c.Feedbacks)
                               .FirstOrDefault(c => c.UserId == userId);
+
+            if (customer == null)
+            {
+                throw new ArgumentException("No customer with id in db");
+            }
+
             return customer;
         }
 

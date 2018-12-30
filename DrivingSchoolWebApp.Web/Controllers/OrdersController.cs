@@ -62,18 +62,19 @@
             try
             {
                 var course = this.courseService.GetCourseById<DetailsCourseViewModel>(courseId);
+               
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var customer = this.customerService.GetCustomerByUserId(userId);
 
-                var customerId = this.customerService.GetCustomerByUserId(userId).Id;
                 var model = new CreateOrderInputModel()
                 {
                     CourseId = courseId,
-                    CustomerId = customerId,
+                    CustomerId = customer.Id,
                     ActualPriceWhenOrder = course.Price
                 };
                 var order = this.orderService.Create(model).GetAwaiter().GetResult();
 
-                return this.RedirectToAction("Details", "Orders", order.Id);
+                return this.RedirectToAction("Details", "Orders", new { Area = "", id = order.Id });
             }
             catch (Exception error)
             {

@@ -25,7 +25,10 @@
         </div>
         <div class="card-footer">
             <a asp-area="" asp-controller="Schools" asp-action="Details" asp-route-id="@Model.SchoolId" class="btn btn-warning text-dark">School Info</a>
-            <a asp-area="" asp-controller="Orders" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Order</a>
+            <form asp-area="" asp-controller="Orders" asp-action="Create" class="btn btn-success text-dark">
+                <input name="CourseId" type="hidden" value="@Model.Id" />
+                <input type="submit" value="Order course" />
+            </form>
         </div>
     </div>
 </div>

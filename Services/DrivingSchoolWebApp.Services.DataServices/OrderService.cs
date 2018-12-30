@@ -72,9 +72,13 @@
 
         public async Task<Order> Create(CreateOrderInputModel model)
         {
-           
-            var order = this.Mapper.Map<Order>(model);
-         
+           var order = new Order
+            {
+                CustomerId = model.CustomerId,
+                CourseId = model.CourseId,
+                ActualPriceWhenOrder = model.ActualPriceWhenOrder
+            };
+
             await this.orderRepository.AddAsync(order);
             await this.orderRepository.SaveChangesAsync();
 

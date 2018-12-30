@@ -3,7 +3,7 @@
     using Data.Models;
     using Mapping;
 
-    public class CreateOrderInputModel : IMapFrom<Order>
+    public class CreateOrderInputModel : IMapFrom<Order>, IMapTo<Order>
     {
         public int CustomerId { get; set; }
 

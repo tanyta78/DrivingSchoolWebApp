@@ -103,7 +103,7 @@
                     var loginResult = this.accountService.Login(user, model.Password);
                     if (loginResult.Succeeded)
                     {
-                        return this.RedirectToAction("Create", "Customers", user.Id);
+                        return this.RedirectToAction("Create", "Customers", new { Area = "", userId = user.Id });
                     }
 
                 }
@@ -116,7 +116,7 @@
                     ////todo check fo null===
                     //this.trainerService.Hire(user.Id, school.Id);
                     ////todo add schoolid if is needed in path
-                    return this.RedirectToAction("Create", "Trainers",  new {Area = "SchoolManage", userId = user.Id});
+                    return this.RedirectToAction("Create", "Trainers", new { Area = "SchoolManage", userId = user.Id });
                 }
 
                 return this.RedirectToAction("Login", "Account");

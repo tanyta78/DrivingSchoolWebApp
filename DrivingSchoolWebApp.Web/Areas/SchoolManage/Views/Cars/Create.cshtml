@@ -16,9 +16,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="OwnerId" class="form-control" hidden="hidden" value="@ViewBag.SchoolId" />
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" placeholder="Model..." />
-                <span asp-validation-for="Model" class="text-danger"></span>
+                <label asp-for="CarModel" class="control-label"></label>
+                <input asp-for="CarModel" class="form-control" placeholder="Model..." />
+                <span asp-validation-for="CarModel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Make" class="control-label"></label>
@@ -52,6 +52,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>
 

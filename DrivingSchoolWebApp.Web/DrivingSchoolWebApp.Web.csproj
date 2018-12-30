@@ -44,6 +44,12 @@
     <Content Update="Areas\SchoolManage\Views\Trainers\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\SchoolManage\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\SchoolManage\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\Lockout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

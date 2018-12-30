@@ -5,6 +5,7 @@
     using Services.Models.School;
     using Web.Controllers;
 
+    [Area("SchoolManage")]
     public class SchoolsController : BaseController
     {
         private readonly ISchoolService schoolService;

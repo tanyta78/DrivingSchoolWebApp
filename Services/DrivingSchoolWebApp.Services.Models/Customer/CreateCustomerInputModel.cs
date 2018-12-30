@@ -4,7 +4,7 @@
     using Data.Models.Enums;
     using Mapping;
 
-    public class CreateCustomerInputModel : IMapFrom<Customer>, IMapTo<Customer>
+    public class CreateCustomerInputModel : IMapFrom<Customer>
     {
         public string UserId { get; set; }
 

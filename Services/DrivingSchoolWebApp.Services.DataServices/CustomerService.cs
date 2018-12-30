@@ -29,7 +29,13 @@
 
         public Customer Create(CreateCustomerInputModel model)
         {
-            var customer = this.Mapper.Map<Customer>(model);
+            var customer = new Customer()
+            {
+                AgeGroup = model.AgeGroup,
+                UserId = model.UserId,
+                Gender = model.Gender,
+                EducationLevel = model.EducationLevel
+            };
 
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();
@@ -68,9 +74,9 @@
         public Customer GetCustomerById(int id)
         {
             var customer = this.customerRepository.All()
-                               .Include(c=>c.CoursesOrdered)
-                               .Include(c=>c.ExamsTaken)
-                               .Include(c=>c.Feedbacks)
+                               .Include(c => c.CoursesOrdered)
+                               .Include(c => c.ExamsTaken)
+                               .Include(c => c.Feedbacks)
                                .FirstOrDefault(c => c.Id == id);
             return customer;
         }
@@ -84,9 +90,9 @@
         public Customer GetCustomerByUserId(string userId)
         {
             var customer = this.customerRepository.All()
-                               .Include(c=>c.CoursesOrdered)
-                               .Include(c=>c.ExamsTaken)
-                               .Include(c=>c.Feedbacks)
+                               .Include(c => c.CoursesOrdered)
+                               .Include(c => c.ExamsTaken)
+                               .Include(c => c.Feedbacks)
                               .FirstOrDefault(c => c.UserId == userId);
             return customer;
         }

@@ -24,5 +24,7 @@
 
         public virtual IEnumerable<Course> CoursesInvolved { get; set; } = new HashSet<Course>();
 
+        public string Name => this.Owner.TradeMark + this.VIN;
+
     }
 }

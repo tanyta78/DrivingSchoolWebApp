@@ -8,6 +8,7 @@
     using Web.Controllers;
     using X.PagedList;
 
+    [Area("SchoolManage")]
     public class TrainersController : BaseController
     {
         private readonly ITrainerService trainerService;

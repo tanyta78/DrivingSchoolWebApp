@@ -10,7 +10,7 @@
 <h2>All</h2>
 
 <p>
-    <a asp-area="SchoolsManage" asp-controller="Cars" asp-action="Create">Create New Car</a>
+    <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Create">Create New Car</a>
 </p>
 
 <div class="container d-flex justify-content-center w-75">
@@ -34,7 +34,7 @@
                 <p class="card-text"><small class="text-muted">@car.OwnerTradeMark @car.OwnerPhone</small></p>
             </div>
             <div class="card-footer">
-                <a asp-area="SchoolsManage" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-info text-dark">Details</a>
+                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-info text-dark">Details</a>
                 </div>
         </div>
     }

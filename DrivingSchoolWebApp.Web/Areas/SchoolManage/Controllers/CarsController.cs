@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.SchoolManage.Controllers
 {
+    using System;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -8,6 +9,7 @@
     using Web.Controllers;
     using X.PagedList;
 
+    [Area("SchoolManage")]
     public class CarsController : BaseController
     {
         private readonly ICarService carService;
@@ -34,9 +36,16 @@
         // GET: SchoolsManage/Cars/Details/5
         public ActionResult Details(int id)
         {
-            var car = this.carService.GetCarById<CarDetailsViewModel>(id);
+            try
+            {
+                var car = this.carService.GetCarById<CarDetailsViewModel>(id);
 
-            return this.View(car);
+                return this.View(car);
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // GET: SchoolsManage/Cars/Create
@@ -57,9 +66,9 @@
                 return this.View(model);
             }
 
-            var carId = this.carService.Create(model).GetAwaiter().GetResult().Id;
+            var car = this.carService.Create(model).GetAwaiter().GetResult();
 
-            return this.RedirectToAction("Details", "Cars", carId);
+            return this.RedirectToAction("Details", "Cars", new { id = car.Id });
 
         }
 
@@ -81,9 +90,9 @@
                 return this.View(model);
             }
 
-            var carId = this.carService.Edit(model);
+            var car = this.carService.Edit(model).GetAwaiter().GetResult();
 
-            return this.RedirectToAction("Details", "Cars", carId);
+            return this.RedirectToAction("Details", "Cars", new { id = car.Id });
         }
 
         // GET: SchoolsManage/Cars/Delete/5
@@ -97,11 +106,11 @@
         // POST: SchoolsManage/Cars/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(CarDetailsViewModel model)
         {
             try
             {
-                this.carService.Delete(id).GetAwaiter().GetResult();
+                this.carService.Delete(model).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(this.All));
             }

@@ -8,12 +8,12 @@
 
 <div class="card-deck">
     <div class="card">
-            <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="@Model.Make _ @Model.Model">
+            <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="@Model.Make _ @Model.CarModel">
 
             <div class="card-body">
-                <h5 class="card-title">@Model.Make _ @Model.Model</h5>
+                <h5 class="card-title">@Model.Make _ @Model.CarModel</h5>
                 <p class="card-text">Car make: @Model.Make</p>
-                <p class="card-text">Car model: @Model.Model</p>
+                <p class="card-text">Car model: @Model.CarModel</p>
                 <p class="card-text">Car transmission: @Model.Transmission.ToString()</p>
                 <p class="card-text"><small class="text-muted">@Model.Owner.TradeMark</small></p>
                 <p class="card-text"><small class="text-muted">@Model.Owner.OfficeAddress</small></p>
@@ -27,5 +27,5 @@
         </div>
     </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-area="SchoolManage" asp-controller="Cars" asp-action="All">Back to All Cars List</a>
 </div>

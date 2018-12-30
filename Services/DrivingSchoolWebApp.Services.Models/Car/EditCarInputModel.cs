@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Car
 {
+    using AutoMapper;
     using Data.Models;
     using Mapping;
     using Microsoft.AspNetCore.Http;
@@ -15,5 +16,8 @@
         public string VIN { get; set; }
 
         public IFormFile CarImage { get; set; }
+
+        [IgnoreMap]
+        public string Username { get; set; }
     }
 }

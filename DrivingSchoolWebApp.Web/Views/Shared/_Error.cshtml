@@ -2,10 +2,13 @@
     ViewData["Title"] = "Error";
 }
 
-@foreach (var error in Model)
+@*@foreach (var error in Model)
 {
     <div class="text-center text-danger"><h2>@error</h2></div>
-}
+}*@
+
+    <div class="text-center text-danger"><h2>@Model</h2></div>
+
 
 <div class="button-holder d-flex justify-content-center">
     <button class="btn app-bg-color" onclick="history.back()">Back</button>

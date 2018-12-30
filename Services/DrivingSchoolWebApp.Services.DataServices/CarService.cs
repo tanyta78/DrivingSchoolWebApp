@@ -32,10 +32,18 @@
         public async Task<Car> Create(CreateCarInputModel model)
         {
             var account = Helpers.SetCloudinary();
-            var imageUrl = await Helpers.UploadImage(account, model.CarImage, model.Name);
+            var imageUrl = await Helpers.UploadImage(account, model.CarImage, model.VIN);
 
-            var car = this.Mapper.Map<Car>(model);
-            car.ImageUrl = imageUrl;
+            var car = new Car
+            {
+                Make = model.Make,
+                Model = model.CarModel,
+                OwnerId = model.OwnerId,
+                VIN = model.VIN,
+                Transmission = model.Transmission,
+                ImageUrl = imageUrl
+            };
+
 
             await this.carRepository.AddAsync(car);
             await this.carRepository.SaveChangesAsync();
@@ -43,12 +51,13 @@
             return car;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(CarDetailsViewModel model)
         {
-            var car = this.GetCarById(id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            var car = this.GetCarById(model.Id);
+            var username = model.Username;
 
-            if (!this.HasRightsToEditOrDelete(id, username))
+
+            if (!this.HasRightsToEditOrDelete(model.Id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -63,11 +72,11 @@
             //todo check model validation in controller?!?
             //todo change inUse, Image, VIN
             var car = this.GetCarById(model.Id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-            
+            var username = model.Username;
+
             if (!this.HasRightsToEditOrDelete(model.Id, username))
             {
-               throw new OperationCanceledException("You do not have rights for this operation!");
+                throw new OperationCanceledException("You do not have rights for this operation!");
             }
 
             car.InUse = model.InUse;
@@ -75,8 +84,12 @@
 
             var name = car.Owner.TradeMark + model.VIN;
             var account = Helpers.SetCloudinary();
-            var imageUrl = await Helpers.UploadImage(account, model.CarImage, name);
-            car.ImageUrl = imageUrl;
+            if (model.CarImage != null)
+            {
+                var imageUrl = await Helpers.UploadImage(account, model.CarImage, name);
+                car.ImageUrl = imageUrl;
+
+            }
 
             this.carRepository.Update(car);
             await this.carRepository.SaveChangesAsync();
@@ -100,14 +113,14 @@
         public IEnumerable<TViewModel> GetCarsByOwnerTradeMark<TViewModel>(string trademark)
         {
             var cars = this.carRepository.All().Where(x => x.Owner.TradeMark == trademark).ProjectTo<TViewModel>().ToList();
-            
+
             return cars;
         }
 
         public IEnumerable<TViewModel> GetCarsBySchoolId<TViewModel>(int schoolId)
         {
             var cars = this.carRepository.All().Where(x => x.OwnerId == schoolId).ProjectTo<TViewModel>().ToList();
-            
+
             return cars;
         }
 

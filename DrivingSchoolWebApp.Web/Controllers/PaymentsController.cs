@@ -64,7 +64,7 @@
             {
                 var order = this.orderService.GetOrderById<DetailsOrderViewModel>(id);
 
-                var model = new CreatePaymentInputModel()
+              var model = new CreatePaymentInputModel()
                 {
                     OrderId = id
                 };
@@ -99,6 +99,7 @@
                 }
 
                 var payment = this.paymentService.Create(model).GetAwaiter().GetResult();
+                //todo change order status when pay if payment =! null!!
 
                 return this.RedirectToAction(nameof(All));
             }

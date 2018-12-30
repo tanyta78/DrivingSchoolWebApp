@@ -37,7 +37,7 @@
                     @Html.DisplayFor(modelItem => item.PaymentMethod)
                 </td>
                 <td>
-                    <a asp-controller="Payments" asp-action="Details" asp-route-id="@item.Id"></a>
+                    <a asp-controller="Payments" asp-action="Details" asp-route-id="@item.Id">View payment details</a>
                 </td>
             </tr>
         }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DrivingSchoolWebApp.Services.Models.Certificate.AllCertificatesViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h2>All certificates</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+           <th>
+                @Html.DisplayNameFor(model => model.CustomerFullName)
+            </th>
+          <th>
+                @Html.DisplayNameFor(model => model.CourseInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IssueDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+          <td>
+                @Html.DisplayFor(modelItem => item.CustomerFullName)
+            </td>
+         <td>
+                @Html.DisplayFor(modelItem => item.CourseInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssueDate)
+            </td>
+            <td>
+                <a asp-controller="Certificates" asp-action="Details" asp-route-examId="@item.Id">View Certificate</a>
+                |
+                <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId">Customer Info</a>
+                |
+                <a asp-controller="Courses" asp-action="Details" asp-route-id="@item.CourseId">Course Additional Info</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

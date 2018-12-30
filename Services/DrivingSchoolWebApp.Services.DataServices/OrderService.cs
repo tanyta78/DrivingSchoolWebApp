@@ -29,6 +29,13 @@
             return this.orderRepository.All().ToList();
         }
 
+        public IEnumerable<TViewModel> All<TViewModel>()
+        {
+            var orders = this.orderRepository.All().ProjectTo<TViewModel>().ToList();
+
+            return orders;
+        }
+
         public TViewModel GetOrderById<TViewModel>(int orderId)
         {
             var order = this.orderRepository.All().Where(x => x.Id == orderId)

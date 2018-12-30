@@ -28,6 +28,13 @@
             return this.paymentRepository.All().ToList();
         }
 
+        public IEnumerable<TViewModel> All<TViewModel>()
+        {
+            var payments = this.paymentRepository.All().ProjectTo<TViewModel>().ToList();
+            
+            return payments;
+        }
+
         public TViewModel GetPaymentById<TViewModel>(int paymentId)
         {
             var payment = this.paymentRepository.All().Where(x => x.Id == paymentId)
@@ -71,7 +78,12 @@
 
         public async Task<Payment> Create(CreatePaymentInputModel model)
         {
-            var payment = this.Mapper.Map<Payment>(model);
+            var payment = new Payment()
+            {
+                OrderId = model.OrderId,
+                PaymentMethod = model.PaymentMethod,
+                Amount = model.Amount
+            };
             
             await this.paymentRepository.AddAsync(payment);
             await this.paymentRepository.SaveChangesAsync();

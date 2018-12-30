@@ -29,7 +29,7 @@
 
         public DateTime OrderedOn { get; set; }
 
-        public decimal PaymentsMade => this.Payments.Sum(p => p.Amount);
+        //public decimal PaymentsMade => this.Payments.Sum(p => p.Amount);
 
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
 
@@ -37,7 +37,7 @@
 
         public bool IsCourseCompleted { get; set; }
 
-        public bool IsFullyPaid => this.PaymentsMade == this.ActualPriceWhenOrder;
+        public bool IsFullyPaid => this.Payments.Sum(p => p.Amount) == this.ActualPriceWhenOrder;
 
     }
 }

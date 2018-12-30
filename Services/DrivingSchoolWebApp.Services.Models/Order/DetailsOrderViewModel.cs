@@ -1,6 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Order
 {
     using System;
+    using AutoMapper;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
@@ -11,7 +12,12 @@
 
         public int CustomerId { get; set; }
 
-        public string CustomerFullName { get; set; }
+        public string CustomerUserFirstName { get; set; }
+
+        public string CustomerUserLastName { get; set; }
+
+        [IgnoreMap]
+        public string CustomerFullName => this.CustomerUserFirstName + this.CustomerUserLastName;
 
         public int CourseId { get; set; }
 
@@ -27,6 +33,6 @@
 
         public DateTime OrderedOn { get; set; }
 
-        public decimal PaymentsMade { get; set; }
+        public decimal PaymentsAmountSum { get; set; }
     }
 }

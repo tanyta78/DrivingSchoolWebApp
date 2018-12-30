@@ -40,22 +40,8 @@
                <td>
                     @Html.DisplayFor(modelItem => item.OrderStatus)
                 </td>
-               @if (User.IsInRole("Customer"))
-                {
-               <td>
-                   <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
-                   |
-                   <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@item.Id" method="post">
-                       <input type="submit" name="Cancel Order" value="Cancel Order" />
-                   </form>>
-                   |
-                   <a asp-controller="Payments" asp-action="Create" asp-route-id="@item.Id"> Make payment</a>
-                   |
-                   <a asp-controller="Feedbacks" asp-action="Create" asp-route-orderId="@item.Id"> Give feedback</a>
-               </td>
-                }
-
-                else if (User.IsInRole("School"))
+              
+               @if (User.IsInRole("School"))
                 {
                     <td>
                         <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
@@ -68,6 +54,20 @@
                     </td>
 
                 }
+               else
+               {
+                   <td>
+                       <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id"> Order Details</a>
+                       |
+                       <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@item.Id" method="post">
+                           <input type="submit" name="Cancel Order" value="Cancel Order" />
+                       </form>
+                       |
+                       <a asp-controller="Payments" asp-action="Create" asp-route-id="@item.Id"> Make payment</a>
+                       |
+                       <a asp-controller="Feedbacks" asp-action="Create" asp-route-orderId="@item.Id"> Give feedback</a>
+                   </td>
+               }
 
             </tr>
         }

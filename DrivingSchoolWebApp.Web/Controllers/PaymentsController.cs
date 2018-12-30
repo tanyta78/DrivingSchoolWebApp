@@ -31,16 +31,20 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var payments = new List<AllPaymentsViewModel>();
-            if (this.User.IsInRole("Customer"))
+            if (this.User.IsInRole("Admin"))
             {
-                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                payments = this.paymentService.GetPaymentsByCustomerId<AllPaymentsViewModel>(customerId).ToList();
+                payments = this.paymentService.All<AllPaymentsViewModel>().ToList();
             }
             else if (this.User.IsInRole("School"))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 payments = this.paymentService.GetPaymentsBySchoolId<AllPaymentsViewModel>(schoolId).ToList();
+            }
+            else
+            {
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                payments = this.paymentService.GetPaymentsByCustomerId<AllPaymentsViewModel>(customerId).ToList();
             }
             return this.View(payments);
         }
@@ -87,7 +91,7 @@
                 }
 
                 var order = this.orderService.GetOrderById<DetailsOrderViewModel>(model.OrderId);
-                var remainedPaymentAmount = order.CoursePrice - order.PaymentsMade;
+                var remainedPaymentAmount = order.CoursePrice - order.PaymentsAmountSum;
 
                 if (remainedPaymentAmount <= 0)
                 {

@@ -10,6 +10,8 @@
     {
         IEnumerable<Payment> All();
 
+        IEnumerable<TViewModel> All<TViewModel>();
+
         TViewModel GetPaymentById<TViewModel>(int paymentId);
 
         IEnumerable<TViewModel> GetPaymentsByCustomerId<TViewModel>(int customerId);

@@ -31,16 +31,20 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orders = new List<AllOrdersViewModel>();
-            if (this.User.IsInRole("Customer"))
-            {
-                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                orders = this.orderService.GetOrdersByCustomerId<AllOrdersViewModel>(customerId).ToList();
-            }
-            else if (this.User.IsInRole("School"))
+            if (this.User.IsInRole("School"))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 orders = this.orderService.GetOrdersBySchoolId<AllOrdersViewModel>(schoolId).ToList();
+            }
+            else if (this.User.IsInRole("Admin"))
+            {
+                orders = this.orderService.All<AllOrdersViewModel>().ToList();
+            }
+            else
+            {
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                orders = this.orderService.GetOrdersByCustomerId<AllOrdersViewModel>(customerId).ToList();
             }
             return this.View(orders);
         }

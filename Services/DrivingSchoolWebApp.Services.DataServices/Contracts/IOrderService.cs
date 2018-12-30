@@ -10,6 +10,8 @@
     {
         IEnumerable<Order> All();
 
+        IEnumerable<TViewModel> All<TViewModel>();
+
         TViewModel GetOrderById<TViewModel>(int orderId);
 
         IEnumerable<TViewModel> GetOrdersByCustomerId<TViewModel>(int customerId);

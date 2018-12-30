@@ -17,12 +17,12 @@
         public virtual School Owner { get; set; }
 
         public string ImageUrl { get; set; }
-
+        
         public bool InUse { get; set; } = true;
 
         public string VIN { get; set; }
 
-        public IEnumerable<Course> CoursesInvolved { get; set; } = new HashSet<Course>();
+        public virtual IEnumerable<Course> CoursesInvolved { get; set; } = new HashSet<Course>();
 
     }
 }

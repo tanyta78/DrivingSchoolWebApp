@@ -21,7 +21,7 @@
         private DbSet<Payment> Payments { get; set; }
         private DbSet<Feedback> Feedbacks { get; set; }
         private DbSet<Exam> Exams { get; set; }
-       
+       private DbSet<Certificate> Certificates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,5 +1,8 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Course
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using AutoMapper;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
@@ -14,11 +17,12 @@
 
         public string Description { get; set; }
 
-        //public double Rating { get; set; }
+        [IgnoreMap]
+        public double Rating { get; set; }
         
         public int MinimumLessonsCount { get; set; }
 
-        public string TrainerNickName { get; set; }
+        public string TrainerUserNickName { get; set; }
 
         public string CarImageUrl { get; set; }
 
@@ -34,11 +38,14 @@
 
         public string SchoolTradeMark { get; set; }
 
-        public string StudentsCount { get; set; }
+        public int StudentsCount { get; set; }
 
-        public string AllFeedbacksCount { get; set; }
+        public int AllFeedbacksCount { get; set; }
 
-        public string ExamsTakenCount { get; set; }
+        public int ExamsTakenCount { get; set; }
 
-    }
+        public int AllFeedbacksRaitingAverage { get; set; }
+
+        
+        }
 }

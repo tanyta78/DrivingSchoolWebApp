@@ -36,8 +36,8 @@
                         <p class="card-text">@course.Price</p>
                     </div>
                     <div class="card-footer">
-                        <a small class="text-muted card-link" asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">Go to Course</a>
-                        <form asp-controller="Orders" asp-action="Create" class="btn btn-success text-dark">
+                        <a small class="text-muted card-link" asp-area=""  asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">Go to Course</a>
+                        <form asp-area="" asp-controller="Orders" asp-action="Create" class="btn btn-success text-dark">
                            <input name="CourseId" type="hidden" value="@course.Id" />
                            <input type="submit" value="Order course" />
                         </form>

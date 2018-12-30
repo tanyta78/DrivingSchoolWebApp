@@ -10,11 +10,11 @@
 
         public Category Category { get; set; }
 
-        public string TrainerNickName { get; set; }
+        public string TrainerUserNickName { get; set; }
 
         public string CarMake { get; set; }
 
-        public string CarModel { get; set; }
+        public string CarCarModel { get; set; }
 
         public string CarTransmission { get; set; }
 

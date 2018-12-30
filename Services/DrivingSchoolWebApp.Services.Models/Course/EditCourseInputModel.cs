@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Course
 {
+    using AutoMapper;
     using Data.Models;
     using Mapping;
 
@@ -17,5 +18,7 @@
 
         public int CarId { get; set; }
 
+        [IgnoreMap]
+        public string Username { get; set; }
     }
 }

@@ -12,14 +12,15 @@
     using DrivingSchoolWebApp.Data.Models;
     using DrivingSchoolWebApp.Data.Models.Enums;
     using Mapping;
-    using Models.Course;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Models.Course;
 
     public class CourseService : BaseService, ICourseService
     {
         private readonly IRepository<Course> courseRepository;
 
-        public CourseService(IRepository<Course> courseRepository,UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public CourseService(IRepository<Course> courseRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
         {
             this.courseRepository = courseRepository;
         }
@@ -41,7 +42,7 @@
                 CarId = model.CarId,
                 SchoolId = model.SchoolId
             };
-            
+
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
 
@@ -63,14 +64,13 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-       public async Task<Course> Edit(EditCourseInputModel model)
+        public async Task<Course> Edit(EditCourseInputModel model)
         {
             //todo check model validation in controller?!?
             //todo change price, description, min lessons,trainerId, carId
             var course = this.GetCourseById(model.Id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-
-            if (!this.HasRightsToEditOrDelete(model.Id, username))
+          
+            if (!this.HasRightsToEditOrDelete(model.Id, model.Username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -90,8 +90,12 @@
 
         public TViewModel GetCourseById<TViewModel>(int courseId)
         {
-            var course = this.courseRepository.All().Where(x => x.Id == courseId)
-                          .To<TViewModel>().FirstOrDefault();
+            var course = this.courseRepository.All()
+                .Include(c => c.AllFeedbacks)
+                .Include(c => c.ExamsTaken)
+                .Include(c => c.Students)
+                .Where(x => x.Id == courseId)
+                .To<TViewModel>().FirstOrDefault();
 
             if (course == null)
             {
@@ -109,36 +113,36 @@
 
         public IEnumerable<TViewModel> GetCoursesByCarId<TViewModel>(int carId)
         {
-            var courses = this.courseRepository.All().Where(x => x.CarId== carId).ProjectTo<TViewModel>().ToList();
-            
+            var courses = this.courseRepository.All().Where(x => x.CarId == carId).ProjectTo<TViewModel>().ToList();
+
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesByCategory<TViewModel>(Category category)
         {
-            var courses = this.courseRepository.All().Where(x => x.Category== category).ProjectTo<TViewModel>().ToList();
-            
+            var courses = this.courseRepository.All().Where(x => x.Category == category).ProjectTo<TViewModel>().ToList();
+
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesBySchoolId<TViewModel>(int schoolId)
         {
-            var courses = this.courseRepository.All().Where(x => x.SchoolId== schoolId).ProjectTo<TViewModel>().ToList();
-            
+            var courses = this.courseRepository.All().Where(x => x.SchoolId == schoolId).ProjectTo<TViewModel>().ToList();
+
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesBySchoolIdAndCategory<TViewModel>(int schoolId, Category category)
         {
-            var courses = this.courseRepository.All().Where(x => x.SchoolId== schoolId && x.Category== category).ProjectTo<TViewModel>().ToList();
-            
+            var courses = this.courseRepository.All().Where(x => x.SchoolId == schoolId && x.Category == category).ProjectTo<TViewModel>().ToList();
+
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesByTrainerId<TViewModel>(int trainerId)
         {
-            var courses = this.courseRepository.All().Where(x => x.TrainerId== trainerId).ProjectTo<TViewModel>().ToList();
-            
+            var courses = this.courseRepository.All().Where(x => x.TrainerId == trainerId).ProjectTo<TViewModel>().ToList();
+
             return courses;
         }
 
@@ -160,6 +164,9 @@
         private Course GetCourseById(int courseId)
         {
             var course = this.courseRepository.All()
+                .Include(c => c.AllFeedbacks)
+                .Include(c => c.ExamsTaken)
+                .Include(c => c.Students)
                 .FirstOrDefault(x => x.Id == courseId);
 
             if (course == null)
@@ -171,4 +178,3 @@
         }
     }
 }
- 

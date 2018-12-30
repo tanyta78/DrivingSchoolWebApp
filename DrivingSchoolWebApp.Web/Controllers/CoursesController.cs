@@ -1,6 +1,8 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Data.Models.Enums;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -56,7 +58,15 @@
         {
             var username = this.User.Identity.Name;
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
-            var courses = this.courseService.GetCoursesBySchoolIdAndCategory<OfferedCoursesViewModel>(schoolId, Enum.Parse<Category>(category));
+            var courses = new List<OfferedCoursesViewModel>();
+            if (category == "All")
+            {
+                courses = this.courseService.GetCoursesBySchoolId<OfferedCoursesViewModel>(schoolId).ToList();
+            }
+            else
+            {
+                courses = this.courseService.GetCoursesBySchoolIdAndCategory<OfferedCoursesViewModel>(schoolId, Enum.Parse<Category>(category)).ToList();
+            }
 
             return this.View(courses);
         }
@@ -77,7 +87,7 @@
             this.ViewBag.SchoolId = schoolId;
             this.ViewBag.TrainerId = trainerId;
             this.ViewBag.Trainers = this.trainerService
-                .AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(
+                .TrainersBySchoolId<AvailableTrainerViewModel>(
                     schoolId);
             this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);
             return this.View();
@@ -110,10 +120,12 @@
             var username = this.User.Identity.Name;
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
             this.ViewBag.Trainers = this.trainerService
-                .AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(
+                .TrainersBySchoolId<AvailableTrainerViewModel>(
                     schoolId);
             this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);
-            return this.View();
+
+            var model = this.courseService.GetCourseById<EditCourseInputModel>(id);
+            return this.View(model);
         }
 
         // POST: Courses/Edit/5
@@ -126,8 +138,9 @@
                 return this.View(model);
             }
 
-            var course = this.courseService.Edit(model);
-            return this.RedirectToAction("Details", "Courses", course.Id);
+            model.Username = this.User.Identity.Name;
+            var course = this.courseService.Edit(model).GetAwaiter().GetResult();
+            return this.RedirectToAction("Details", "Courses", new { Area = "", id = course.Id });
         }
 
         // GET: Courses/Delete/5

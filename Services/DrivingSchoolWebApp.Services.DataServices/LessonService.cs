@@ -82,7 +82,8 @@
                 Subject = model.Subject,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
-                IsFullDay = model.IsFullDay
+                IsFullDay = model.IsFullDay,
+                ThemeColor = model.ThemeColor
             };
 
             await this.lessonRepository.AddAsync(lesson);

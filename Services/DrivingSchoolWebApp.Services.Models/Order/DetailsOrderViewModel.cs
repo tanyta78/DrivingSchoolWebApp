@@ -1,23 +1,19 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Order
 {
     using System;
+    using System.Linq;
     using AutoMapper;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
 
-    public class DetailsOrderViewModel:IMapFrom<Order>
+    public class DetailsOrderViewModel : IMapFrom<Order>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
         public int CustomerId { get; set; }
 
-        public string CustomerUserFirstName { get; set; }
-
-        public string CustomerUserLastName { get; set; }
-
-        [IgnoreMap]
-        public string CustomerFullName => this.CustomerUserFirstName + this.CustomerUserLastName;
+        public string CustomerFullName { get; set; }
 
         public int CourseId { get; set; }
 
@@ -34,5 +30,15 @@
         public DateTime OrderedOn { get; set; }
 
         public decimal PaymentsAmountSum { get; set; }
+
+        [IgnoreMap] public decimal RemainingAmount => this.CoursePrice - this.PaymentsAmountSum;
+
+        public void CreateMappings(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Order, DetailsOrderViewModel>()
+                .ForMember(dest => dest.PaymentsAmountSum,
+                    opt => opt.MapFrom(src => src.Payments.Select(p => p.Amount).Sum()))
+                .ForMember(dest => dest.CustomerFullName, opt => opt.MapFrom(src => src.Customer.User.FirstName + " " + src.Customer.User.LastName));
+        }
     }
 }

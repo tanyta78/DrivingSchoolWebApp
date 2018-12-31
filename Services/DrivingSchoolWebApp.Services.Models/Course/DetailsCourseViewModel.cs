@@ -1,13 +1,12 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Course
 {
-    using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
 
-    public class DetailsCourseViewModel : IMapFrom<Course>
+    public class DetailsCourseViewModel : IMapFrom<Course>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -17,9 +16,8 @@
 
         public string Description { get; set; }
 
-        [IgnoreMap]
         public double Rating { get; set; }
-        
+
         public int MinimumLessonsCount { get; set; }
 
         public string TrainerUserNickName { get; set; }
@@ -44,8 +42,11 @@
 
         public int ExamsTakenCount { get; set; }
 
-        public int AllFeedbacksRaitingAverage { get; set; }
-
-        
+        public void CreateMappings(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Course, DetailsCourseViewModel>()
+                .ForMember(dest => dest.Rating,
+                    opt => opt.MapFrom(src => src.AllFeedbacks.Count() != 0 ? src.AllFeedbacks.Select(f => f.Rating).Average():0));
         }
+    }
 }

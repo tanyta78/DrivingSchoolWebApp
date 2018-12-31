@@ -39,8 +39,24 @@
         public ActionResult All(string category)
         {
             //todo add check for correct category
-            var courses = this.courseService.GetCoursesByCategory<AllCoursesViewModel>(Enum.Parse<Category>(category));
-            return this.View(courses);
+            try
+            {
+                var courses = new List<AllCoursesViewModel>();
+                if (category == "All")
+                {
+                    courses = this.courseService.GetAllCourses<AllCoursesViewModel>().ToList();
+                }
+                else
+                {
+                    courses = this.courseService.GetCoursesByCategory<AllCoursesViewModel>( Enum.Parse<Category>(category)).ToList();
+                }
+                
+                return this.View(courses);
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // GET: Courses/Offered

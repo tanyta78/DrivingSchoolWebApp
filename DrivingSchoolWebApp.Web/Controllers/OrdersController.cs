@@ -66,7 +66,7 @@
             try
             {
                 var course = this.courseService.GetCourseById<DetailsCourseViewModel>(courseId);
-               
+
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var customer = this.customerService.GetCustomerByUserId(userId);
 
@@ -94,7 +94,8 @@
         {
             try
             {
-                var order = this.orderService.CancelOrder(id).GetAwaiter().GetResult();
+                var username = this.User.Identity.Name;
+                var order = this.orderService.CancelOrder(id, username).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }

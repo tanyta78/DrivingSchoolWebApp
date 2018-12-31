@@ -10,7 +10,7 @@
 
         public Category Category { get; set; }
 
-        public string TrainerNickName { get; set; }
+        public string TrainerUserNickName { get; set; }
 
         public string CarVIN { get; set; }
 

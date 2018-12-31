@@ -1,0 +1,71 @@
+﻿@model DrivingSchoolWebApp.Services.Models.Lesson.DetailsLessonViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DetailsLessonViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCustomerFullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderCustomerFullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCourseTrainerNickName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderCourseTrainerNickName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ThemeColor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ThemeColor)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFullDay)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFullDay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+  <a asp-action="Index">Back to List</a>
+</div>

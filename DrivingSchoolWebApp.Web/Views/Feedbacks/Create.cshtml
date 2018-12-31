@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Feedbacks" asp-action="Create" method="post">
+        <form asp-area="" asp-controller="Feedbacks" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            <input asp-for="CustomerId" class="form-control" type="hidden" value="@Model.CustomerId" />
            <input asp-for="CourseId" class="form-control" type="hidden" value="@Model.CourseId" />

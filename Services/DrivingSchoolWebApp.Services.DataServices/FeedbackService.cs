@@ -28,6 +28,13 @@
             return this.feedbackRepository.All().ToList();
         }
 
+        public IEnumerable<TViewModel> All<TViewModel>()
+        {
+            var feedbacks = this.feedbackRepository.All().ProjectTo<TViewModel>().ToList();
+
+            return feedbacks;
+        }
+
         public TViewModel GetFeedbackById<TViewModel>(int feedbackId)
         {
             var feedback = this.feedbackRepository.All().Where(x => x.Id == feedbackId)
@@ -64,7 +71,13 @@
 
         public async Task<Feedback> Create(CreateFeedbackInputModel model)
         {
-            var feedback = this.Mapper.Map<Feedback>(model);
+            var feedback = new Feedback
+            {
+                CourseId = model.CourseId,
+                CustomerId = model.CustomerId,
+                Content = model.Content,
+                Rating = model.Rating
+            };
 
             await this.feedbackRepository.AddAsync(feedback);
             await this.feedbackRepository.SaveChangesAsync();

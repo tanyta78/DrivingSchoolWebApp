@@ -44,7 +44,7 @@
 
             var customerId = this.customerService.GetCustomerByUserId(userId).Id;
             var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
-            var result = this.Json(new {success = true, lessons});
+            var result = this.Json(new { success = true, lessons });
             return result;
         }
 
@@ -77,7 +77,7 @@
             }
 
             var lesson = this.lessonService.Create(model).GetAwaiter().GetResult();
-            return this.RedirectToAction("Details", "Lessons", lesson.Id);
+            return this.RedirectToAction("Details", "Lessons", new { lessonId = lesson.Id });
 
 
         }
@@ -132,7 +132,7 @@
             }
 
             var lesson = this.lessonService.Edit(model);
-            return this.RedirectToAction("Details", "Lessons", lesson.Id);
+            return this.RedirectToAction("Details", "Lessons", new { lessonId = lesson.Id });
 
         }
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Models.Enums;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Customer;
@@ -62,9 +63,9 @@
         {
             try
             {
-                var order = this.orderService.GetOrderById<DetailsOrderViewModel>(id);
-
-              var model = new CreatePaymentInputModel()
+                var order =  this.orderService.GetOrderById<DetailsOrderViewModel>(id);
+                
+                var model = new CreatePaymentInputModel()
                 {
                     OrderId = id
                 };
@@ -90,16 +91,18 @@
                     return this.View(model);
                 }
 
+                var username = this.User.Identity.Name;
                 var order = this.orderService.GetOrderById<DetailsOrderViewModel>(model.OrderId);
                 var remainedPaymentAmount = order.CoursePrice - order.PaymentsAmountSum;
 
-                if (remainedPaymentAmount <= 0)
+                if (remainedPaymentAmount <= 0 || remainedPaymentAmount < model.Amount)
                 {
                     return this.View("_Error", $"Amount of payment is greater than remained amount {remainedPaymentAmount}. ");
                 }
 
                 var payment = this.paymentService.Create(model).GetAwaiter().GetResult();
                 //todo change order status when pay if payment =! null!!
+                this.orderService.ChangeStatus(model.OrderId, OrderStatus.PaymentReceived, username).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
@@ -107,6 +110,24 @@
             {
                 return this.View("_Error", e.Message);
             }
+        }
+
+        // GET: Payments/Make/
+        public ActionResult Make()
+        {
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                var orders =  this.orderService.GetOrdersByCustomerId<DetailsOrderViewModel>(customerId).ToList();
+                this.ViewBag.Orders = orders;
+               return this.View();
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
+
         }
 
 

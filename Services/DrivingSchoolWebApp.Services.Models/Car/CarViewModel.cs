@@ -18,7 +18,7 @@
 
         public string ImageUrl { get; set; }
 
-        public string Title => this.Model + this.Make + this.Transmission.ToString();
+        public string Title => this.Model +" "+ this.Make +" "+ this.Transmission.ToString();
 
         public string OwnerTradeMark { get; set; }
 

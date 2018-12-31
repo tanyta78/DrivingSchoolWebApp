@@ -9,6 +9,8 @@
     {
         IEnumerable<Feedback> All();
 
+        IEnumerable<TViewModel> All<TViewModel>();
+
         TViewModel GetFeedbackById<TViewModel>(int feedbackId);
 
         IEnumerable<TViewModel> GetFeedbacksByCustomerId<TViewModel>(int customerId);

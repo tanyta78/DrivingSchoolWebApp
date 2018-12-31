@@ -1,10 +1,11 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Lesson
 {
     using System;
+    using AutoMapper;
     using Data.Models;
     using Mapping;
 
-    public class DetailsLessonViewModel : IMapFrom<Lesson>
+    public class DetailsLessonViewModel : IMapFrom<Lesson>,IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -24,5 +25,10 @@
 
         public string Description { get; set; }
 
+        public void CreateMappings(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Lesson, DetailsLessonViewModel>()
+               .ForMember(dest => dest.OrderCustomerFullName, opt => opt.MapFrom(src => src.Order.Customer.User.FirstName + " " + src.Order.Customer.User.LastName));
+        }
     }
 }

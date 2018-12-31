@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -48,7 +47,7 @@
 
             return order;
         }
-        
+
         public IEnumerable<TViewModel> GetOrdersByCustomerId<TViewModel>(int customerId)
         {
             var orders = this.orderRepository.All().Where(x => x.CustomerId == customerId).ProjectTo<TViewModel>().ToList();
@@ -79,7 +78,7 @@
 
         public async Task<Order> Create(CreateOrderInputModel model)
         {
-           var order = new Order
+            var order = new Order
             {
                 CustomerId = model.CustomerId,
                 CourseId = model.CourseId,
@@ -92,11 +91,11 @@
             return order;
         }
 
-        public async Task<Order> ChangeStatus(int id, OrderStatus newStatus)
+        public async Task<Order> ChangeStatus(int id, OrderStatus newStatus, string username)
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id) || order.OrderStatus==OrderStatus.Cancelled)
+            if (!this.HasRightsToEditOrDelete(id, username) || order.OrderStatus == OrderStatus.Cancelled)
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -109,11 +108,11 @@
             return order;
         }
 
-        public async Task<Order> CancelOrder(int id)
+        public async Task<Order> CancelOrder(int id, string username)
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
+            if (!this.HasRightsToEditOrDelete(id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -126,11 +125,11 @@
             return order;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string username)
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
+            if (!this.HasRightsToEditOrDelete(id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -139,10 +138,10 @@
             await this.orderRepository.SaveChangesAsync();
         }
 
-        private bool HasRightsToEditOrDelete(int orderId)
+        private bool HasRightsToEditOrDelete(int orderId, string username)
         {
             var order = this.GetOrderById(orderId);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and car for null; to add include if needed

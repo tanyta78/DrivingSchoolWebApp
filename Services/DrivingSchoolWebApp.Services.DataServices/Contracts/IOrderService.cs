@@ -24,10 +24,10 @@
 
         Task<Order> Create(CreateOrderInputModel model);
 
-        Task<Order> ChangeStatus(int id,OrderStatus newStatus);
+        Task<Order> ChangeStatus(int id,OrderStatus newStatus, string username);
 
-        Task<Order> CancelOrder (int id);
+        Task<Order> CancelOrder (int id, string username);
         
-        Task Delete(int id);
+        Task Delete(int id, string username);
     }
 }

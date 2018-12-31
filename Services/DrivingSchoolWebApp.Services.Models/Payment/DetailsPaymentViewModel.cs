@@ -5,7 +5,7 @@
     using Data.Models.Enums;
     using Mapping;
 
-    public class DetailsPaymentViewModel : IMapFrom<Payment>
+    public class DetailsPaymentViewModel : IMapFrom<Payment>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -17,11 +17,12 @@
 
         public string OrderCourseSchoolTradeMark { get; set; }
 
-        public string OrderCustomerUserFirstName { get; set; }
+        public string OrderCustomerFullName { get; set; }
 
-        public string OrderCustomerUserLastName { get; set; }
-
-        [IgnoreMap]
-        public string OrderCustomerFullName => this.OrderCustomerUserFirstName + this.OrderCustomerUserLastName;
+        public void CreateMappings(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Payment, DetailsPaymentViewModel>()
+               .ForMember(dest => dest.OrderCustomerFullName, opt => opt.MapFrom(src => src.Order.Customer.User.FirstName + " " + src.Order.Customer.User.LastName));
+        }
     }
 }

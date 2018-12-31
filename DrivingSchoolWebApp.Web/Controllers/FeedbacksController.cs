@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -30,16 +31,20 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var feedbacks = new List<AllFeedbackViewModel>();
-            if (this.User.IsInRole("Customer"))
+            if (this.User.IsInRole("Admin"))
             {
-                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                feedbacks = this.feedbackService.GetFeedbacksByCustomerId<AllFeedbackViewModel>(customerId).ToList();
+                feedbacks = this.feedbackService.All<AllFeedbackViewModel>().ToList();
             }
             else if (this.User.IsInRole("School"))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 feedbacks = this.feedbackService.GetFeedbacksBySchoolId<AllFeedbackViewModel>(schoolId).ToList();
+            }
+            else
+            {
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                feedbacks = this.feedbackService.GetFeedbacksByCustomerId<AllFeedbackViewModel>(customerId).ToList();
             }
             return this.View(feedbacks);
         }
@@ -74,9 +79,9 @@
 
                 return this.RedirectToAction(nameof(this.All));
             }
-            catch
+            catch(Exception e)
             {
-                return this.View(model);
+                return this.View("_Error",e.Message);
             }
         }
 

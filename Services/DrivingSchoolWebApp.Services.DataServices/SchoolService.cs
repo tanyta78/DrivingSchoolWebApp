@@ -118,8 +118,26 @@
 
         public TViewModel GetSchoolById<TViewModel>(int id)
         {
-            var school = this.GetSchoolById(id);
-            return this.Mapper.Map<TViewModel>(school);
+            var school = this.schoolRepository
+                .All()
+                .Where(s=>s.Id==id)
+                .To<TViewModel>().FirstOrDefault();
+            return school;
+        }
+
+        public TViewModel GetSchoolByManagerName<TViewModel>(string username)
+        {
+            var school = this.schoolRepository.All()
+                .Where(x => x.Manager.UserName == username)
+                .To<TViewModel>()
+                .FirstOrDefault();
+
+            if (school == null)
+            {
+                throw new ArgumentException("No school with this manager name in db");
+            }
+
+            return school;
         }
 
         private School GetSchoolById(int schoolId)
@@ -135,12 +153,6 @@
 
 
             return school;
-        }
-
-        public TViewModel GetSchoolByManagerName<TViewModel>(string username)
-        {
-            var school = this.GetSchoolByManagerName(username);
-            return this.Mapper.Map<TViewModel>(school);
         }
 
         private School GetSchoolByManagerName(string username)

@@ -18,13 +18,10 @@
         
         public bool IsActive { get; set; }
 
-        public virtual IEnumerable<Course> CoursesOffered { get; set; } = new HashSet<Course>();
+        public int CoursesOfferedCount { get; set; }
 
-        public virtual IEnumerable<Trainer> Trainers { get; set; } = new HashSet<Trainer>();
+        public int TrainersCount { get; set; } 
 
-        public virtual IEnumerable<Order> Orders { get; set; } = new HashSet<Order>();
-
-        public virtual IEnumerable<Car> OwnedCars { get; set; } = new HashSet<Car>();
-
+        public int OwnedCarsCount { get; set; } 
     }
 }

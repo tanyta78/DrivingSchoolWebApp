@@ -30,16 +30,20 @@
 
             var certificates = new List<AllCertificatesViewModel>();
 
-            if (this.User.IsInRole("Customer"))
+            if (this.User.IsInRole("Admin"))
             {
-                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                certificates = this.certificateService.GetCertificatesByCustomerId<AllCertificatesViewModel>(customerId).ToList();
+                certificates = this.certificateService.All<AllCertificatesViewModel>().ToList();
             }
             else if (this.User.IsInRole("School"))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 certificates = this.certificateService.GetCertificatesBySchoolId<AllCertificatesViewModel>(schoolId).ToList();
+            }
+            else
+            {
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                certificates = this.certificateService.GetCertificatesByCustomerId<AllCertificatesViewModel>(customerId).ToList();
             }
             return this.View(certificates);
         }

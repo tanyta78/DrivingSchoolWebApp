@@ -1,10 +1,11 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Certificate
 {
     using System;
+    using AutoMapper;
     using Data.Models;
     using Mapping;
 
-    public class AllCertificatesViewModel:IMapFrom<Certificate>
+    public class AllCertificatesViewModel:IMapFrom<Certificate>,IHaveCustomMappings
     {
 
         public int Id { get; set; }
@@ -19,5 +20,11 @@
         
         public DateTime IssueDate { get; set; }
 
+        public void CreateMappings(IMapperConfigurationExpression  cfg)
+        {
+            cfg.CreateMap<Certificate, AllCertificatesViewModel>()
+                .ForMember(dest => dest.CustomerFullName, opt => opt.MapFrom(src => src.Customer.User.FirstName + " " + src.Customer.User.LastName))
+                .ForMember(dest => dest.CourseInfo, opt => opt.MapFrom(src => src.Course.Trainer.User.Nickname + " as trainer" + src.Course.School.TradeMark + " school" + src.Course.Car.CarModel + " " + src.Course.Car.CarModel + " " + src.Course.Car.Make + " " + src.Course.Car.Transmission));
+        }
     }
 }

@@ -21,7 +21,7 @@
         private readonly ICustomerService customerService;
         private readonly ISchoolService schoolService;
 
-        public ExamsController(IExamService examService, IOrderService orderService,ICertificateService certificateService, ICustomerService customerService,ISchoolService schoolService)
+        public ExamsController(IExamService examService, IOrderService orderService, ICertificateService certificateService, ICustomerService customerService, ISchoolService schoolService)
         {
             this.examService = examService;
             this.orderService = orderService;
@@ -35,10 +35,9 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var exams = new List<AllExamsViewModel>();
-            if (this.User.IsInRole("Customer"))
+            if (this.User.IsInRole("Admin"))
             {
-                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                exams = this.examService.GetExamsByCustomerId<AllExamsViewModel>(customerId).ToList();
+                exams = this.examService.All<AllExamsViewModel>().ToList();
             }
             else if (this.User.IsInRole("School"))
             {
@@ -46,10 +45,15 @@
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 exams = this.examService.GetExamsBySchoolId<AllExamsViewModel>(schoolId).ToList();
             }
+            else
+            {
+                var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
+                exams = this.examService.GetExamsByCustomerId<AllExamsViewModel>(customerId).ToList();
+            }
             return this.View(exams);
         }
 
-       // GET: Exams/Create/3
+        // GET: Exams/Create/3
         public ActionResult Create(int orderId)
         {
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
@@ -90,7 +94,8 @@
         {
             try
             {
-                var exam = this.examService.CancelExam(id).GetAwaiter().GetResult();
+                var username = this.User.Identity.Name;
+                var exam = this.examService.CancelExam(id,username).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
@@ -107,18 +112,19 @@
         {
             try
             {
-                var exam = this.examService.ChangeStatus(id, LessonStatus.Finished).GetAwaiter().GetResult();
+                var username = this.User.Identity.Name;
 
-                //todo create certificate
-                var model = new CreateCertificateInputModel()
+                var exam = this.examService.ChangeStatus(id, LessonStatus.Finished,username).GetAwaiter().GetResult();
+
+              var model = new CreateCertificateInputModel()
                 {
                     CourseId = exam.CourseId,
                     CustomerId = exam.CustomerId
                 };
 
-                var certificate = this.certificateService.Create(model);
+                var certificate = this.certificateService.Create(model).GetAwaiter().GetResult();
 
-                return this.RedirectToAction("All","Certificates",certificate.Id);
+                return this.RedirectToAction("Details","Certificates",new{id=certificate.Id});
             }
             catch (Exception e)
             {

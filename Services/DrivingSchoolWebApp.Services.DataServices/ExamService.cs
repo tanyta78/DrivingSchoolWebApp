@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -27,6 +26,13 @@
         public IEnumerable<Exam> All()
         {
             return this.examRepository.All().ToList();
+        }
+
+        public IEnumerable<TViewModel> All<TViewModel>()
+        {
+            var exams = this.examRepository.All().ProjectTo<TViewModel>().ToList();
+
+            return exams;
         }
 
         public TViewModel GetExamById<TViewModel>(int examId)
@@ -92,19 +98,27 @@
 
         public async Task<Exam> Create(CreateExamInputModel model)
         {
-            var exam = this.Mapper.Map<Exam>(model);
-           
+            var exam = new Exam()
+            {
+                CourseId = model.CourseId,
+                CustomerId = model.CustomerId,
+                Date = model.Date,
+                Time = model.Time,
+                Status = model.Status,
+                Type = model.Type
+            };
+
             await this.examRepository.AddAsync(exam);
             await this.examRepository.SaveChangesAsync();
 
             return exam;
         }
 
-        public async Task<Exam> ChangeStatus(int id, LessonStatus newStatus)
+        public async Task<Exam> ChangeStatus(int id, LessonStatus newStatus, string username)
         {
             var exam = this.GetExamById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
+            if (!this.HasRightsToEditOrDelete(id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -117,11 +131,11 @@
             return exam;
         }
 
-        public async Task<Exam> CancelExam(int id)
+        public async Task<Exam> CancelExam(int id, string username)
         {
             var exam = this.GetExamById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
+            if (!this.HasRightsToEditOrDelete(id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -134,11 +148,11 @@
             return exam; ;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string username)
         {
             var exam = this.GetExamById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
+            if (!this.HasRightsToEditOrDelete(id, username))
             {
                 //todo throw custom error message
                 throw new OperationCanceledException("You do not have rights for this operation!");
@@ -147,10 +161,10 @@
             await this.examRepository.SaveChangesAsync();
         }
 
-        private bool HasRightsToEditOrDelete(int examId)
+        private bool HasRightsToEditOrDelete(int examId, string username)
         {
             var exam = this.GetExamById(examId);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+
             var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
             //todo check user and car for null; to add include if needed
@@ -158,7 +172,7 @@
             var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
             var isAdmin = roles.Any(x => x == "Admin");
-            var isCreator = username == exam.Customer.User.UserName;
+            var isCreator = username == exam.Course.School.Manager.UserName;
 
             return isCreator || isAdmin;
         }

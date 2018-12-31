@@ -35,7 +35,7 @@
                 @Html.DisplayFor(modelItem => item.IssueDate)
             </td>
             <td>
-                <a asp-controller="Certificates" asp-action="Details" asp-route-examId="@item.Id">View Certificate</a>
+                <a asp-controller="Certificates" asp-action="Details" asp-route-id="@item.Id">View Certificate</a>
                 |
                 <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId">Customer Info</a>
                 |

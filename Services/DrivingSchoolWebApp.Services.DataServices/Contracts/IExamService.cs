@@ -10,6 +10,8 @@
     {
         IEnumerable<Exam> All();
 
+        IEnumerable<TViewModel> All<TViewModel>();
+
         TViewModel GetExamById<TViewModel>(int examId);
 
         IEnumerable<TViewModel> GetExamsByCustomerId<TViewModel>(int customerId);
@@ -24,10 +26,10 @@
         
         Task<Exam> Create(CreateExamInputModel model);
 
-        Task<Exam> ChangeStatus(int id,LessonStatus newStatus);
+        Task<Exam> ChangeStatus(int id,LessonStatus newStatus,string username);
 
-        Task<Exam> CancelExam (int id);
+        Task<Exam> CancelExam (int id,string username);
         
-        Task Delete(int id);
+        Task Delete(int id, string username);
     }
 }

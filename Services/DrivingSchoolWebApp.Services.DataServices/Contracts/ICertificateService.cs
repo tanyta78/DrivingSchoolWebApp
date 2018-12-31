@@ -9,6 +9,8 @@
     {
         IEnumerable<Certificate> All();
 
+        IEnumerable<TViewModel> All<TViewModel>();
+
         TViewModel GetCertificateById<TViewModel>(int certificateId);
 
         IEnumerable<TViewModel> GetCertificatesByCustomerId<TViewModel>(int customerId);
@@ -18,7 +20,7 @@
         IEnumerable<TViewModel> GetCertificatesBySchoolId<TViewModel>(int schoolId);
 
         Task<Certificate> Create(CreateCertificateInputModel model);
-        
-        Task Delete(int id);
+
+        Task Delete(int id, string username);
     }
 }

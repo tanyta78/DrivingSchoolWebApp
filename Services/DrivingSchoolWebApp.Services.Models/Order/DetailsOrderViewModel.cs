@@ -17,6 +17,8 @@
 
         public int CourseId { get; set; }
 
+        public int CourseTrainerId { get; set; }
+
         public string CourseSchoolTradeMark { get; set; }
 
         public string CourseCategory { get; set; }

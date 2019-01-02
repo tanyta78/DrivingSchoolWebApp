@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Migrations;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -30,7 +31,7 @@
         }
 
         // GET: Lessons
-        public ActionResult Index(int trainerId)
+        public ActionResult Index(int trainerId, int orderId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (this.User.IsInRole("School"))
@@ -44,6 +45,7 @@
                 this.ViewBag.OrdersList = receivedOrders;
                 this.ViewBag.TrainersList = trainers;
                 this.ViewBag.TrainerId = trainerId;
+                this.ViewBag.OrderId = orderId;
                 return this.View("SchoolSchedule");
             }
             else
@@ -92,6 +94,10 @@
         // GET: Lessons/Create/4
         public ActionResult Create(int orderId)
         {
+            var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
+            var trainerId = order.CourseTrainerId;
+            return this.RedirectToAction("Index",new{trainerId= trainerId, orderId = orderId});
+            
             var model = new CreateLessonInputModel()
             {
                 OrderId = orderId

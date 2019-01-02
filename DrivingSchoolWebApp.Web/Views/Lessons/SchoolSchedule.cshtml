@@ -10,20 +10,21 @@
     ViewData["Title"] = "Schedule";
     var ordersList = ViewBag.OrdersList;
     var trainersList = ViewBag.TrainersList;
-   }
+    int orderId = ViewBag.OrderId;
+}
 
 
 <h2>Schedule</h2>
 <div>
     @*<form id="myForm" asp-action="Index" asp-controller="Lessons">
-    <div class="form-group">
-        <label name="TrainerId">Trainers</label>
-        <select id="trainerId" name="TrainerId"
-                asp-items="@(new SelectList(trainersList, "Id", "UserNickname"))">
-            <option>Please select one</option>
-        </select>
-    </div>
-    </form>*@
+        <div class="form-group">
+            <label name="TrainerId">Trainers</label>
+            <select id="trainerId" name="TrainerId"
+                    asp-items="@(new SelectList(trainersList, "Id", "UserNickname"))">
+                <option>Please select one</option>
+            </select>
+        </div>
+        </form>*@
     <input type="hidden" name="TrainerId" id="trainerId" value="@ViewBag.TrainerId" />
 </div>
 <div id="calender"></div>
@@ -65,7 +66,7 @@
                     <div class="form-group">
                         <label asp-for="OrderId">Order</label>
                         <select asp-for="OrderId"
-                                asp-items="@(new SelectList(ordersList,"Id","Info"))">
+                                asp-items="@(new SelectList(ordersList,"Id","Info",orderId))">
                             <option>Please select one</option>
                         </select>
                     </div>
@@ -111,7 +112,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-success">Save</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </form>
             </div>
         </div>

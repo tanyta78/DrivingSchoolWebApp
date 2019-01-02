@@ -56,18 +56,15 @@
         public int Edit(EditSchoolInputModel model)
         {
             var school = this.GetSchoolById(model.Id);
-            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
-            //if (!this.HasRightsToEditOrDelete(model.Id, username))
-            //{
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
+            school.IsActive = model.IsActive;
             school.OfficeAddress = model.OfficeAddress;
             school.TradeMark = model.TradeMark;
             school.Phone = model.Phone;
 
-            this.schoolRepository.Update(school);
+           this.schoolRepository.Update(school);
+           this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
             return school.Id;
         }
 
@@ -75,21 +72,11 @@
         {
             var school = this.GetSchoolById(schoolId);
 
-            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-            //var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-            //var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-            //var hasRights = roles.Any(x => x == "Admin");
-
-            //if (!hasRights)
-            //{
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
-            school.ManagerId = newManager.Id;
+           school.ManagerId = newManager.Id;
 
             this.schoolRepository.Update(school);
+            this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
             return school.Id;
         }
 

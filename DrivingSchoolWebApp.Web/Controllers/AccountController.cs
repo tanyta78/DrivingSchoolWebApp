@@ -111,12 +111,6 @@
 
                 if (model.UserType == UserType.Trainer)
                 {
-                    //var managerName = this.User.Identity.Name;
-                    //var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
-
-                    ////todo check fo null===
-                    //this.trainerService.Hire(user.Id, school.Id);
-                    ////todo add schoolid if is needed in path
                     return this.RedirectToAction("Create", "Trainers", new { Area = "SchoolManage", userId = user.Id });
                 }
 

@@ -60,7 +60,7 @@
 
             //set user role
             this.accountService.SetRole("School", model.ManagerId);
-
+            
             //todo decide where to redirect
             return this.RedirectToAction("Details", "ManageSchools", schoolId);
         }

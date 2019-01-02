@@ -16,13 +16,13 @@
         {
             if (this.User.IsInRole("School"))
             {
-                <partial name="_SchoolNavigation"/>
+                <partial name="_SchoolNavigation" />
             }
             else
             {
                 <partial name="_UserNavigation" />
             }
-           
+
         }
     </ul>
     @if (!this.User.Identity.IsAuthenticated)
@@ -42,10 +42,16 @@
             <li class="nav-item">
                 <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Home" asp-action="Index">Hello @User.Identity.Name!</a>
             </li>
+            @if (this.User.IsInRole("School"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="SchoolManage" asp-controller="Schools" asp-action="Manage">Manage profile</a>
+                </li>
+            }
             @if (this.User.IsInRole("Admin"))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark"asp-area="Administration" asp-controller="Users" asp-action="AdminPanel">Admin Panel</a>
+                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="Users" asp-action="AdminPanel">Admin Panel</a>
                 </li>
             }
             <li class="nav-item">

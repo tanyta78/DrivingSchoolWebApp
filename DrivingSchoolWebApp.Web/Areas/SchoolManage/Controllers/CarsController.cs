@@ -171,7 +171,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var car = this.carService.GetCarById<CarDetailsViewModel>(carId);
 
-            var result = (userId == car.OwnerManagerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == car.OwnerManagerId) || this.User.IsInRole("Admin");
             return result;
         }
     }

@@ -3,20 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
     using DrivingSchoolWebApp.Data.Models.Enums;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Models.Course;
 
-    public class CourseService :  ICourseService
+    public class CourseService : ICourseService
     {
         private readonly IRepository<Course> courseRepository;
 
@@ -27,7 +24,7 @@
 
         public IEnumerable<Course> All()
         {
-            return this.courseRepository.All().Where(c => c.IsFinished == false).ToList();
+            return this.courseRepository.All().Where(c => (c.IsFinished == false)&&(c.School.IsActive)&&(c.School.Manager.IsApproved)).ToList();
         }
 
         public async Task<Course> Create(CreateCourseInputModel model)
@@ -69,7 +66,7 @@
             //todo check model validation in controller?!?
             //todo change price, description, min lessons,trainerId, carId
             var course = this.GetCourseById(model.Id);
-          
+
             //if (!this.HasRightsToEditOrDelete(model.Id, model.Username))
             //{
             //    //todo throw custom error message
@@ -107,20 +104,22 @@
 
         public IEnumerable<TViewModel> GetAllCourses<TViewModel>()
         {
-            var courses = this.courseRepository.All().ProjectTo<TViewModel>().ToList();
+            var courses = this.courseRepository.All()
+                .Where(c => (c.IsFinished == false)&&(c.School.IsActive)&&(c.School.Manager.IsApproved))
+                .ProjectTo<TViewModel>().ToList();
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesByCarId<TViewModel>(int carId)
         {
-            var courses = this.courseRepository.All().Where(x => x.CarId == carId).ProjectTo<TViewModel>().ToList();
+            var courses = this.courseRepository.All().Where(c =>(c.IsFinished == false)&&(c.School.IsActive)&&(c.School.Manager.IsApproved)&&(c.CarId == carId)).ProjectTo<TViewModel>().ToList();
 
             return courses;
         }
 
         public IEnumerable<TViewModel> GetCoursesByCategory<TViewModel>(Category category)
         {
-            var courses = this.courseRepository.All().Where(x => x.Category == category).ProjectTo<TViewModel>().ToList();
+            var courses = this.courseRepository.All().Where(c => (c.Category == category)&&(c.IsFinished == false)&&(c.School.IsActive)&&(c.School.Manager.IsApproved)).ProjectTo<TViewModel>().ToList();
 
             return courses;
         }
@@ -146,22 +145,7 @@
             return courses;
         }
 
-        //private bool HasRightsToEditOrDelete(int courseId, string username)
-        //{
-        //    var course = this.GetCourseById(courseId);
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and car for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var hasRights = roles.Any(x => x == "Admin");
-        //    var isManager = username == course.School.Manager.UserName;
-
-        //    return isManager || hasRights;
-        //}
-
-        private Course GetCourseById(int courseId)
+       private Course GetCourseById(int courseId)
         {
             var course = this.courseRepository.All()
                 .Include(c => c.AllFeedbacks)

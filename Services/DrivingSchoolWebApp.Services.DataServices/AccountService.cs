@@ -183,7 +183,7 @@
         public void RemoveApproval(string id)
         {
             var user = this.GetUserById(id);
-            this.RemoveRole("School", id);
+            //this.RemoveRole("School", id);
             //let  user.UserType  to school to be available to create by choosing from admin new school;
             user.IsApproved = false;
             this.userRepository.Update(user);

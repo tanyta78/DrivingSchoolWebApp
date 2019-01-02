@@ -182,6 +182,10 @@
 
         private bool HasRights(int lessonId)
         {
+            if (lessonId==0)
+            {
+                return true;
+            }
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(lessonId);
 

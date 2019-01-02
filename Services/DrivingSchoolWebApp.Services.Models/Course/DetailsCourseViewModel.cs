@@ -34,7 +34,7 @@
 
         public int SchoolId { get; set; }
 
-        public string SchoolManagerUserId { get; set; }
+        public string SchoolManagerId { get; set; }
 
         public string SchoolTradeMark { get; set; }
 

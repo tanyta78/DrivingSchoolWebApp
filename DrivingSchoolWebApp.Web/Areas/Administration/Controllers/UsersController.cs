@@ -48,6 +48,14 @@
             return this.RedirectToAction("AdminPanel");
         }
 
+        // GET: Administration/Users/RemoveApproval/id
+        [Authorize(Roles = "Admin")]
+        public IActionResult RemoveApproval(string id)
+        {
+            this.accountService.RemoveApproval(id);
+            return this.RedirectToAction("AdminPanel");
+        }
+
         // GET: Administration/Users/Enable/id
         [Authorize(Roles = "Admin")]
         public IActionResult Enable(string id)

@@ -99,7 +99,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var school = this.schoolService.GetSchoolById<DetailsSchoolViewModel>(schoolId);
 
-            var result = (userId == school.ManagerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == school.ManagerId) || this.User.IsInRole("Admin");
             return result;
         }
 

@@ -222,7 +222,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var course = this.courseService.GetCourseById<DetailsCourseViewModel>(courseId);
 
-            var result = (userId == course.SchoolManagerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == course.SchoolManagerId) || this.User.IsInRole("Admin");
             return result;
         }
     }

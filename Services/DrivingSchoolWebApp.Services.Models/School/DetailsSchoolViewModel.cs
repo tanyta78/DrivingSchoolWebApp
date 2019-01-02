@@ -9,7 +9,7 @@
 
         public string ManagerNickName { get; set; }
 
-        public string ManagerUserId { get; set; }
+        public string ManagerId { get; set; }
         
         public string TradeMark { get; set; }
 

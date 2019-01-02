@@ -43,6 +43,11 @@
                             {
                                 <span col="2"><a asp-area="Administration" asp-controller="Users" asp-action="Approve" asp-route-id="@user.Id" class="text-dark btn btn-outline-info">Approve</a></span>
                             }
+                            else
+                            {
+                                <span col="2"><a asp-area="Administration" asp-controller="Users" asp-action="RemoveApproval" asp-route-id="@user.Id" class="text-dark btn btn-outline-info">Remove Approval</a></span>
+
+                            }
                         }
 
 

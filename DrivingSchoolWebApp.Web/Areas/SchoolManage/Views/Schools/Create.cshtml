@@ -1,0 +1,49 @@
+﻿@using System.Security.Claims
+@model DrivingSchoolWebApp.Services.Models.School.CreateSchoolInputModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>CreateSchoolInputModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Schools" asp-area="SchoolManage" method="post" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ManagerId" class="form-control" type="hidden" value ="@User.FindFirstValue(ClaimTypes.NameIdentifier)"/>
+            <div class="form-group">
+                <label asp-for="TradeMark" class="control-label"></label>
+                <input asp-for="TradeMark" class="form-control" />
+                <span asp-validation-for="TradeMark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OfficeAddress" class="control-label"></label>
+                <input asp-for="OfficeAddress" class="form-control" />
+                <span asp-validation-for="OfficeAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create school profile" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

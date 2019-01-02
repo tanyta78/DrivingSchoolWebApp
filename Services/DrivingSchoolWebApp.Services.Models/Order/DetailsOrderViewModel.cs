@@ -13,6 +13,8 @@
 
         public int CustomerId { get; set; }
 
+        public string CustomerUserId { get; set; }
+
         public string CustomerFullName { get; set; }
 
         public int CourseId { get; set; }

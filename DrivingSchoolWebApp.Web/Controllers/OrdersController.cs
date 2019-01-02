@@ -94,16 +94,29 @@
         {
             try
             {
-                var username = this.User.Identity.Name;
-                var order = this.orderService.CancelOrder(id, username).GetAwaiter().GetResult();
+                var result = this.HasRights(id);
+                if (!result)
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
+                this.orderService.CancelOrder(id).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
             catch (Exception error)
             {
                 //todo handle exceptions with filter and log it
-                return this.View("_Error", error);
+                return this.View("_Error", error.Message);
             }
+        }
+
+        private bool HasRights(int orderId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
+
+            var result = (userId == order.CustomerUserId) || this.User.IsInRole("Admin");
+            return result;
         }
 
         // TODO: Decide who can delete order. Does it needed?

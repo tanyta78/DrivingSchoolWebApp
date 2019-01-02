@@ -1,9 +1,9 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
-    using Data.Migrations;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -96,14 +96,8 @@
         {
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
             var trainerId = order.CourseTrainerId;
-            return this.RedirectToAction("Index",new{trainerId= trainerId, orderId = orderId});
-            
-            var model = new CreateLessonInputModel()
-            {
-                OrderId = orderId
-            };
+            return this.RedirectToAction("Index", new { trainerId = trainerId, orderId = orderId });
 
-            return this.View(model);
         }
 
         // POST: Lessons/Create
@@ -126,19 +120,30 @@
         [ValidateAntiForgeryToken]
         public ActionResult Save(FullCalendarInputModel model)
         {
-
-            if (!this.ModelState.IsValid)
+            try
             {
-                return this.Json(new { success = false, error = true });
+                if (!this.ModelState.IsValid)
+                {
+                    return this.Json(new { success = false, error = true });
+                }
+
+                if (!this.HasRights(model.Id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
+
+                var result = this.lessonService.Save(model);
+
+                return this.RedirectToAction("Index", new { trainerId = model.TrainerId });
             }
-
-            var result = this.lessonService.Save(model);
-
-            return this.RedirectToAction("Index", new { trainerId = model.TrainerId });
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
 
         }
 
-      
+
         // GET: Lessons/Edit/5
         public ActionResult Edit(int id)
         {
@@ -173,6 +178,15 @@
         {
             this.lessonService.Delete(id);
             return this.RedirectToAction(nameof(Index));
+        }
+
+        private bool HasRights(int lessonId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(lessonId);
+
+            var result = (userId == lesson.OrderCourseSchoolManagerUserId) || this.User.IsInRole("Admin");
+            return result;
         }
     }
 }

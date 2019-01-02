@@ -4,21 +4,19 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.Order;
 
-    public class OrderService : BaseService, IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IRepository<Order> orderRepository;
 
-        public OrderService(IRepository<Order> orderRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public OrderService(IRepository<Order> orderRepository)
         {
             this.orderRepository = orderRepository;
         }
@@ -78,14 +76,14 @@
 
         public IEnumerable<TViewModel> GetOrdersBySchoolIdAndPaymentMade<TViewModel>(int schoolId)
         {
-            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && (x.OrderStatus==OrderStatus.PaymentReceived||x.OrderStatus==OrderStatus.PaymentUpdated||x.OrderStatus==OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
+            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && (x.OrderStatus == OrderStatus.PaymentReceived || x.OrderStatus == OrderStatus.PaymentUpdated || x.OrderStatus == OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
 
             return orders;
         }
 
         public IEnumerable<TViewModel> GetOrdersBySchoolIdPaymentMadeAndTrainerId<TViewModel>(int schoolId, int trainerId)
         {
-            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && x.Course.TrainerId==trainerId && (x.OrderStatus==OrderStatus.PaymentReceived||x.OrderStatus==OrderStatus.PaymentUpdated||x.OrderStatus==OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
+            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && x.Course.TrainerId == trainerId && (x.OrderStatus == OrderStatus.PaymentReceived || x.OrderStatus == OrderStatus.PaymentUpdated || x.OrderStatus == OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
 
             return orders;
         }
@@ -105,15 +103,15 @@
             return order;
         }
 
-        public async Task<Order> ChangeStatus(int id, OrderStatus newStatus, string username)
+        public async Task<Order> ChangeStatus(int id, OrderStatus newStatus)
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id, username) || order.OrderStatus == OrderStatus.Cancelled)
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id, username) || order.OrderStatus == OrderStatus.Cancelled)
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             order.OrderStatus = newStatus;
             this.orderRepository.Update(order);
@@ -122,15 +120,15 @@
             return order;
         }
 
-        public async Task<Order> CancelOrder(int id, string username)
+        public async Task<Order> CancelOrder(int id)
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             order.OrderStatus = OrderStatus.Cancelled;
             this.orderRepository.Update(order);
@@ -143,30 +141,30 @@
         {
             var order = this.GetOrderById(id);
 
-            if (!this.HasRightsToEditOrDelete(id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
             this.orderRepository.Delete(order);
             await this.orderRepository.SaveChangesAsync();
         }
 
-        private bool HasRightsToEditOrDelete(int orderId, string username)
-        {
-            var order = this.GetOrderById(orderId);
+        //private bool HasRightsToEditOrDelete(int orderId, string username)
+        //{
+        //    var order = this.GetOrderById(orderId);
 
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and car for null; to add include if needed
+        //    //todo check user and car for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var isAdmin = roles.Any(x => x == "Admin");
-            var isCreator = username == order.Customer.User.UserName;
+        //    var isAdmin = roles.Any(x => x == "Admin");
+        //    var isCreator = username == order.Customer.User.UserName;
 
-            return isCreator || isAdmin;
-        }
+        //    return isCreator || isAdmin;
+        //}
 
         private Order GetOrderById(int orderId)
         {

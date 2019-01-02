@@ -42,6 +42,7 @@
                 return this.Redirect("/Account/Lockout");
             }
 
+
             var result = this.accountService.Login(user, model.Password);
             if (result.Succeeded)
             {
@@ -118,6 +119,16 @@
                     ////todo add schoolid if is needed in path
                     return this.RedirectToAction("Create", "Trainers", new { Area = "SchoolManage", userId = user.Id });
                 }
+
+                if (model.UserType == UserType.School)
+                {
+                    var loginResult = this.accountService.Login(user, model.Password);
+                    if (loginResult.Succeeded)
+                    {
+                        return this.RedirectToAction("Create", "Schools", new { Area = "SchoolManage", userId = user.Id });
+                    }
+                }
+
 
                 return this.RedirectToAction("Login", "Account");
             }

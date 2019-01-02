@@ -56,13 +56,20 @@
         // GET: Exams/Create/3
         public ActionResult Create(int orderId)
         {
-            var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
-            var model = new CreateExamInputModel()
+            try
             {
-                CourseId = order.CourseId,
-                CustomerId = order.CustomerId
-            };
-            return this.View(model);
+                var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
+                var model = new CreateExamInputModel()
+                {
+                    CourseId = order.CourseId,
+                    CustomerId = order.CustomerId
+                };
+                return this.View(model);
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // POST: Exams/Create
@@ -94,8 +101,12 @@
         {
             try
             {
-                var username = this.User.Identity.Name;
-                var exam = this.examService.CancelExam(id,username).GetAwaiter().GetResult();
+                if (!this.HasRights(id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
+
+                var exam = this.examService.CancelExam(id).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
@@ -112,11 +123,14 @@
         {
             try
             {
-                var username = this.User.Identity.Name;
+                if (!this.HasRights(id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
 
-                var exam = this.examService.ChangeStatus(id, LessonStatus.Finished,username).GetAwaiter().GetResult();
+                var exam = this.examService.ChangeStatus(id, LessonStatus.Finished).GetAwaiter().GetResult();
 
-              var model = new CreateCertificateInputModel()
+                var model = new CreateCertificateInputModel()
                 {
                     CourseId = exam.CourseId,
                     CustomerId = exam.CustomerId
@@ -124,12 +138,21 @@
 
                 var certificate = this.certificateService.Create(model).GetAwaiter().GetResult();
 
-                return this.RedirectToAction("Details","Certificates",new{id=certificate.Id});
+                return this.RedirectToAction("Details", "Certificates", new { id = certificate.Id });
             }
             catch (Exception e)
             {
                 return this.View("_Error", e.Message);
             }
+        }
+
+        private bool HasRights(int examId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var exam = this.examService.GetExamById<AllExamsViewModel>(examId);
+
+            var result = (userId == exam.CourseSchoolManagerUserId) || this.User.IsInRole("Admin");
+            return result;
         }
     }
 }

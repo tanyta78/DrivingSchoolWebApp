@@ -10,6 +10,8 @@
 
         public AppUser User { get; set; }
 
+        public string UserId { get; set; }
+
         public string UserNickName { get; set; }
 
         public string UserAddress { get; set; }

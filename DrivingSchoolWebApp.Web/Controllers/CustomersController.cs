@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -94,6 +95,14 @@
         //    {
         //        return this.View();
         //    }
-        //}
+        
+        private bool HasRights(int customerId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = this.customerService.GetCustomerById<DetailsCustomerViewModel>(customerId);
+
+            var result = (userId == customer.UserId) || this.User.IsInRole("Admin");
+            return result;
+        }
     }
 }

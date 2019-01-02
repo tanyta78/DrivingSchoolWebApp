@@ -3,13 +3,21 @@
     using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using Models;
+    using Services.DataServices.Contracts;
+    using Services.Models.School;
 
     public class HomeController : BaseController
     {
+        private readonly ISchoolService schoolService;
+
+        public HomeController(ISchoolService schoolService)
+        {
+            this.schoolService = schoolService;
+        }
 
         public IActionResult Index()
         {
-            return this.View();
+           return this.View();
         }
 
         //public IActionResult About()

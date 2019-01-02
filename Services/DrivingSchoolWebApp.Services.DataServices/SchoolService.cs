@@ -3,21 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.School;
 
-    public class SchoolService : BaseService, ISchoolService
+    public class SchoolService : ISchoolService
     {
         private readonly IRepository<School> schoolRepository;
 
-        public SchoolService(IRepository<School> schoolRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public SchoolService(IRepository<School> schoolRepository)
         {
             this.schoolRepository = schoolRepository;
         }
@@ -27,26 +24,6 @@
             return this.schoolRepository.All().Where(s => s.IsActive).ProjectTo<TViewModel>();
         }
 
-        //only admin
-        public void ApproveSchool(AppUser manager)
-        {
-            var roles = this.UserManager.GetRolesAsync(manager).GetAwaiter().GetResult();
-            if (!roles.Contains("School"))
-            {
-                return;
-            }
-
-            var school = new School()
-            {
-                Manager = manager
-            };
-
-            this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
-            this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
-
-        }
-
-        //only admin
         public int Create(CreateSchoolInputModel model)
         {
             //todo check manager is in role school 
@@ -79,12 +56,12 @@
         public int Edit(EditSchoolInputModel model)
         {
             var school = this.GetSchoolById(model.Id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
-            if (!this.HasRightsToEditOrDelete(model.Id, username))
-            {
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(model.Id, username))
+            //{
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             school.OfficeAddress = model.OfficeAddress;
             school.TradeMark = model.TradeMark;
@@ -98,17 +75,17 @@
         {
             var school = this.GetSchoolById(schoolId);
 
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            //var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+            //var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
+            //var hasRights = roles.Any(x => x == "Admin");
 
-            if (!hasRights)
-            {
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!hasRights)
+            //{
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             school.ManagerId = newManager.Id;
 
@@ -120,7 +97,7 @@
         {
             var school = this.schoolRepository
                 .All()
-                .Where(s=>s.Id==id)
+                .Where(s => s.Id == id)
                 .To<TViewModel>().FirstOrDefault();
             return school;
         }
@@ -140,7 +117,7 @@
             return school;
         }
 
-       private School GetSchoolById(int schoolId)
+        private School GetSchoolById(int schoolId)
         {
             var school = this.schoolRepository
                 .All()
@@ -168,19 +145,19 @@
             return school;
         }
 
-        private bool HasRightsToEditOrDelete(int schoolId, string username)
-        {
-            var school = this.GetSchoolById(schoolId);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //private bool HasRightsToEditOrDelete(int schoolId, string username)
+        //{
+        //    var school = this.GetSchoolById(schoolId);
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and car for null; to add include if needed
+        //    //todo check user and car for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
-            var isManager = username == school.Manager.UserName;
+        //    var hasRights = roles.Any(x => x == "Admin");
+        //    var isManager = username == school.Manager.UserName;
 
-            return isManager || hasRights;
-        }
+        //    return isManager || hasRights;
+        //}
     }
 }

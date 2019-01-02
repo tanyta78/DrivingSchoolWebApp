@@ -3,22 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.Feedback;
 
-    public class FeedbackService : BaseService, IFeedbackService
+    public class FeedbackService : IFeedbackService
     {
         private readonly IRepository<Feedback> feedbackRepository;
 
-        public FeedbackService(IRepository<Feedback> feedbackRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public FeedbackService(IRepository<Feedback> feedbackRepository)
         {
             this.feedbackRepository = feedbackRepository;
         }
@@ -89,30 +86,30 @@
         {
             var feedback = this.GetFeedbackById(id);
 
-            if (!this.HasRightsToEditOrDelete(id))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
             this.feedbackRepository.Delete(feedback);
             await this.feedbackRepository.SaveChangesAsync();
         }
 
-        private bool HasRightsToEditOrDelete(int feedbackId)
-        {
-            var feedback = this.GetFeedbackById(feedbackId);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //private bool HasRightsToEditOrDelete(int feedbackId)
+        //{
+        //    var feedback = this.GetFeedbackById(feedbackId);
+        //    var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and feedback for null; to add include if needed
+        //    //todo check user and feedback for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var isAdmin = roles.Any(x => x == "Admin");
-            var isCreator = username == feedback.Customer.User.UserName;
+        //    var isAdmin = roles.Any(x => x == "Admin");
+        //    var isCreator = username == feedback.Customer.User.UserName;
 
-            return isCreator || isAdmin;
-        }
+        //    return isCreator || isAdmin;
+        //}
 
         private Feedback GetFeedbackById(int feedbackId)
         {

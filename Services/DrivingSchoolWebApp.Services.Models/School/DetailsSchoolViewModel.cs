@@ -9,6 +9,8 @@
 
         public string ManagerNickName { get; set; }
 
+        public string ManagerUserId { get; set; }
+        
         public string TradeMark { get; set; }
 
         public string OfficeAddress { get; set; }

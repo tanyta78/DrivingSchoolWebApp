@@ -12,8 +12,8 @@
         <form asp-area="Administration" asp-controller="ManageSchools" asp-action="Delete" asp-route-id="@Model.Id" asp-route-username="@Model.ManagerUserName" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Manager.UserName" class="control-label"></label>
-                <input asp-for="Manager.UserName" class="form-control" value="@Model.ManagerUserName" disabled/>
+                <label asp-for="ManagerUserName" class="control-label"></label>
+                <input asp-for="ManagerUserName" class="form-control" value="@Model.ManagerUserName" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="TradeMark" class="control-label"></label>

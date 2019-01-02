@@ -4,20 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.Certificate;
 
-    public class CertificateService : BaseService, ICertificateService
+    public class CertificateService : ICertificateService
     {
         private readonly IRepository<Certificate> certificateRepository;
 
-        public CertificateService(IRepository<Certificate> certificateRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public CertificateService(IRepository<Certificate> certificateRepository)
         {
             this.certificateRepository = certificateRepository;
         }
@@ -84,34 +82,34 @@
             return certificate;
         }
 
-        public async Task Delete(int id, string username)
-        {
-            var certificate = this.GetCertificateById(id);
+        //public async Task Delete(int id, string username)
+        //{
+        //    var certificate = this.GetCertificateById(id);
 
-            if (!this.HasRightsToEditOrDelete(id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
-            this.certificateRepository.Delete(certificate);
-            await this.certificateRepository.SaveChangesAsync();
-        }
+        //    if (!this.HasRightsToEditOrDelete(id, username))
+        //    {
+        //        //todo throw custom error message
+        //        throw new OperationCanceledException("You do not have rights for this operation!");
+        //    }
+        //    this.certificateRepository.Delete(certificate);
+        //    await this.certificateRepository.SaveChangesAsync();
+        //}
 
-        private bool HasRightsToEditOrDelete(int certificateId, string username)
-        {
-            var certificate = this.GetCertificateById(certificateId);
+        //private bool HasRightsToEditOrDelete(int certificateId, string username)
+        //{
+        //    var certificate = this.GetCertificateById(certificateId);
 
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and Certificate for null; to add include if needed
+        //    //todo check user and Certificate for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var isAdmin = roles.Any(x => x == "Admin");
-            var isCreator = username == certificate.Customer.User.UserName;
+        //    var isAdmin = roles.Any(x => x == "Admin");
+        //    var isCreator = username == certificate.Customer.User.UserName;
 
-            return isCreator || isAdmin;
-        }
+        //    return isCreator || isAdmin;
+        //}
 
         private Certificate GetCertificateById(int certificateId)
         {

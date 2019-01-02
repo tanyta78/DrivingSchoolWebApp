@@ -3,23 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.Car;
 
-    public class CarService : BaseService, ICarService
+    public class CarService : ICarService
     {
         private readonly IRepository<Car> carRepository;
 
 
-        public CarService(IRepository<Car> carRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public CarService(IRepository<Car> carRepository)
         {
             this.carRepository = carRepository;
         }
@@ -54,14 +51,13 @@
         public async Task Delete(CarDetailsViewModel model)
         {
             var car = this.GetCarById(model.Id);
-            var username = model.Username;
+            //var username = model.Username;
 
-
-            if (!this.HasRightsToEditOrDelete(model.Id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(model.Id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             this.carRepository.Delete(car);
             await this.carRepository.SaveChangesAsync();
@@ -72,12 +68,12 @@
             //todo check model validation in controller?!?
             //todo change inUse, Image, VIN
             var car = this.GetCarById(model.Id);
-            var username = model.Username;
+            //var username = model.Username;
 
-            if (!this.HasRightsToEditOrDelete(model.Id, username))
-            {
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(model.Id, username))
+            //{
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             car.InUse = model.InUse;
             car.VIN = model.VIN;
@@ -124,20 +120,20 @@
             return cars;
         }
 
-        private bool HasRightsToEditOrDelete(int carId, string username)
-        {
-            var car = this.GetCarById(carId);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //private bool HasRightsToEditOrDelete(int carId, string username)
+        //{
+        //    var car = this.GetCarById(carId);
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and car for null; to add include if needed
+        //    //todo check user and car for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
-            var isOwner = username == car.Owner.Manager.UserName;
+        //    var hasRights = roles.Any(x => x == "Admin");
+        //    var isOwner = username == car.Owner.Manager.UserName;
 
-            return isOwner || hasRights;
-        }
+        //    return isOwner || hasRights;
+        //}
 
         private Car GetCarById(int id)
         {

@@ -63,8 +63,8 @@
         {
             try
             {
-                var order =  this.orderService.GetOrderById<DetailsOrderViewModel>(id);
-                
+                var order = this.orderService.GetOrderById<DetailsOrderViewModel>(id);
+
                 var model = new CreatePaymentInputModel()
                 {
                     OrderId = id
@@ -91,7 +91,6 @@
                     return this.View(model);
                 }
 
-                var username = this.User.Identity.Name;
                 var order = this.orderService.GetOrderById<DetailsOrderViewModel>(model.OrderId);
                 var remainedPaymentAmount = order.CoursePrice - order.PaymentsAmountSum;
 
@@ -102,7 +101,7 @@
 
                 var payment = this.paymentService.Create(model).GetAwaiter().GetResult();
                 //todo change order status when pay if payment =! null!!
-                this.orderService.ChangeStatus(model.OrderId, OrderStatus.PaymentReceived, username).GetAwaiter().GetResult();
+                this.orderService.ChangeStatus(model.OrderId, OrderStatus.PaymentReceived).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(All));
             }
@@ -119,9 +118,9 @@
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
-                var orders =  this.orderService.GetOrdersByCustomerId<DetailsOrderViewModel>(customerId).ToList();
+                var orders = this.orderService.GetOrdersByCustomerId<DetailsOrderViewModel>(customerId).ToList();
                 this.ViewBag.Orders = orders;
-               return this.View();
+                return this.View();
             }
             catch (Exception e)
             {

@@ -21,6 +21,6 @@
 
         Task<Certificate> Create(CreateCertificateInputModel model);
 
-        Task Delete(int id, string username);
+        //Task Delete(int id, string username);
     }
 }

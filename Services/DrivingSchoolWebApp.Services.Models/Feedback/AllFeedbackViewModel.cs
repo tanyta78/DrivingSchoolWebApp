@@ -4,13 +4,15 @@
     using Data.Models;
     using Mapping;
 
-    public class AllFeedbackViewModel:IMapFrom<Feedback>,IHaveCustomMappings
+    public class AllFeedbackViewModel : IMapFrom<Feedback>, IHaveCustomMappings
     {
         public int CustomerId { get; set; }
 
         public int CourseId { get; set; }
 
         public string CustomerFullName { get; set; }
+
+        public string CustomerUserId { get; set; }
 
         public string CourseDescription { get; set; }
 

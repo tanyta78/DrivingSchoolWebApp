@@ -5,20 +5,18 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Models.Lesson;
 
-    public class LessonService : BaseService, ILessonService
+    public class LessonService : ILessonService
     {
         private readonly IRepository<Lesson> lessonRepository;
 
-        public LessonService(IRepository<Lesson> lessonRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public LessonService(IRepository<Lesson> lessonRepository)
         {
             this.lessonRepository = lessonRepository;
         }
@@ -52,8 +50,8 @@
         }
 
         public IEnumerable<TViewModel> GetLessonsByOrderId<TViewModel>(int orderId)
-        { 
-            var lessons = this.lessonRepository.All().Where(x => x.OrderId==orderId).ProjectTo<TViewModel>().ToList();
+        {
+            var lessons = this.lessonRepository.All().Where(x => x.OrderId == orderId).ProjectTo<TViewModel>().ToList();
 
             return lessons;
         }
@@ -95,13 +93,13 @@
         public async Task<Lesson> Edit(EditLessonInputModel model)
         {
             var lesson = this.GetLessonById(model.Id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
-            if (!this.HasRightsToEditOrDelete(model.Id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(model.Id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             lesson.Status = model.Status;
             lesson.StartTime = model.StartTime;
@@ -119,32 +117,32 @@
         public async Task Delete(int id)
         {
             var lesson = this.GetLessonById(id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
-            if (!this.HasRightsToEditOrDelete(id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             this.lessonRepository.Delete(lesson);
             await this.lessonRepository.SaveChangesAsync();
         }
 
-        private bool HasRightsToEditOrDelete(int lessonId, string username)
-        {
-            var lesson = this.GetLessonById(lessonId);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //private bool HasRightsToEditOrDelete(int lessonId, string username)
+        //{
+        //    var lesson = this.GetLessonById(lessonId);
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and lesson for null; to add include if needed
+        //    //todo check user and lesson for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
-            var isCreator = username == lesson.Order.Course.School.Manager.UserName;
+        //    var hasRights = roles.Any(x => x == "Admin");
+        //    var isCreator = username == lesson.Order.Course.School.Manager.UserName;
 
-            return isCreator || hasRights;
-        }
+        //    return isCreator || hasRights;
+        //}
 
         private Lesson GetLessonById(int lessonId)
         {
@@ -162,10 +160,10 @@
 
         public int Save(FullCalendarInputModel model)
         {
-            
+
             if (model.Id != 0)
             {
-               var lessonEditModel=new EditLessonInputModel()
+                var lessonEditModel = new EditLessonInputModel()
                 {
                     Id = model.Id,
                     Description = model.Description,
@@ -179,7 +177,7 @@
             }
             else
             {
-              var lessonCreateModel = new CreateLessonInputModel()
+                var lessonCreateModel = new CreateLessonInputModel()
                 {
                     Description = model.Description,
                     EndTime = model.EndTime,
@@ -194,7 +192,7 @@
                 return lesson.Id;
             }
 
-            
+
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.SchoolManage.Controllers
 {
     using System;
-    using Microsoft.AspNetCore.Http;
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Car;
@@ -61,23 +61,37 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateCarInputModel model)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                return this.View(model);
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(model);
+                }
+
+                var car = this.carService.Create(model).GetAwaiter().GetResult();
+
+                return this.RedirectToAction("Details", "Cars", new { id = car.Id });
             }
-
-            var car = this.carService.Create(model).GetAwaiter().GetResult();
-
-            return this.RedirectToAction("Details", "Cars", new { id = car.Id });
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
 
         }
 
         // GET: SchoolsManage/Cars/Edit/5
         public ActionResult Edit(int id)
         {
-            var carModel = this.carService.GetCarById<EditCarInputModel>(id);
+            try
+            {
+                var carModel = this.carService.GetCarById<EditCarInputModel>(id);
 
-            return this.View(carModel);
+                return this.View(carModel);
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // POST: SchoolsManage/Cars/Edit/5
@@ -85,22 +99,47 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditCarInputModel model)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                return this.View(model);
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(model);
+                }
+
+                if (!this.HasRights(model.Id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
+
+                var car = this.carService.Edit(model).GetAwaiter().GetResult();
+
+                return this.RedirectToAction("Details", "Cars", new { id = car.Id });
             }
-
-            var car = this.carService.Edit(model).GetAwaiter().GetResult();
-
-            return this.RedirectToAction("Details", "Cars", new { id = car.Id });
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // GET: SchoolsManage/Cars/Delete/5
         public ActionResult Delete(int id)
         {
-            var carModel = this.carService.GetCarById<CarDetailsViewModel>(id);
+            try
+            {
+                if (!this.HasRights(id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                }
 
-            return this.View(carModel);
+                var carModel = this.carService.GetCarById<CarDetailsViewModel>(id);
+
+                return this.View(carModel);
+
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // POST: SchoolsManage/Cars/Delete/5
@@ -110,6 +149,11 @@
         {
             try
             {
+                if (!this.HasRights(model.Id))
+                {
+                    throw new OperationCanceledException("You do not have rights for this operation!");
+                } 
+
                 this.carService.Delete(model).GetAwaiter().GetResult();
 
                 return this.RedirectToAction(nameof(this.All));
@@ -121,5 +165,14 @@
         }
 
         //todo Implement change owner for car . Maybe with isInUse prop=?
+
+        private bool HasRights(int carId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var car = this.carService.GetCarById<CarDetailsViewModel>(carId);
+
+            var result = (userId == car.OwnerManagerUserId) || this.User.IsInRole("Admin");
+            return result;
+        }
     }
 }

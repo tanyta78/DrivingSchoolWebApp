@@ -18,6 +18,8 @@
 
         public string CourseInfo { get; set; }
 
+        public string CourseSchoolManagerUserId { get; set; }
+
         public DateTime Date { get; set; }
 
         public DateTime Time { get; set; }

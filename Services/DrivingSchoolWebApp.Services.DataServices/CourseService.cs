@@ -16,11 +16,11 @@
     using Microsoft.EntityFrameworkCore;
     using Models.Course;
 
-    public class CourseService : BaseService, ICourseService
+    public class CourseService :  ICourseService
     {
         private readonly IRepository<Course> courseRepository;
 
-        public CourseService(IRepository<Course> courseRepository, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) : base(userManager, signInManager, mapper)
+        public CourseService(IRepository<Course> courseRepository)
         {
             this.courseRepository = courseRepository;
         }
@@ -52,13 +52,13 @@
         public async Task Delete(int id)
         {
             var course = this.GetCourseById(id);
-            var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
+            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
 
-            if (!this.HasRightsToEditOrDelete(id, username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(id, username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             this.courseRepository.Delete(course);
             await this.courseRepository.SaveChangesAsync();
@@ -70,11 +70,11 @@
             //todo change price, description, min lessons,trainerId, carId
             var course = this.GetCourseById(model.Id);
           
-            if (!this.HasRightsToEditOrDelete(model.Id, model.Username))
-            {
-                //todo throw custom error message
-                throw new OperationCanceledException("You do not have rights for this operation!");
-            }
+            //if (!this.HasRightsToEditOrDelete(model.Id, model.Username))
+            //{
+            //    //todo throw custom error message
+            //    throw new OperationCanceledException("You do not have rights for this operation!");
+            //}
 
             course.CarId = model.CarId;
             course.TrainerId = model.TrainerId;
@@ -146,20 +146,20 @@
             return courses;
         }
 
-        private bool HasRightsToEditOrDelete(int courseId, string username)
-        {
-            var course = this.GetCourseById(courseId);
-            var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
+        //private bool HasRightsToEditOrDelete(int courseId, string username)
+        //{
+        //    var course = this.GetCourseById(courseId);
+        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-            //todo check user and car for null; to add include if needed
+        //    //todo check user and car for null; to add include if needed
 
-            var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
 
-            var hasRights = roles.Any(x => x == "Admin");
-            var isManager = username == course.School.Manager.UserName;
+        //    var hasRights = roles.Any(x => x == "Admin");
+        //    var isManager = username == course.School.Manager.UserName;
 
-            return isManager || hasRights;
-        }
+        //    return isManager || hasRights;
+        //}
 
         private Course GetCourseById(int courseId)
         {

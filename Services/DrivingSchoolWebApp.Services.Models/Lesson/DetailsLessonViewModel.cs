@@ -13,6 +13,8 @@
 
         public string OrderCustomerFullName { get; set; }
 
+        public string OrderCourseSchoolManagerUserId{ get; set; }
+        
         public string OrderCourseTrainerNickName { get; set; }
 
         public DateTime? EndTime { get; set; }

@@ -7,7 +7,7 @@
     {
         public School()
         {
-            this.IsActive = true;
+            this.IsActive = false;
         }
 
         public string ManagerId { get; set; }

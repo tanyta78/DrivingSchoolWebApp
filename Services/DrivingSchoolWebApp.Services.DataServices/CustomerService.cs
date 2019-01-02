@@ -13,11 +13,11 @@
     using Microsoft.EntityFrameworkCore;
     using Models.Customer;
 
-    public class CustomerService : BaseService, ICustomerService
+    public class CustomerService :  ICustomerService
     {
         private readonly IRepository<Customer> customerRepository;
 
-        public CustomerService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IRepository<Customer> customerRepository) : base(userManager, signInManager, mapper)
+        public CustomerService( IRepository<Customer> customerRepository) 
         {
             this.customerRepository = customerRepository;
         }

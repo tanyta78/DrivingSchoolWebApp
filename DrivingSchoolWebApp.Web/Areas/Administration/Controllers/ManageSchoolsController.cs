@@ -7,6 +7,7 @@
     using Web.Controllers;
     using X.PagedList;
 
+    [Area("Administration")]
     public class ManageSchoolsController : BaseController
     {
         private readonly ISchoolService schoolService;
@@ -74,6 +75,7 @@
         // POST: Administration/ManageSchools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("Admin")]
         public IActionResult Edit(EditSchoolInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -131,5 +133,7 @@
 
             return this.RedirectToAction(nameof(this.Index));
         }
+
+
     }
 }

@@ -66,9 +66,10 @@
             if (user.UserType != UserType.School)
             {
                 user.IsApproved = true;
-                this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
             }
+           
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
             this.logger.LogInformation("User created a new account with password.");
 
@@ -159,11 +160,9 @@
             var user = this.GetUserById(id);
             //todo check for null
             if (user.UserType != UserType.School) return;
-            this.SetRole("School", id);
-
-            this.schoolService.ApproveSchool(user);
+          
             user.IsApproved = true;
-            
+
             this.userRepository.Update(user);
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
@@ -196,7 +195,7 @@
         {
             var user = this.GetUserById(id);
             user.IsEnabled = true;
-            
+
             this.userRepository.Update(user);
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
         }

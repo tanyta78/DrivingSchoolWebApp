@@ -6,6 +6,7 @@
     using Services.Models.Account;
     using Web.Controllers;
 
+    [Area("Administration")]
     public class UsersController : BaseController
     {
         private readonly IAccountService accountService;

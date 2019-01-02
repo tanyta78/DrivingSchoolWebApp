@@ -17,6 +17,8 @@
 
         public string ImageUrl { get; set; }
 
+        public string OwnerManagerUserId { get; set; }
+
         public virtual School Owner { get; set; }
 
         [IgnoreMap]

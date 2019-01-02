@@ -1,31 +1,33 @@
 ﻿$(document).ready(function () {
     var events = [];
     var selectedEvent = null;
+    var trainerId = $("#trainerId").val();
     fetchEventAndRenderCalendar();
 
     function fetchEventAndRenderCalendar() {
         events = [];
         $.ajax({
             type: "GET",
-            url: "/Lessons/GetMyEvents",
+            url: "/Lessons/GetSchoolEvents",
+            data: { trainerId: trainerId },
             success: function (data) {
                 $.each(data,
                     function (i, v) {
                         events.push({
-                            eventID: v.Id,
-                            title: v.Subject,
-                            description: v.Description,
-                            start: moment(v.StartTime),
-                            end: v.EndTime != null ? moment(v.EndTime) : null,
-                            color: v.ThemeColor,
-                            allDay: v.IsFullDay
+                            eventID: v.id,
+                            title: v.subject,
+                            description: v.description,
+                            start: moment(v.startTime),
+                            end: v.endTime != null ? moment(v.endTime) : null,
+                            color: v.themeColor,
+                            allDay: v.isFullDay
                         });
                     });
 
                 generateCalender(events);
             },
             error: function (error) {
-                alert("failed");
+                alert("failed to get events " + error.message);
             }
         });
     }
@@ -44,7 +46,7 @@
             eventLimit: true,
             eventColor: "#378006",
             events: events,
-            eventClick: function(calEvent, jsEvent, view) {
+            eventClick: function (calEvent, jsEvent, view) {
                 selectedEvent = calEvent;
                 $("#myModal #eventTitle").text(calEvent.title);
                 var $description = $("<div/>");
@@ -58,7 +60,7 @@
                 $("#myModal").modal();
             },
             selectable: true,
-            select: function(start, end) {
+            select: function (start, end) {
                 selectedEvent = {
                     eventID: 0,
                     title: "",
@@ -72,10 +74,10 @@
                 $("#calendar").fullCalendar("unselect");
             },
             editable: true,
-            eventDrop: function(event) {
+            eventDrop: function (event) {
                 var data = {
                     Id: event.eventID,
-                    Subject:event.title,
+                    Subject: event.title,
                     StartTime: event.start.format("DD/MM/YYYY HH:mm A"),
                     EndTime: event.end != null ? event.end.format("DD/MM/YYYY HH:mm A") : null,
                     Description: event.description,
@@ -87,24 +89,24 @@
         });
     }
 
-    $("#btnEdit").click(function() {
+    $("#btnEdit").click(function () {
         //Open modal dialog for edit event
         openAddEditForm();
     });
-    $("#btnDelete").click(function() {
+    $("#btnDelete").click(function () {
         if (selectedEvent != null && confirm("Are you sure?")) {
             $.ajax({
                 type: "POST",
                 url: "/Lessons/Delete",
-                data: { 'eventID': selectedEvent.eventID },
-                success: function(data) {
+                data: { 'id': selectedEvent.eventID },
+                success: function (data) {
                     //if (data.status) {
                     //Refresh the calender
                     fetchEventAndRenderCalendar();
                     $("#myModal").modal("hide");
                     //}
                 },
-                error: function() {
+                error: function () {
                     alert("Failed");
                 }
             });
@@ -115,7 +117,7 @@
         format: "DD/MM/YYYY HH:mm A"
     });
 
-    $("#chkIsFullDay").change(function () {
+    $("#fcIsFullDay").change(function () {
         if ($(this).is(":checked")) {
             $("#divEndDate").hide();
         }
@@ -126,68 +128,17 @@
 
     function openAddEditForm() {
         if (selectedEvent != null) {
-            $("#hdEventID").val(selectedEvent.eventID);
-            $("#txtSubject").val(selectedEvent.title);
-            $("#txtStart").val(selectedEvent.start.format("DD/MM/YYYY HH:mm A"));
-            $("#chkIsFullDay").prop("checked", selectedEvent.allDay || false);
-            $("#chkIsFullDay").change();
-            $("#txtEnd").val(selectedEvent.end != null ? selectedEvent.end.format("DD/MM/YYYY HH:mm A") : "");
-            $("#txtDescription").val(selectedEvent.description);
-            $("#ddThemeColor").val(selectedEvent.color);
+            $("#fcId").val(selectedEvent.eventID);
+            $("#fcSubject").val(selectedEvent.title);
+            $("#fcStartTime").val(selectedEvent.start.format("DD/MM/YYYY HH:mm A"));
+            $("#fcIsFullDay").prop("checked", selectedEvent.allDay || false);
+            $("#fcIsFullDay").change();
+            $("#fcEndTime").val(selectedEvent.end != null ? selectedEvent.end.format("DD/MM/YYYY HH:mm A") : "");
+            $("#fcDescription").val(selectedEvent.description);
+            $("#fcThemeColor").val(selectedEvent.color);
         }
         $("#myModal").modal("hide");
         $("#myModalSave").modal();
     }
 
-    $("#btnSave").click(function () {
-        //Validation/
-        if ($("#txtSubject").val().trim() == "") {
-            alert("Subject required");
-            return;
-        }
-        if ($("#txtStart").val().trim() == "") {
-            alert("Start date required");
-            return;
-        }
-        if ($("#chkIsFullDay").is(":checked") == false && $("#txtEnd").val().trim() == "") {
-            alert("End date required");
-            return;
-        } else {
-            var startDate = moment($("#txtStart").val(), "DD/MM/YYYY HH:mm A").toDate();
-            var endDate = moment($("#txtEnd").val(), "DD/MM/YYYY HH:mm A").toDate();
-            if (startDate > endDate) {
-                alert("Invalid end date");
-                return;
-            }
-        }
-
-        var dataInput = {
-            Id: $("#hdEventID").val(),
-            Subject: $("#txtSubject").val().trim(),
-            StartTime: $("#txtStart").val().trim(),
-            EndTime: $("#chkIsFullDay").is(":checked") ? null : $("#txtEnd").val().trim(),
-            Description: $("#txtDescription").val(),
-            ThemeColor: $("#ddThemeColor").val(),
-            IsFullDay: $("#chkIsFullDay").is(":checked")
-        }
-        saveEvent(dataInput);
-        // call function for submit data to the server 
-    });
-
-    function saveEvent(inputData) {
-        $.ajax({
-            type: "POST",
-            url: "/Lessons/Save",
-            data: inputData,
-            success: function (data) {
-               
-                    fetchEventAndRenderCalendar();
-                    $("#myModalSave").modal("hide");
-                
-            },
-            error: function () {
-                alert("Failed");
-            }
-        });
-    }
 })

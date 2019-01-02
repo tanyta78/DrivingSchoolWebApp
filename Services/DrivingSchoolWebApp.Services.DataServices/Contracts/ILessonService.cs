@@ -24,6 +24,7 @@
         IEnumerable<TViewModel> GetLessonsByCustomerId<TViewModel>(int customerId);
 
         IEnumerable<TViewModel> GetLessonsByTrainerId<TViewModel>(int trainerId);
-        object Save(FullCalendarInputModel model);
+
+        int Save(FullCalendarInputModel model);
     }
 }

@@ -160,21 +160,41 @@
             return lesson;
         }
 
-        public object Save(FullCalendarInputModel model)
+        public int Save(FullCalendarInputModel model)
         {
-
+            
             if (model.Id != 0)
             {
-                var lessonEditModel = this.Mapper.Map<EditLessonInputModel>(model);
+               var lessonEditModel=new EditLessonInputModel()
+                {
+                    Id = model.Id,
+                    Description = model.Description,
+                    EndTime = model.EndTime,
+                    IsFullDay = model.IsFullDay,
+                    StartTime = model.StartTime,
+                    ThemeColor = model.ThemeColor
+                };
                 var editedLesson = this.Edit(lessonEditModel).GetAwaiter().GetResult();
+                return editedLesson.Id;
             }
             else
             {
-                var lessonCreateModel = this.Mapper.Map<CreateLessonInputModel>(model);
+              var lessonCreateModel = new CreateLessonInputModel()
+                {
+                    Description = model.Description,
+                    EndTime = model.EndTime,
+                    IsFullDay = model.IsFullDay,
+                    OrderId = model.OrderId,
+                    StartTime = model.StartTime,
+                    Subject = model.Subject,
+                    ThemeColor = model.ThemeColor
+                };
                 var lesson = this.Create(lessonCreateModel).GetAwaiter().GetResult();
+
+                return lesson.Id;
             }
 
-            return new { success = true };
+            
         }
     }
 }

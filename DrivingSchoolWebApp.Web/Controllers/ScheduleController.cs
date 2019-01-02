@@ -8,10 +8,7 @@
     using Services.DataServices.Contracts;
     using Services.Models.Lesson;
 
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ScheduleController : BaseController
+   public class ScheduleController : BaseController
     {
         private readonly ILessonService lessonService;
         private readonly ICustomerService customerService;
@@ -23,49 +20,47 @@
         }
 
        
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Lesson>), 200)]
-        public ActionResult<List<DetailsLessonViewModel>> GetMyEvents()
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+       // [HttpGet]
+       //public ActionResult <List<DetailsLessonViewModel>> GetMyEvents()
+       // {
+       //     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var customerId = this.customerService.GetCustomerByUserId(userId).Id;
-            return this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
+       //     var customerId = this.customerService.GetCustomerByUserId(userId).Id;
 
-        }
+       //     var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Lesson), 200)]
-        [ProducesResponseType(404)]
-        public ActionResult<DetailsLessonViewModel> GetByIdAsync(int id)
-        {
-            var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(id);
+       //     return lessons ;
 
-            if (lesson == null)
-            {
-                return this.NotFound();
-            }
+       // }
 
-            return lesson;
-        }
+       //[HttpGet]
+       // public ActionResult<DetailsLessonViewModel> GetByIdAsync(int id)
+       // {
+       //     var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(id);
+
+       //     if (lesson == null)
+       //     {
+       //         return this.NotFound();
+       //     }
+
+       //     return lesson;
+       // }
 
        
-        [HttpPost]
-        [ProducesResponseType(typeof(Lesson), 201)]
-        [ProducesResponseType(400)]
-        public ActionResult SaveAjax([FromBody]FullCalendarInputModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
+       // [HttpPost]
+       //public ActionResult SaveAjax([FromBody]FullCalendarInputModel model)
+       // {
+       //     if (!this.ModelState.IsValid)
+       //     {
+       //         return this.BadRequest(this.ModelState);
+       //     }
 
-            var result = this.lessonService.Save(model);
+       //     var result = this.lessonService.Save(model);
 
-            return this.CreatedAtAction(nameof(GetByIdAsync),
-                new { id = model.Id }, model);
+       //     return this.CreatedAtAction(nameof(GetByIdAsync),
+       //         new { id = model.Id }, model);
 
-        }
+       // }
 
         //// GET: Lessons/Edit/5
         //public ActionResult Edit(int id)

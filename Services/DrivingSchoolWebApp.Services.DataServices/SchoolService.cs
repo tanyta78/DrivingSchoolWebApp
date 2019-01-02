@@ -140,7 +140,7 @@
             return school;
         }
 
-        private School GetSchoolById(int schoolId)
+       private School GetSchoolById(int schoolId)
         {
             var school = this.schoolRepository
                 .All()

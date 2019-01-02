@@ -25,6 +25,8 @@
 
         public string Description { get; set; }
 
+        public string Subject { get; set; }
+
         public void CreateMappings(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<Lesson, DetailsLessonViewModel>()

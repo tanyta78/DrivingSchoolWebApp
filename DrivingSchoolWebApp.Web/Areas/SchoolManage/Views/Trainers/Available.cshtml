@@ -42,6 +42,8 @@
                 <a asp-area="" asp-controller="Courses" asp-action="Create" asp-route-trainerId="@trainer.Id" class="btn btn-info text-dark">Create Course with this trainer</a>
                 <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-warning text-dark">Edit</a>
                 <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Delete" asp-route-id="@trainer.Id" class="btn btn-danger text-dark">Delete</a>
+                <a asp-area="" asp-controller="Lessons" asp-action="Index" asp-route-trainerId="@trainer.Id" class="btn btn-info text-dark">See schedule for this trainer</a>
+
             </td>
         </tr>
     }

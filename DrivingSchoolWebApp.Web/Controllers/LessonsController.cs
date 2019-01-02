@@ -1,51 +1,85 @@
 ﻿namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Lesson;
+    using Services.Models.Order;
+    using Services.Models.School;
+    using Services.Models.Trainer;
 
     public class LessonsController : BaseController
     {
 
         private readonly ILessonService lessonService;
         private readonly ICustomerService customerService;
+        private readonly IOrderService orderService;
+        private readonly ISchoolService schoolService;
+        private readonly ITrainerService trainerService;
 
-        public LessonsController(ILessonService lessonService, ICustomerService customerService)
+        public LessonsController(ILessonService lessonService, ICustomerService customerService, IOrderService orderService, ISchoolService schoolService, ITrainerService trainerService)
         {
             this.lessonService = lessonService;
             this.customerService = customerService;
+            this.orderService = orderService;
+            this.schoolService = schoolService;
+            this.trainerService = trainerService;
         }
 
         // GET: Lessons
-        public ActionResult Index()
+        public ActionResult Index(int trainerId)
         {
-            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var customer = this.customerService.GetCustomerByUserId(userId);
-            //var courseId = 0;
-            //if (customer.CoursesOrdered.Count() != 0)
-            //{
-            //    //?!?!
-            //    courseId = customer.CoursesOrdered.FirstOrDefault().Id;
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (this.User.IsInRole("School"))
+            {
+                var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(this.User.Identity.Name);
+                var trainers = this.trainerService.TrainersBySchoolId<AvailableTrainerViewModel>(school.Id);
 
-            //}
+                var receivedOrders = this.orderService.GetOrdersBySchoolIdPaymentMadeAndTrainerId<FullCalendarOrdersViewModel>(school.Id, trainerId)
+                    .ToList();
 
-            //this.ViewBag.CourseId = courseId;
-            //this.ViewBag.CustomerId = customer.Id;
-            return this.View("CustomerSchedule");
+                this.ViewBag.OrdersList = receivedOrders;
+                this.ViewBag.TrainersList = trainers;
+                this.ViewBag.TrainerId = trainerId;
+                return this.View("SchoolSchedule");
+            }
+            else
+            {
+                var customer = this.customerService.GetCustomerByUserId(userId);
+
+                var orders = this.orderService.GetOrdersByCustomerId<FullCalendarOrdersViewModel>(customer.Id).ToList();
+
+                this.ViewBag.OrdersList = orders;
+
+                return this.View("CustomerSchedule");
+            }
+
         }
 
         // GET: Lessons/GetMyEvents
-        public ActionResult GetMyEvents()
+        public ActionResult<List<DetailsLessonViewModel>> GetMyEvents()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var customerId = this.customerService.GetCustomerByUserId(userId).Id;
             var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
-            var result = this.Json(new { success = true, lessons });
-            return result;
+
+            return lessons;
+        }
+
+        // GET: Lessons/GetSchoolEvents
+        public ActionResult<List<DetailsLessonViewModel>> GetSchoolEvents(int? trainerId)
+        {
+            var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(this.User.Identity.Name).Id;
+
+            var trainers = this.trainerService.TrainersBySchoolId<AvailableTrainerViewModel>(schoolId);
+
+            var lessons = this.lessonService.GetLessonsByTrainerId<DetailsLessonViewModel>(trainerId ?? trainers.First().Id).ToList();
+
+            return lessons;
         }
 
         // GET: Lessons/Details/5
@@ -94,27 +128,11 @@
 
             var result = this.lessonService.Save(model);
 
-            return this.RedirectToAction(nameof(Index));
+            return this.RedirectToAction("Index", new { trainerId = model.TrainerId });
 
         }
 
-        // POST: Lessons/Save
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveAjax(FullCalendarInputModel model)
-        {
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.Json(new { success = false, error = true });
-            }
-
-            var result = this.lessonService.Save(model);
-
-            return this.Json(new { success = true, responseText = "Success" });
-
-        }
-
+      
         // GET: Lessons/Edit/5
         public ActionResult Edit(int id)
         {

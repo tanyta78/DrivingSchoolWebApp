@@ -76,6 +76,20 @@
             return orders;
         }
 
+        public IEnumerable<TViewModel> GetOrdersBySchoolIdAndPaymentMade<TViewModel>(int schoolId)
+        {
+            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && (x.OrderStatus==OrderStatus.PaymentReceived||x.OrderStatus==OrderStatus.PaymentUpdated||x.OrderStatus==OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
+
+            return orders;
+        }
+
+        public IEnumerable<TViewModel> GetOrdersBySchoolIdPaymentMadeAndTrainerId<TViewModel>(int schoolId, int trainerId)
+        {
+            var orders = this.orderRepository.All().Where(x => x.Course.SchoolId == schoolId && x.Course.TrainerId==trainerId && (x.OrderStatus==OrderStatus.PaymentReceived||x.OrderStatus==OrderStatus.PaymentUpdated||x.OrderStatus==OrderStatus.Completed)).ProjectTo<TViewModel>().ToList();
+
+            return orders;
+        }
+
         public async Task<Order> Create(CreateOrderInputModel model)
         {
             var order = new Order

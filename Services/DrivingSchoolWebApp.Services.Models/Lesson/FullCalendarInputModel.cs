@@ -10,6 +10,8 @@
 
         public int OrderId { get; set; }
 
+        public int TrainerId { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public DateTime StartTime { get; set; }

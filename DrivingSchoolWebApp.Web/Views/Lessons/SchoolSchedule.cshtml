@@ -1,17 +1,31 @@
-﻿@model DrivingSchoolWebApp.Services.Models.Lesson.ScheduleSchoolModel
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@model DrivingSchoolWebApp.Services.Models.Lesson.FullCalendarInputModel
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
 @{
     ViewData["Title"] = "Schedule";
-}
-@section Scripts
-    {
-    <script src="@Url.Content("~/Scripts/myCalendar.js")"></script>
-    }
+    var ordersList = ViewBag.OrdersList;
+    var trainersList = ViewBag.TrainersList;
+   }
 
 
 <h2>Schedule</h2>
-<input hidden id="lessonCustomerId" value="@Model.CustomerId" />
-<input hidden id="lessonCourseId" value="@Model.CourseId" />
-
+<div>
+    @*<form id="myForm" asp-action="Index" asp-controller="Lessons">
+    <div class="form-group">
+        <label name="TrainerId">Trainers</label>
+        <select id="trainerId" name="TrainerId"
+                asp-items="@(new SelectList(trainersList, "Id", "UserNickname"))">
+            <option>Please select one</option>
+        </select>
+    </div>
+    </form>*@
+    <input type="hidden" name="TrainerId" id="trainerId" value="@ViewBag.TrainerId" />
+</div>
 <div id="calender"></div>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -45,16 +59,24 @@
                 <h4 class="modal-title">Save Event</h4>
             </div>
             <div class="modal-body">
-                <form class="col-md-12 form-horizontal">
-                    <input type="hidden" id="hdEventID" value="0" />
+                <form class="col-md-12 form-horizontal" asp-controller="Lessons" asp-action="Save" id="lessonsForm" method="post">
+                    <input type="hidden" asp-for="Id" id="fcId" value="0" />
+                    <input type="hidden" asp-for="TrainerId" value="@ViewBag.TrainerId" />
                     <div class="form-group">
-                        <label>Subject</label>
-                        <input type="text" id="txtSubject" class="form-control" />
+                        <label asp-for="OrderId">Order</label>
+                        <select asp-for="OrderId"
+                                asp-items="@(new SelectList(ordersList,"Id","Info"))">
+                            <option>Please select one</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>Start</label>
+                        <label asp-for="Subject">Subject</label>
+                        <input type="text" asp-for="Subject" class="form-control" id="fcSubject" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartTime">Start</label>
                         <div class="input-group date" id="dtp1">
-                            <input type="text" id="txtStart" class="form-control" />
+                            <input type="text" asp-for="StartTime" class="form-control" id="fcStartTime" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -62,25 +84,25 @@
                     </div>
                     <div class="form-group">
                         <div class="checkbox">
-                            <label><input type="checkbox" id="chkIsFullDay" checked="checked" />  Is Full Day event</label>
+                            <label asp-for="IsFullDay"><input type="checkbox" asp-for="IsFullDay" checked="checked" id="fcIsFullDay" /> Is Full Day event</label>
                         </div>
                     </div>
-                    <div class="form-group" id="divEndDate">
-                        <label>End</label>
+                    <div class="form-group" id="divEndDate" style="display: none">
+                        <label asp-for="EndTime">End</label>
                         <div class="input-group date" id="dtp2">
-                            <input type="text" id="txtEnd" class="form-control" />
+                            <input type="text" asp-for="EndTime" class="form-control" id="fcEndTime" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                        <label asp-for="Description">Description</label>
+                        <textarea asp-for="Description" rows="3" class="form-control" id="fcDescription"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Theme Color</label>
-                        <select id="ddThemeColor" class="form-control">
+                        <label asp-for="ThemeColor">Theme Color</label>
+                        <select asp-for="ThemeColor" class="form-control" id="fcThemeColor">
                             <option value="">Default</option>
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
@@ -88,13 +110,21 @@
                             <option value="green">Green</option>
                         </select>
                     </div>
-                    <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts{
+    <script>
+        $("#trainerId").change(function () {
+            $("#myForm").submit();
+        });
+    </script>
+    <script type="text/javascript" src="~/scripts/schoolCalendar.js"></script>
+}
 
 

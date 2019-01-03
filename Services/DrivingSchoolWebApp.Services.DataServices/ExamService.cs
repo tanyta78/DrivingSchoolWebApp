@@ -116,12 +116,6 @@
         {
             var exam = this.GetExamById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
             exam.Status = newStatus;
             this.examRepository.Update(exam);
             await this.examRepository.SaveChangesAsync();
@@ -133,12 +127,6 @@
         {
             var exam = this.GetExamById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
             exam.Status = LessonStatus.Canceled;
             this.examRepository.Update(exam);
             await this.examRepository.SaveChangesAsync();
@@ -146,33 +134,15 @@
             return exam; ;
         }
 
-        public async Task Delete(int id)
+        public async Task<Exam> Delete(int id)
         {
             var exam = this.GetExamById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
             this.examRepository.Delete(exam);
             await this.examRepository.SaveChangesAsync();
+
+            return exam;
         }
 
-        //private bool HasRightsToEditOrDelete(int examId, string username)
-        //{
-        //    var exam = this.GetExamById(examId);
-
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and car for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var isAdmin = roles.Any(x => x == "Admin");
-        //    var isCreator = username == exam.Course.School.Manager.UserName;
-
-        //    return isCreator || isAdmin;
-        //}
     }
 }

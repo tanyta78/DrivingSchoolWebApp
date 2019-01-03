@@ -30,6 +30,6 @@
 
         Task<Exam> CancelExam (int id);
         
-        Task Delete(int id);
+        Task<Exam> Delete(int id);
     }
 }

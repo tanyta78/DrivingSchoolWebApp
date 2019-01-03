@@ -206,7 +206,7 @@
         }
 
         [Test]
-        public void Edit_WithValidCourseObject_ReturnsCar()
+        public void Edit_WithValidCourseObject_ReturnsCourse()
         {
             var course = new Course()
             {
@@ -263,7 +263,7 @@
         }
 
         [Test]
-        public void Delete_WithValidCarObject_ReturnsCar()
+        public void Delete_WithValidCourseObject_ReturnsCourse()
         {
             var course = new Course()
             {

@@ -3,21 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using DrivingSchoolWebApp.Data.Models;
     using Mapping;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Models.Customer;
 
-    public class CustomerService :  ICustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly IRepository<Customer> customerRepository;
 
-        public CustomerService( IRepository<Customer> customerRepository) 
+        public CustomerService(IRepository<Customer> customerRepository)
         {
             this.customerRepository = customerRepository;
         }
@@ -44,21 +42,21 @@
             return customer;
         }
 
-        public void Delete(int id)
+        public Customer Delete(int id)
         {
             //todo find user and set isEnabled to false =>check this
             var customer = this.GetCustomerById(id);
             var user = customer.User;
             user.IsEnabled = false;
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();
-
+            return customer;
         }
 
-        public void Edit(CustomerViewModel model)
-        {
-            //todo decide model and what to change?!? do not change userId
-            //maybe you do not need this
-        }
+        //public Customer Edit(CustomerViewModel model)
+        //{
+        //    //todo decide model and what to change?!? do not change userId
+        //    //maybe you do not need this
+        //}
 
         public IEnumerable<TViewModel> All<TViewModel>()
         {

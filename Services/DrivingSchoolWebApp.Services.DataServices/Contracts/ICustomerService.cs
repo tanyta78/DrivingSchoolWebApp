@@ -18,8 +18,8 @@
 
         Customer Create(CreateCustomerInputModel model);
 
-        void Edit(CustomerViewModel model);
+        //Customer Edit(CustomerViewModel model);
 
-        void Delete(int id);
+        Customer Delete(int id);
     }
 }

@@ -184,7 +184,7 @@
         {
             try
             {
-                var course = this.courseService.GetCourseById<DeleteCourseViewModel>(id);
+               var course = this.courseService.GetCourseById<DeleteCourseViewModel>(id);
 
                 return this.View(course);
 

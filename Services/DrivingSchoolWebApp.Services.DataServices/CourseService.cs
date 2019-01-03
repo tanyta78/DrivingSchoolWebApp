@@ -46,19 +46,14 @@
             return course;
         }
 
-        public async Task Delete(int id)
+        public async Task<Course> Delete(int id)
         {
             var course = this.GetCourseById(id);
-            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
+           
             this.courseRepository.Delete(course);
             await this.courseRepository.SaveChangesAsync();
+
+            return course;
         }
 
         public async Task<Course> Edit(EditCourseInputModel model)
@@ -67,13 +62,7 @@
             //todo change price, description, min lessons,trainerId, carId
             var course = this.GetCourseById(model.Id);
 
-            //if (!this.HasRightsToEditOrDelete(model.Id, model.Username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
-            course.CarId = model.CarId;
+           course.CarId = model.CarId;
             course.TrainerId = model.TrainerId;
             course.Price = model.Price;
             course.Description = model.Description;

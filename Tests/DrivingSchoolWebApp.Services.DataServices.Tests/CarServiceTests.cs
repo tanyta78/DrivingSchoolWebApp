@@ -80,7 +80,7 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
 
             Assert.That(result.Id, Is.EqualTo(1));
         }
-        
+
         [Test]
         public void GetCarById_NoCarWihIdInDb_ThrowsException()
         {
@@ -103,7 +103,7 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             };
             this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable());
 
-            Assert.That(()=>this.carService.GetCarById<CarDetailsViewModel>(4), Throws.ArgumentException);
+            Assert.That(() => this.carService.GetCarById<CarDetailsViewModel>(4), Throws.ArgumentException);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
                 InUse = true
             };
 
-           
+
             this.repository.Setup(r => r.AddAsync(car)).Returns(Task.FromResult(car));
 
             var model = new CreateCarInputModel()
@@ -137,12 +137,215 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             };
             var result = this.carService.Create(model).GetAwaiter().GetResult();
 
-            Assert.That(result.CarModel,Is.EqualTo("testModel"));
+            Assert.That(result.CarModel, Is.EqualTo("testModel"));
         }
 
+        [Test]
+        public void Edit_WithValidCarObject_ReturnsCar()
+        {
+            var car = new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "77777",
+                InUse = true
+            };
+            var returnValue = new List<Car>()
+            {
+                car
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable);
 
+            this.repository.Setup(r => r.Update(car)).Callback(() => new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "AA1111AA",
+                InUse = true
+            });
 
+            var model = new EditCarInputModel()
+            {
+                Id = 1,
+                ImageUrl = "testUrl",
+                VIN = "AA1111AA",
+                InUse = true
+            };
+            var result = this.carService.Edit(model).GetAwaiter().GetResult();
 
+            Assert.That(result.VIN, Is.EqualTo("AA1111AA"));
+        }
+
+        [Test]
+        public void Edit_CarObjectDoNotExistInDb_ThrowsException()
+        {
+            var car = new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "77777",
+                InUse = true
+            };
+            var returnValue = new List<Car>()
+            {
+                car
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable);
+
+            this.repository.Setup(r => r.Update(car)).Callback(() => new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "AA1111AA",
+                InUse = true
+            });
+
+            var model = new EditCarInputModel()
+            {
+                Id = 2,
+                ImageUrl = "testUrl",
+                VIN = "AA1111AA",
+                InUse = true
+            };
+          
+            Assert.That(() => this.carService.Edit(model).GetAwaiter().GetResult(), Throws.ArgumentException);
+        }
+        
+        [Test]
+        public void GetCarByOwnerTradeMark_WithValidData_ReturnsCarsWithWantedTradeMark()
+        {
+            var returnValue = new List<Car>()
+            {
+                new Car()
+                {
+                    Id = 1,
+                    CarModel = "testModel",
+                    ImageUrl = "testUrl",
+                    Make = "testMake",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne"
+                    },
+                    OwnerId = 1,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3311",
+                    InUse = true
+                },
+                new Car()
+                {
+                    Id = 2,
+                    CarModel = "testModel2",
+                    ImageUrl = "testUrl2",
+                    Make = "testMake2",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne2"
+                    },
+                    OwnerId = 2,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3322",
+                    InUse = true
+                },
+                new Car()
+                {
+                    Id = 3,
+                    CarModel = "testModel3",
+                    ImageUrl = "testUrl3",
+                    Make = "testMake3",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne"
+                    },
+                    OwnerId = 1,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3333",
+                    InUse = true
+                }
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable());
+
+            var result = this.carService.GetCarsByOwnerTradeMark<CarDetailsViewModel>("TheBestOne");
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetCarBySchoolId_WithValidData_ReturnsCarsWithWantedSchoolId()
+        {
+            var returnValue = new List<Car>()
+            {
+                new Car()
+                {
+                    Id = 1,
+                    CarModel = "testModel",
+                    ImageUrl = "testUrl",
+                    Make = "testMake",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne"
+                    },
+                    OwnerId = 1,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3311",
+                    InUse = true
+                },
+                new Car()
+                {
+                    Id = 2,
+                    CarModel = "testModel2",
+                    ImageUrl = "testUrl2",
+                    Make = "testMake2",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne2"
+                    },
+                    OwnerId = 2,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3322",
+                    InUse = true
+                },
+                new Car()
+                {
+                    Id = 3,
+                    CarModel = "testModel3",
+                    ImageUrl = "testUrl3",
+                    Make = "testMake3",
+                    Owner = new School()
+                    {
+                        TradeMark = "TheBestOne2"
+                    },
+                    OwnerId = 2,
+                    Transmission = Transmission.Authomatic,
+                    VIN = "AA3333",
+                    InUse = true
+                }
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable());
+
+            var result = this.carService.GetCarsBySchoolId<CarDetailsViewModel>(2);
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+        }
 
         private void SetMapper()
         {

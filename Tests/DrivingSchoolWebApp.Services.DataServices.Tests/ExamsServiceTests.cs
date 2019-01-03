@@ -61,7 +61,7 @@
             var returnValue = new List<Exam>();
             this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable());
 
-            var result = this.examsService.All();
+            var result = this.examsService.All<AllExamsViewModel>();
 
             Assert.That(result, Is.Empty);
         }

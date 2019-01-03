@@ -82,34 +82,17 @@
             return feedback;
         }
 
-        public async Task Delete(int id)
+        public async Task<Feedback> Delete(int id)
         {
             var feedback = this.GetFeedbackById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
             this.feedbackRepository.Delete(feedback);
             await this.feedbackRepository.SaveChangesAsync();
+
+            return feedback;
         }
 
-        //private bool HasRightsToEditOrDelete(int feedbackId)
-        //{
-        //    var feedback = this.GetFeedbackById(feedbackId);
-        //    var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
-        //    //todo check user and feedback for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var isAdmin = roles.Any(x => x == "Admin");
-        //    var isCreator = username == feedback.Customer.User.UserName;
-
-        //    return isCreator || isAdmin;
-        //}
 
         private Feedback GetFeedbackById(int feedbackId)
         {

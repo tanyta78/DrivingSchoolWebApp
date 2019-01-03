@@ -21,6 +21,6 @@
         
         Task<Feedback> Create(CreateFeedbackInputModel model);
 
-       Task Delete(int id);
+       Task<Feedback> Delete(int id);
     }
 }

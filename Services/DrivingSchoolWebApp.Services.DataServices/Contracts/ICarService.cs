@@ -19,7 +19,7 @@
 
         Task<Car> Edit(EditCarInputModel model);
 
-        Task Delete(CarDetailsViewModel model);
+        Task<Car> Delete(CarDetailsViewModel model);
 
     }
 }

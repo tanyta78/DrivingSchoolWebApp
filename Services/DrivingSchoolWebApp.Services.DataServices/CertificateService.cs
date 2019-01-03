@@ -82,46 +82,6 @@
             return certificate;
         }
 
-        //public async Task Delete(int id, string username)
-        //{
-        //    var certificate = this.GetCertificateById(id);
-
-        //    if (!this.HasRightsToEditOrDelete(id, username))
-        //    {
-        //        //todo throw custom error message
-        //        throw new OperationCanceledException("You do not have rights for this operation!");
-        //    }
-        //    this.certificateRepository.Delete(certificate);
-        //    await this.certificateRepository.SaveChangesAsync();
-        //}
-
-        //private bool HasRightsToEditOrDelete(int certificateId, string username)
-        //{
-        //    var certificate = this.GetCertificateById(certificateId);
-
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and Certificate for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var isAdmin = roles.Any(x => x == "Admin");
-        //    var isCreator = username == certificate.Customer.User.UserName;
-
-        //    return isCreator || isAdmin;
-        //}
-
-        private Certificate GetCertificateById(int certificateId)
-        {
-            var certificate = this.certificateRepository.All()
-                .FirstOrDefault(x => x.Id == certificateId);
-
-            if (certificate == null)
-            {
-                throw new ArgumentException("No Certificate with id in db");
-            }
-
-            return certificate;
-        }
+      
     }
 }

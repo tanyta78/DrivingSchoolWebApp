@@ -8,6 +8,7 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
+    using Microsoft.AspNetCore.Http;
     using Models.Account;
     using Models.Car;
     using Moq;
@@ -177,13 +178,66 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             var model = new EditCarInputModel()
             {
                 Id = 1,
-                ImageUrl = "testUrl",
+                ImageUrl = "testUrlNew",
                 VIN = "AA1111AA",
-                InUse = true
+                InUse = false
             };
             var result = this.carService.Edit(model).GetAwaiter().GetResult();
 
             Assert.That(result.VIN, Is.EqualTo("AA1111AA"));
+            Assert.That(result.ImageUrl, Is.EqualTo("testUrl"));
+            Assert.That(result.InUse, Is.EqualTo(false));
+            Assert.That(result.Id,Is.EqualTo(1));
+
+            Assert.That(result.CarModel, Is.EqualTo("testModel"));
+            Assert.That(result,Is.TypeOf<Car>());
+        }
+
+        [Test]
+        public void Edit_WithEmptyImageFile_ThrowsException()
+        {
+            var car = new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "77777",
+                InUse = true
+            };
+            var returnValue = new List<Car>()
+            {
+                car
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable);
+
+            this.repository.Setup(r => r.Update(car)).Callback(() => new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "AA1111AA",
+                InUse = true
+            });
+
+            var fileformMock = new Mock<IFormFile>();
+            var model = new EditCarInputModel()
+            {
+                Id = 1,
+                ImageUrl = "testUrlNew",
+                VIN = "AA1111AA",
+                InUse = false,
+                CarImage = fileformMock.Object
+            };
+
+            Assert.That(() => this.carService.Edit(model).GetAwaiter().GetResult(), Throws.Exception);
         }
 
         [Test]
@@ -227,10 +281,10 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
                 VIN = "AA1111AA",
                 InUse = true
             };
-          
+
             Assert.That(() => this.carService.Edit(model).GetAwaiter().GetResult(), Throws.ArgumentException);
         }
-        
+
         [Test]
         public void GetCarByOwnerTradeMark_WithValidData_ReturnsCarsWithWantedTradeMark()
         {
@@ -345,6 +399,51 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             var result = this.carService.GetCarsBySchoolId<CarDetailsViewModel>(2);
 
             Assert.That(result.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Delete_WithValidCarObject_ReturnsCar()
+        {
+            var car = new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "df33434",
+                InUse = true
+            };
+
+            var returnValue=new List<Car>()
+            {
+                car
+            };
+
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable);
+            this.repository.Setup(r => r.Delete(car)).Callback(() => new Car()
+            {
+                Id = 1,
+                CarModel = "testModel",
+                ImageUrl = "testUrl",
+                Make = "testMake",
+                Owner = new School(),
+                OwnerId = 1,
+                Transmission = Transmission.Authomatic,
+                VIN = "df33434",
+                InUse = true
+            });
+
+           var model = new CarDetailsViewModel()
+           {
+               Id = 1
+           };
+
+            var result = this.carService.Delete(model).GetAwaiter().GetResult();
+
+            Assert.That(result.CarModel, Is.EqualTo("testModel"));
         }
 
         private void SetMapper()

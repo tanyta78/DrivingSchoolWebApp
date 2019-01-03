@@ -22,10 +22,7 @@
 
         public bool IsFinished { get; set; }
 
-        //todo set rating to calculated property from feedback not in db
-        //public double Rating => this.AllFeedbacks.ToList().Select(f => f.Rating).Average() ;
-
-        public int SchoolId { get; set; }
+       public int SchoolId { get; set; }
 
         public virtual School School { get; set; }
 

@@ -24,7 +24,7 @@
         {
             cfg.CreateMap<Certificate, AllCertificatesViewModel>()
                 .ForMember(dest => dest.CustomerFullName, opt => opt.MapFrom(src => src.Customer.User.FirstName + " " + src.Customer.User.LastName))
-                .ForMember(dest => dest.CourseInfo, opt => opt.MapFrom(src => src.Course.Trainer.User.Nickname + " as trainer" + src.Course.School.TradeMark + " school" + src.Course.Car.CarModel + " " + src.Course.Car.CarModel + " " + src.Course.Car.Make + " " + src.Course.Car.Transmission));
+                .ForMember(dest => dest.CourseInfo, opt => opt.MapFrom(src => src.Course.Trainer.User.Nickname + " as trainer" + src.Course.School.TradeMark + " school" + src.Course.Car.CarModel + " " + src.Course.Car.Make + " " + src.Course.Car.Transmission));
         }
     }
 }

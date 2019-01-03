@@ -35,6 +35,7 @@
 
             ms.Dispose();
             return uploadResult.SecureUri.AbsoluteUri;
+
         }
 
         public static Cloudinary SetCloudinary()

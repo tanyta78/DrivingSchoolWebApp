@@ -49,12 +49,14 @@
             return car;
         }
 
-        public async Task Delete(CarDetailsViewModel model)
+        public async Task<Car> Delete(CarDetailsViewModel model)
         {
             var car = this.GetCarById(model.Id);
 
             this.carRepository.Delete(car);
             await this.carRepository.SaveChangesAsync();
+
+            return car;
         }
 
         public async Task<Car> Edit(EditCarInputModel model)

@@ -21,9 +21,10 @@
             this.carRepository = carRepository;
         }
 
-        public IEnumerable<Car> All()
+        public IEnumerable<Car> GetAllCars()
         {
-            return this.carRepository.All().ToList();
+            var result = this.carRepository.All().ToList();
+            return result;
         }
 
         public async Task<Car> Create(CreateCarInputModel model)
@@ -51,13 +52,6 @@
         public async Task Delete(CarDetailsViewModel model)
         {
             var car = this.GetCarById(model.Id);
-            //var username = model.Username;
-
-            //if (!this.HasRightsToEditOrDelete(model.Id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
 
             this.carRepository.Delete(car);
             await this.carRepository.SaveChangesAsync();
@@ -68,12 +62,6 @@
             //todo check model validation in controller?!?
             //todo change inUse, Image, VIN
             var car = this.GetCarById(model.Id);
-            //var username = model.Username;
-
-            //if (!this.HasRightsToEditOrDelete(model.Id, username))
-            //{
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
 
             car.InUse = model.InUse;
             car.VIN = model.VIN;
@@ -96,7 +84,7 @@
         public TViewModel GetCarById<TViewModel>(int id)
         {
             var car = this.carRepository.All().Where(x => x.Id == id)
-                           .To<TViewModel>().FirstOrDefault();
+                .To<TViewModel>().FirstOrDefault();
 
             if (car == null)
             {
@@ -120,20 +108,6 @@
             return cars;
         }
 
-        //private bool HasRightsToEditOrDelete(int carId, string username)
-        //{
-        //    var car = this.GetCarById(carId);
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and car for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var hasRights = roles.Any(x => x == "Admin");
-        //    var isOwner = username == car.Owner.Manager.UserName;
-
-        //    return isOwner || hasRights;
-        //}
 
         private Car GetCarById(int id)
         {

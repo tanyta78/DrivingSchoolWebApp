@@ -7,7 +7,7 @@
 
     public interface ICarService
     {
-        IEnumerable<Car> All();
+        IEnumerable<Car> GetAllCars();
 
         TViewModel GetCarById<TViewModel>(int id);
 

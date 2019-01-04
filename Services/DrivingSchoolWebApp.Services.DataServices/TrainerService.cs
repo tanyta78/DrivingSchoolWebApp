@@ -32,16 +32,16 @@
             return trainer;
         }
 
-        public void Delete(int id)
-        {
-            throw new System.NotImplementedException();
-        }
+        //public void Delete(int id)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
-        public void Edit()
-        {
-            throw new System.NotImplementedException();
+        //public void Edit()
+        //{
+        //    throw new System.NotImplementedException();
 
-        }
+        //}
 
         public TViewModel GetTrainerById<TViewModel>(int id)
         {

@@ -8,9 +8,9 @@
     {
         Trainer Hire(CreateTrainerInputModel model);
 
-        void Edit();
+        //void Edit();
 
-        void Delete(int id);
+        //void Delete(int id);
 
         IEnumerable<TViewModel> TrainersBySchoolId<TViewModel>(int schoolId);
 

@@ -151,7 +151,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var exam = this.examService.GetExamById<AllExamsViewModel>(examId);
 
-            var result = (userId == exam.CourseSchoolManagerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == exam.CourseSchoolManagerId) || this.User.IsInRole("Admin");
             return result;
         }
     }

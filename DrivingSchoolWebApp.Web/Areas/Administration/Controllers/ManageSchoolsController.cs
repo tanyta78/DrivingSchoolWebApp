@@ -56,7 +56,7 @@
                 return this.View(model);
             }
 
-            var schoolId = this.schoolService.Create(model);
+            var schoolId = this.schoolService.Create(model).Id;
 
             //set user role
             this.accountService.SetRole("School", model.ManagerId);
@@ -83,7 +83,7 @@
                 return this.View(model);
             }
 
-            var schoolId = this.schoolService.Edit(model);
+            var schoolId = this.schoolService.Edit(model).Id;
 
             //todo decide where to redirect
             return this.RedirectToAction("Details", "ManageSchools", schoolId);
@@ -126,7 +126,7 @@
             }
 
             var newManager = this.accountService.GetUser(model.ManagerId);
-            this.schoolService.ChangeManager(model.Id, newManager);
+            this.schoolService.ChangeManager(model.Id, model.ManagerId);
 
             this.accountService.RemoveApproval(model.ManagerId);
             this.accountService.Approve(model.NewManagerId);

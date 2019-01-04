@@ -46,7 +46,7 @@
                     return this.View(model);
                 }
 
-                var schoolId = this.schoolService.Create(model);
+                var schoolId = this.schoolService.Create(model).Id;
                 this.accountService.SetRole("School", model.ManagerId);
                 //todo decide where to redirect
                 return this.RedirectToAction("Manage", "Schools", new { Area = "SchoolManage" });
@@ -82,7 +82,7 @@
                     throw new OperationCanceledException("You do not have rights for this operation!");
                 }
 
-                var schoolId = this.schoolService.Edit(model);
+                var schoolId = this.schoolService.Edit(model).Id;
 
                 //todo decide where to redirect
                 return this.RedirectToAction("Manage", "Schools", schoolId);

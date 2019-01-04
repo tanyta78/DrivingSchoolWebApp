@@ -24,7 +24,7 @@
             return this.schoolRepository.All().Where(s => s.IsActive).ProjectTo<TViewModel>();
         }
 
-        public int Create(CreateSchoolInputModel model)
+        public School Create(CreateSchoolInputModel model)
         {
             //todo check manager is in role school 
             var school = new School()
@@ -38,22 +38,25 @@
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school.Id;
+            return school;
         }
 
-        public void Delete(int id)
+        public School Delete(int id)
         {
             //todo 
             //change school isActive to false
             var school = this.GetSchoolById(id);
             school.IsActive = false;
+            this.schoolRepository.Update(school);
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
             //change manager usertype to customer and remove user from role school and isApproved set to false=> ONLY with admin rights or approvement
             //do this in controller and call account service
+
+            return school;
         }
 
-        public int Edit(EditSchoolInputModel model)
+        public School Edit(EditSchoolInputModel model)
         {
             var school = this.GetSchoolById(model.Id);
 
@@ -62,22 +65,22 @@
             school.TradeMark = model.TradeMark;
             school.Phone = model.Phone;
 
-           this.schoolRepository.Update(school);
-           this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
+            this.schoolRepository.Update(school);
+            this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school.Id;
+            return school;
         }
 
-        public int ChangeManager(int schoolId, AppUser newManager)
+        public School ChangeManager(int schoolId, string newManagerId)
         {
             var school = this.GetSchoolById(schoolId);
 
-           school.ManagerId = newManager.Id;
+            school.ManagerId = newManagerId;
 
             this.schoolRepository.Update(school);
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
-            return school.Id;
+            return school;
         }
 
         public TViewModel GetSchoolById<TViewModel>(int id)
@@ -119,32 +122,6 @@
             return school;
         }
 
-        private School GetSchoolByManagerName(string username)
-        {
-            var school = this.schoolRepository.All()
-                             .FirstOrDefault(x => x.Manager.UserName == username);
-
-            if (school == null)
-            {
-                throw new ArgumentException("No school with this manager name in db");
-            }
-
-            return school;
-        }
-
-        //private bool HasRightsToEditOrDelete(int schoolId, string username)
-        //{
-        //    var school = this.GetSchoolById(schoolId);
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and car for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var hasRights = roles.Any(x => x == "Admin");
-        //    var isManager = username == school.Manager.UserName;
-
-        //    return isManager || hasRights;
-        //}
+       
     }
 }

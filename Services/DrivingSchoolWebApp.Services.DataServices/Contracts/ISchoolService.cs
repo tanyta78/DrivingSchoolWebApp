@@ -8,13 +8,13 @@
     {
        // void ApproveSchool(AppUser manager); 
 
-        int Create(CreateSchoolInputModel model); 
+        School Create(CreateSchoolInputModel model); 
         
-        int Edit(EditSchoolInputModel model);
+        School Edit(EditSchoolInputModel model);
 
-        int ChangeManager(int schoolId, AppUser newManager);
+        School ChangeManager(int schoolId, string newManagerId);
 
-        void Delete(int id);
+        School Delete(int id);
 
         IEnumerable<TViewModel> AllActiveSchools<TViewModel>();
 

@@ -107,12 +107,6 @@
         {
             var order = this.GetOrderById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username) || order.OrderStatus == OrderStatus.Cancelled)
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
             order.OrderStatus = newStatus;
             this.orderRepository.Update(order);
             await this.orderRepository.SaveChangesAsync();
@@ -124,12 +118,6 @@
         {
             var order = this.GetOrderById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
-
             order.OrderStatus = OrderStatus.Cancelled;
             this.orderRepository.Update(order);
             await this.orderRepository.SaveChangesAsync();
@@ -137,34 +125,16 @@
             return order;
         }
 
-        public async Task Delete(int id, string username)
+        public async Task<Order> Delete(int id, string username)
         {
             var order = this.GetOrderById(id);
 
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
             this.orderRepository.Delete(order);
             await this.orderRepository.SaveChangesAsync();
+
+            return order;
         }
 
-        //private bool HasRightsToEditOrDelete(int orderId, string username)
-        //{
-        //    var order = this.GetOrderById(orderId);
-
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and car for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var isAdmin = roles.Any(x => x == "Admin");
-        //    var isCreator = username == order.Customer.User.UserName;
-
-        //    return isCreator || isAdmin;
-        //}
 
         private Order GetOrderById(int orderId)
         {

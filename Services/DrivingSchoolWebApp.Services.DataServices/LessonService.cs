@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using AutoMapper.QueryableExtensions;
     using Contracts;
@@ -72,7 +71,6 @@
 
         public async Task<Lesson> Create(CreateLessonInputModel model)
         {
-            //todo check who can add lessons from full calendar!!! now customers can - only for test functionality
             var lesson = new Lesson()
             {
                 OrderId = model.OrderId,
@@ -93,13 +91,6 @@
         public async Task<Lesson> Edit(EditLessonInputModel model)
         {
             var lesson = this.GetLessonById(model.Id);
-            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-
-            //if (!this.HasRightsToEditOrDelete(model.Id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
 
             lesson.Status = model.Status;
             lesson.StartTime = model.StartTime;
@@ -114,35 +105,15 @@
             return lesson;
         }
 
-        public async Task Delete(int id)
+        public async Task<Lesson> Delete(int id)
         {
             var lesson = this.GetLessonById(id);
-            //var username = this.UserManager.GetUserName(ClaimsPrincipal.Current);
-
-            //if (!this.HasRightsToEditOrDelete(id, username))
-            //{
-            //    //todo throw custom error message
-            //    throw new OperationCanceledException("You do not have rights for this operation!");
-            //}
 
             this.lessonRepository.Delete(lesson);
             await this.lessonRepository.SaveChangesAsync();
+
+            return lesson;
         }
-
-        //private bool HasRightsToEditOrDelete(int lessonId, string username)
-        //{
-        //    var lesson = this.GetLessonById(lessonId);
-        //    var user = this.UserManager.FindByNameAsync(username).GetAwaiter().GetResult();
-
-        //    //todo check user and lesson for null; to add include if needed
-
-        //    var roles = this.UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-
-        //    var hasRights = roles.Any(x => x == "Admin");
-        //    var isCreator = username == lesson.Order.Course.School.Manager.UserName;
-
-        //    return isCreator || hasRights;
-        //}
 
         private Lesson GetLessonById(int lessonId)
         {

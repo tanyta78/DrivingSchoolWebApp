@@ -32,6 +32,6 @@
 
         Task<Order> CancelOrder (int id);
         
-        Task Delete(int id, string username);
+        Task<Order> Delete(int id, string username);
     }
 }

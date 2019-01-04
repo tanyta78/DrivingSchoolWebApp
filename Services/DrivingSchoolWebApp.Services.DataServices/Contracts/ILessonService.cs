@@ -15,7 +15,7 @@
 
         Task<Lesson> Edit(EditLessonInputModel model);
 
-        Task Delete(int id);
+        Task<Lesson> Delete(int id);
 
         IEnumerable<TViewModel> GetLessonsByCourseIdAndCustomerId<TViewModel>(int customerId, int courseId);
 

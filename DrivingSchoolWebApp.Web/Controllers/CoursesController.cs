@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
     using Data.Models.Enums;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -29,6 +31,7 @@
         }
 
         // GET: Courses/All
+        [Authorize]
         public ActionResult All()
         {
             var courses = this.courseService.GetAllCourses<AllCoursesViewModel>();
@@ -37,6 +40,7 @@
 
         // Post: Courses/All
         [HttpPost]
+        [Authorize]
         public ActionResult All(string category)
         {
             //todo add check for correct category
@@ -61,6 +65,7 @@
         }
 
         // GET: Courses/Offered
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Offered()
         {
             var username = this.User.Identity.Name;
@@ -71,6 +76,7 @@
 
         // POST: Courses/Offered
         [HttpPost]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Offered(string category)
         {
             var username = this.User.Identity.Name;
@@ -89,6 +95,7 @@
         }
 
         // GET: Courses/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             var course = this.courseService.GetCourseById<DetailsCourseViewModel>(id);
@@ -97,6 +104,7 @@
         }
 
         // GET: Courses/Create
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Create(int? trainerId)
         {
             var username = this.User.Identity.Name;
@@ -113,6 +121,7 @@
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Create(CreateCourseInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -132,6 +141,7 @@
         }
 
         // GET: Courses/Edit/5
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Edit(int id)
         {
             try
@@ -155,6 +165,7 @@
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Edit(EditCourseInputModel model)
         {
             try
@@ -180,6 +191,7 @@
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Delete(int id)
         {
             try
@@ -198,6 +210,7 @@
         // POST: Courses/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, School")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

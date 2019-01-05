@@ -1,6 +1,7 @@
 ﻿
 namespace DrivingSchoolWebApp.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.School;
@@ -15,6 +16,7 @@ namespace DrivingSchoolWebApp.Web.Controllers
         }
 
         // GET: Schools/All
+        [Authorize]
         public ActionResult All()
         {
             var schools = this.schoolService.AllActiveSchools<AllSchoolViewModel>();
@@ -22,6 +24,7 @@ namespace DrivingSchoolWebApp.Web.Controllers
         }
 
         // GET: Schools/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             var school = this.schoolService.GetSchoolById<DetailsSchoolViewModel>(id);

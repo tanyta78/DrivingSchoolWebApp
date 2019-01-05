@@ -20,10 +20,6 @@
         public const string AdministratorArea = "Admin";
         public const string SchoolArea = "SchoolManage";
 
-
-
-
-
         //--Exception messages
         public const string NoRights = "You do not have rights for this operation!";
 

@@ -2,6 +2,7 @@
 {
     using Data.Models.Enums;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Account;
@@ -148,6 +149,7 @@
 
         //todo Protect thie route for admins and schools changing his trainers user profiles
         // GET: Account/UpdateUserProfile/5
+        [Authorize(Roles = "Admin, School")]
         public IActionResult UpdateUserProfile(string userId)
         {
             var userModel = this.accountService.GetUserById<EditUserProfileInputModel>(userId);
@@ -157,6 +159,7 @@
 
         // POST: Account/UpdateUserProfile/5
         [HttpPost]
+        [Authorize(Roles = "Admin, School")]
         public IActionResult UpdateUserProfile(EditUserProfileInputModel model)
         {
             if (!this.ModelState.IsValid) return this.View(model);

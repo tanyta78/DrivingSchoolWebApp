@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Course;
@@ -27,17 +29,18 @@
         }
 
         // GET: Orders/All
+        [Authorize]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orders = new List<AllOrdersViewModel>();
-            if (this.User.IsInRole("School"))
+            if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 orders = this.orderService.GetOrdersBySchoolId<AllOrdersViewModel>(schoolId).ToList();
             }
-            else if (this.User.IsInRole("Admin"))
+            else if (this.User.IsInRole(GlobalDataConstants.AdministratorRoleName))
             {
                 orders = this.orderService.All<AllOrdersViewModel>().ToList();
             }
@@ -50,6 +53,7 @@
         }
 
         // GET: Orders/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(id);
@@ -61,6 +65,7 @@
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Create([FromForm]int courseId)
         {
             try
@@ -90,6 +95,7 @@
         // POST: Orders/Cancel/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Cancel(int id)
         {
             try
@@ -115,7 +121,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
 
-            var result = (userId == order.CustomerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == order.CustomerUserId) || this.User.IsInRole(GlobalDataConstants.AdministratorRoleName);
             return result;
         }
 

@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
     using Data.Models.Enums;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Customer;
@@ -28,21 +30,22 @@
         }
 
         // GET: Payments/All
+        [Authorize(Roles ="Admin, School, User")]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var payments = new List<AllPaymentsViewModel>();
-            if (this.User.IsInRole("Admin"))
+            if (this.User.IsInRole(GlobalDataConstants.AdministratorRoleName))
             {
                 payments = this.paymentService.All<AllPaymentsViewModel>().ToList();
             }
-            else if (this.User.IsInRole("School"))
+            else if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
                 payments = this.paymentService.GetPaymentsBySchoolId<AllPaymentsViewModel>(schoolId).ToList();
             }
-            else
+            else if(this.User.IsInRole(GlobalDataConstants.UserRoleName))
             {
                 var customerId = this.customerService.GetCustomerByUserId<DetailsCustomerViewModel>(userId).Id;
                 payments = this.paymentService.GetPaymentsByCustomerId<AllPaymentsViewModel>(customerId).ToList();
@@ -51,6 +54,7 @@
         }
 
         // GET: Payments/Details/5
+       [Authorize(Roles ="Admin, School, User")]
         public ActionResult Details(int id)
         {
             var payment = this.paymentService.GetPaymentById<DetailsPaymentViewModel>(id);
@@ -59,6 +63,7 @@
         }
 
         // GET: Payments/Create/5
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Create(int id)
         {
             try
@@ -82,6 +87,7 @@
         // POST: Payments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Create(CreatePaymentInputModel model)
         {
             try
@@ -112,6 +118,7 @@
         }
 
         // GET: Payments/Make/
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Make()
         {
             try

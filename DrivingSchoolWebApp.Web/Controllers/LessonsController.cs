@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -31,10 +33,11 @@
         }
 
         // GET: Lessons
+        [Authorize]
         public ActionResult Index(int trainerId, int orderId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (this.User.IsInRole("School"))
+            if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
             {
                 var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(this.User.Identity.Name);
                 var trainers = this.trainerService.TrainersBySchoolId<AvailableTrainerViewModel>(school.Id);
@@ -48,7 +51,7 @@
                 this.ViewBag.OrderId = orderId;
                 return this.View("SchoolSchedule");
             }
-            else
+            else if (this.User.IsInRole(GlobalDataConstants.UserRoleName))
             {
                 var customer = this.customerService.GetCustomerByUserId(userId);
 
@@ -58,21 +61,38 @@
 
                 return this.View("CustomerSchedule");
             }
+            else
+            {
+                //todo for trainers=> for admin maybe redirect and don.t show or get all orders and trainers and visualize in school schedule 
+                //var trainer = this.trainerService.GetTrainerByUserId<DetailsTrainerViewModel>(userId);
+                //this.ViewBag.TrainerId = trainerId;
+                //return this.View("CustomerSchedule");
+            }
 
         }
 
         // GET: Lessons/GetMyEvents
-        public ActionResult<List<DetailsLessonViewModel>> GetMyEvents()
+        [Authorize]
+        public ActionResult<List<DetailsLessonViewModel>> GetMyEvents(int? trainerId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var lessons = new List<DetailsLessonViewModel>();
+            if (this.User.IsInRole(GlobalDataConstants.UserRoleName))
+            {
+                var customerId = this.customerService.GetCustomerByUserId(userId).Id;
+                lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
 
-            var customerId = this.customerService.GetCustomerByUserId(userId).Id;
-            var lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
+            }
+            else 
+            {
+
+            }
 
             return lessons;
         }
 
         // GET: Lessons/GetSchoolEvents
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult<List<DetailsLessonViewModel>> GetSchoolEvents(int? trainerId)
         {
             var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(this.User.Identity.Name).Id;
@@ -85,6 +105,7 @@
         }
 
         // GET: Lessons/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(id);
@@ -92,6 +113,7 @@
         }
 
         // GET: Lessons/Create/4
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(int orderId)
         {
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
@@ -103,6 +125,7 @@
         // POST: Lessons/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(CreateLessonInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -115,9 +138,11 @@
 
 
         }
+
         // POST: Lessons/Save
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Save(FullCalendarInputModel model)
         {
             try
@@ -145,6 +170,7 @@
 
 
         // GET: Lessons/Edit/5
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Edit(int id)
         {
             return this.View();
@@ -153,6 +179,7 @@
         // POST: Lessons/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Edit(EditLessonInputModel model)
         {
             try
@@ -172,6 +199,7 @@
         }
 
         // GET: Lessons/Delete/5
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Delete(int id)
         {
             return this.View();
@@ -180,6 +208,7 @@
         // POST: Lessons/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
@@ -202,7 +231,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var lesson = this.lessonService.GetLessonById<DetailsLessonViewModel>(lessonId);
 
-            var result = (userId == lesson.OrderCourseSchoolManagerUserId) || this.User.IsInRole("Admin");
+            var result = (userId == lesson.OrderCourseSchoolManagerUserId) || this.User.IsInRole(GlobalDataConstants.AdministratorRoleName);
             return result;
         }
     }

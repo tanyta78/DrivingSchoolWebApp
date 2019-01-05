@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -28,6 +29,7 @@
         }
 
         // GET: Feedbacks/All
+        [Authorize]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -58,6 +60,7 @@
         }
 
         // GET: Feedbacks/Create/5
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
        public ActionResult Create(int orderId)
         {
             var order = this.orderService.GetOrderById<DetailsOrderViewModel>(orderId);
@@ -74,6 +77,7 @@
         // POST: Feedbacks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.UserRoleName)]
         public ActionResult Create(CreateFeedbackInputModel model)
         {
             try

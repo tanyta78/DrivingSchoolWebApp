@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Certificate;
@@ -24,17 +26,18 @@
         }
 
         // GET: Certificates/All
+        [Authorize]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var certificates = new List<AllCertificatesViewModel>();
 
-            if (this.User.IsInRole("Admin"))
+            if (this.User.IsInRole(GlobalDataConstants.AdministratorRoleName))
             {
                 certificates = this.certificateService.All<AllCertificatesViewModel>().ToList();
             }
-            else if (this.User.IsInRole("School"))
+            else if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;
@@ -49,6 +52,7 @@
         }
 
         //Get: Certificates/Details/3
+        [Authorize]
         public IActionResult Details(int id)
         {
             try

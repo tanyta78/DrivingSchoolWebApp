@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Data.Common;
     using Data.Models.Enums;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Certificate;
@@ -31,6 +33,7 @@
         }
 
         // GET: Exams/All
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -54,6 +57,7 @@
         }
 
         // GET: Exams/Create/3
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(int orderId)
         {
             try
@@ -75,6 +79,7 @@
         // POST: Exams/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(CreateExamInputModel model)
         {
             try
@@ -97,6 +102,7 @@
         // POST: Exams/Cancel/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Cancel(int id)
         {
             try
@@ -119,6 +125,7 @@
         // POST: Exams/Finish/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Finish(int id)
         {
             try
@@ -151,7 +158,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var exam = this.examService.GetExamById<AllExamsViewModel>(examId);
 
-            var result = (userId == exam.CourseSchoolManagerId) || this.User.IsInRole("Admin");
+            var result = (userId == exam.CourseSchoolManagerId) || this.User.IsInRole(GlobalDataConstants.AdministratorRoleName);
             return result;
         }
     }

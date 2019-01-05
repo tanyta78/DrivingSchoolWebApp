@@ -2,6 +2,8 @@
 {
     using System;
     using System.Security.Claims;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.Car;
@@ -9,7 +11,7 @@
     using Web.Controllers;
     using X.PagedList;
 
-    [Area("SchoolManage")]
+    [Area(GlobalDataConstants.SchoolArea)]
     public class CarsController : BaseController
     {
         private readonly ICarService carService;
@@ -22,6 +24,7 @@
         }
 
         // GET: SchoolsManage/Cars/All
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult All(int? page)
         {
             var schoolId = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(this.User.Identity.Name).Id;
@@ -34,6 +37,7 @@
         }
 
         // GET: SchoolsManage/Cars/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             try
@@ -49,6 +53,7 @@
         }
 
         // GET: SchoolsManage/Cars/Create
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create()
         {
             var schoolId = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(this.User.Identity.Name).Id;
@@ -59,6 +64,7 @@
         // POST: SchoolsManage/Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(CreateCarInputModel model)
         {
             try
@@ -80,6 +86,7 @@
         }
 
         // GET: SchoolsManage/Cars/Edit/5
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Edit(int id)
         {
             try
@@ -97,6 +104,7 @@
         // POST: SchoolsManage/Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Edit(EditCarInputModel model)
         {
             try
@@ -108,7 +116,7 @@
 
                 if (!this.HasRights(model.Id))
                 {
-                    throw new OperationCanceledException("You do not have rights for this operation!");
+                    throw new OperationCanceledException(GlobalDataConstants.NoRights);
                 }
 
                 var car = this.carService.Edit(model).GetAwaiter().GetResult();
@@ -122,13 +130,14 @@
         }
 
         // GET: SchoolsManage/Cars/Delete/5
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Delete(int id)
         {
             try
             {
                 if (!this.HasRights(id))
                 {
-                    throw new OperationCanceledException("You do not have rights for this operation!");
+                    throw new OperationCanceledException(GlobalDataConstants.NoRights);
                 }
 
                 var carModel = this.carService.GetCarById<CarDetailsViewModel>(id);
@@ -145,13 +154,14 @@
         // POST: SchoolsManage/Cars/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Delete(CarDetailsViewModel model)
         {
             try
             {
                 if (!this.HasRights(model.Id))
                 {
-                    throw new OperationCanceledException("You do not have rights for this operation!");
+                    throw new OperationCanceledException(GlobalDataConstants.NoRights);
                 } 
 
                 this.carService.Delete(model).GetAwaiter().GetResult();
@@ -171,7 +181,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var car = this.carService.GetCarById<CarDetailsViewModel>(carId);
 
-            var result = (userId == car.OwnerManagerId) || this.User.IsInRole("Admin");
+            var result = (userId == car.OwnerManagerId) || this.User.IsInRole(GlobalDataConstants.AdministratorRoleName);
             return result;
         }
     }

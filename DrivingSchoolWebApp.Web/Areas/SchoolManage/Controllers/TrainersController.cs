@@ -116,7 +116,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            this.trainerService.Delete(id);
+            //this.trainerService.Delete(id);
             return this.RedirectToAction("All");
         }
     }

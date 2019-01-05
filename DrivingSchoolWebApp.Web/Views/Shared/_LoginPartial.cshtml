@@ -5,10 +5,6 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
-@{
-    var userType = @UserManager.GetUserAsync(User).Result.UserType;
-}
-
 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -19,11 +15,11 @@
         </li>
         @if (this.User.Identity.IsAuthenticated)
         {
-            if (this.User.IsInRole("School"))
+           if (this.User.IsInRole("School"))
             {
                 <partial name="_SchoolNavigation" />
             }
-            else if(userType==UserType.Customer)
+            else if(@UserManager.GetUserAsync(User).Result.UserType == UserType.Customer)
             {
                 <partial name="_UserNavigation" />
             }

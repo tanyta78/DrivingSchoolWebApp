@@ -33,16 +33,16 @@
         }
 
         // GET: Exams/All
-        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
+        [Authorize]
         public ActionResult All()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var exams = new List<AllExamsViewModel>();
-            if (this.User.IsInRole("Admin"))
+            if (this.User.IsInRole(GlobalDataConstants.AdministratorRoleName))
             {
                 exams = this.examService.All<AllExamsViewModel>().ToList();
             }
-            else if (this.User.IsInRole("School"))
+            else if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
             {
                 var schoolId = this.schoolService
                     .GetSchoolByManagerName<DetailsSchoolViewModel>(this.User.Identity.Name).Id;

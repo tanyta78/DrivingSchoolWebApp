@@ -17,7 +17,7 @@
         };
 
         //--Areas names
-        public const string AdministratorArea = "Admin";
+        public const string AdministratorArea = "Administration";
         public const string SchoolArea = "SchoolManage";
 
         //--Exception messages

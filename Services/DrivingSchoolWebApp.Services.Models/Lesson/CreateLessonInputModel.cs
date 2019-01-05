@@ -12,6 +12,7 @@
         public int OrderId { get; set; }
 
         [DataType(DataType.DateTime)]
+        [GreaterThan("StartTime",ErrorMessage = "End time must be greater than start time")]
         public DateTime? EndTime { get; set; }
 
         [Required]

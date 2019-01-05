@@ -66,7 +66,7 @@
                 //todo for trainers=> for admin maybe redirect and don.t show or get all orders and trainers and visualize in school schedule 
                 //var trainer = this.trainerService.GetTrainerByUserId<DetailsTrainerViewModel>(userId);
                 //this.ViewBag.TrainerId = trainerId;
-                //return this.View("CustomerSchedule");
+                return this.View("CustomerSchedule");
             }
 
         }

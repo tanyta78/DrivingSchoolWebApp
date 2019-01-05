@@ -12,11 +12,13 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Middlewares;
     using Services.DataServices;
     using Services.DataServices.Contracts;
     using Services.Mapping;
     using Services.Models.Account;
+    using ILoggerFactory = Castle.Core.Logging.ILoggerFactory;
 
     public class Startup
     {
@@ -94,7 +96,14 @@
                     });
             });
 
-
+            // Facebook authentication
+            //services.AddAuthentication()
+            //    .AddFacebook(facebookOptions =>
+            //    {
+            //        facebookOptions.AppId = this.Configuration["Authentication:Facebook:AppId"];
+            //        facebookOptions.AppSecret = this.Configuration["Authentication:Facebook:AppSecret"];
+            //    });
+            //services.AddLogging();
 
             // Application services
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
@@ -118,6 +127,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -129,9 +139,8 @@
                 app.UseHsts();
             }
 
-
-            app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
 

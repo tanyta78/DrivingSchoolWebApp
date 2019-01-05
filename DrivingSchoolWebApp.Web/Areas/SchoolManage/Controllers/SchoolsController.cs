@@ -2,12 +2,14 @@
 {
     using System;
     using System.Security.Claims;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
     using Services.Models.School;
     using Web.Controllers;
 
-    [Area("SchoolManage")]
+    [Area(GlobalDataConstants.SchoolArea)]
     public class SchoolsController : BaseController
     {
         private readonly ISchoolService schoolService;
@@ -20,6 +22,7 @@
         }
 
         // GET: SchoolManage/Schools/Manage
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public IActionResult Manage()
         {
             var username = this.User.Identity.Name;
@@ -29,6 +32,7 @@
         }
 
         // GET: SchoolManage/Schools/Create
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public IActionResult Create()
         {
             return this.View();
@@ -37,6 +41,7 @@
         // POST: Schools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public IActionResult Create(CreateSchoolInputModel model)
         {
             try
@@ -59,6 +64,7 @@
         }
 
         // GET: Schools/Edit/5
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public IActionResult Edit(int id)
         {
             var school = this.schoolService.GetSchoolById<EditSchoolInputModel>(id);
@@ -68,6 +74,7 @@
         // POST: Schools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public IActionResult Edit(EditSchoolInputModel model)
         {
             try
@@ -79,7 +86,7 @@
 
                 if (!this.HasRights(model.Id))
                 {
-                    throw new OperationCanceledException("You do not have rights for this operation!");
+                    throw new OperationCanceledException(GlobalDataConstants.NoRights);
                 }
 
                 var schoolId = this.schoolService.Edit(model).Id;

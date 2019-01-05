@@ -1,5 +1,6 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.Administration.Controllers
 {
+    using Data.Common;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -7,7 +8,7 @@
     using Web.Controllers;
     using X.PagedList;
 
-    [Area("Administration")]
+    [Area(GlobalDataConstants.AdministratorArea)]
     public class ManageSchoolsController : BaseController
     {
         private readonly ISchoolService schoolService;
@@ -20,6 +21,7 @@
         }
 
         // GET: Administration/ManageSchools
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Index(int? page)
         {
             var schoolsApproved = this.schoolService.AllActiveSchools<SchoolViewModel>();
@@ -32,6 +34,7 @@
 
 
         // GET: Administration/ManageSchools/Details/5
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Details(int id)
         {
             var school = this.schoolService.GetSchoolById<SchoolViewModel>(id);
@@ -40,6 +43,7 @@
         }
 
         // GET: Administration/ManageSchools/Create
+       [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Create()
         {
             this.ViewBag.UsersIds = this.accountService.AllNonManager();
@@ -49,6 +53,7 @@
         // POST: Administration/ManageSchools/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Create(CreateSchoolInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -66,6 +71,7 @@
         }
 
         // GET: Administration/ManageSchools/Edit/5
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Edit(int id)
         {
             var school = this.schoolService.GetSchoolById<EditSchoolInputModel>(id);
@@ -75,7 +81,7 @@
         // POST: Administration/ManageSchools/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize("Admin")]
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Edit(EditSchoolInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -90,6 +96,7 @@
         }
 
         // GET: Administration/ManageSchools/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var school = this.schoolService.GetSchoolById<DeleteSchoolViewModel>(id);
@@ -99,7 +106,7 @@
         // POST: Administration/ManageSchools/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize("Admin")]
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult Delete(int id, string username)
         {
             this.schoolService.Delete(id);
@@ -117,7 +124,7 @@
         // POST: Administration/ManageSchools/ChangeManager/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize("Admin")]
+        [Authorize(Roles = GlobalDataConstants.AdministratorRoleName)]
         public IActionResult ChangeManager(ChangeManagerSchoolViewModel model)
         {
             if (!this.ModelState.IsValid)

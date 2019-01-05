@@ -1,6 +1,8 @@
 ﻿namespace DrivingSchoolWebApp.Web.Areas.SchoolManage.Controllers
 {
     using System;
+    using Data.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Services.DataServices.Contracts;
@@ -9,7 +11,7 @@
     using Web.Controllers;
     using X.PagedList;
 
-    [Area("SchoolManage")]
+    [Area(GlobalDataConstants.SchoolArea)]
     public class TrainersController : BaseController
     {
         private readonly ITrainerService trainerService;
@@ -22,6 +24,7 @@
         }
 
         // GET: Trainers/All
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult All(int? page)
         {
             var managerName = this.User.Identity.Name;
@@ -35,6 +38,7 @@
         }
 
         // GET: Trainers/Available
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Available(int? page)
         {
             var managerName = this.User.Identity.Name;
@@ -48,6 +52,7 @@
         }
 
         // GET: Trainers/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             try
@@ -64,6 +69,7 @@
         }
 
         // GET: Trainers/Create/2
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(string userId)
         {
             var managerName = this.User.Identity.Name;
@@ -76,6 +82,7 @@
         // POST: Trainers/Create/2
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = GlobalDataConstants.SchoolRoleName)]
         public ActionResult Create(CreateTrainerInputModel model)
         {
             if (!this.ModelState.IsValid) return this.View();
@@ -85,7 +92,7 @@
             return this.RedirectToAction("All", "Trainers");
         }
 
-        //todo Decide how to change trainer user profile. Or add new properties in trainer model to proceed edit.
+        //todo Decide how to change trainer user profile. Or add new properties in trainer model to proceed edit. Add has rights
         //// GET: Trainers/Edit/5
         //public ActionResult Edit(int id)
         //{

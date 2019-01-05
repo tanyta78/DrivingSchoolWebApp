@@ -947,6 +947,7 @@
             {
                 Id = 0,
                 OrderId = 1,
+                TrainerId = 1,
                 StartTime = new DateTime(2018, 12, 11, 12, 00, 00),
                 EndTime = new DateTime(2018, 12, 11, 13, 0, 0),
                 ThemeColor = "green",

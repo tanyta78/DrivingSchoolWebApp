@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -28,13 +29,7 @@
 
         public Customer Create(CreateCustomerInputModel model)
         {
-            var customer = new Customer()
-            {
-                AgeGroup = model.AgeGroup,
-                UserId = model.UserId,
-                Gender = model.Gender,
-                EducationLevel = model.EducationLevel
-            };
+            var customer = Mapper.Map<Customer>(model);
 
             this.customerRepository.AddAsync(customer).GetAwaiter().GetResult();
             this.customerRepository.SaveChangesAsync().GetAwaiter().GetResult();

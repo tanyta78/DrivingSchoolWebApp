@@ -129,7 +129,6 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             var model = new CreateCarInputModel()
             {
                 CarModel = "testModel",
-                ImageUrl = "testUrl",
                 Make = "testMake",
                 OwnerId = 1,
                 Transmission = Transmission.Authomatic,
@@ -187,10 +186,10 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
             Assert.That(result.VIN, Is.EqualTo("AA1111AA"));
             Assert.That(result.ImageUrl, Is.EqualTo("testUrl"));
             Assert.That(result.InUse, Is.EqualTo(false));
-            Assert.That(result.Id,Is.EqualTo(1));
+            Assert.That(result.Id, Is.EqualTo(1));
 
             Assert.That(result.CarModel, Is.EqualTo("testModel"));
-            Assert.That(result,Is.TypeOf<Car>());
+            Assert.That(result, Is.TypeOf<Car>());
         }
 
         [Test]
@@ -417,7 +416,7 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
                 InUse = true
             };
 
-            var returnValue=new List<Car>()
+            var returnValue = new List<Car>()
             {
                 car
             };
@@ -436,10 +435,10 @@ namespace DrivingSchoolWebApp.Services.DataServices.Tests
                 InUse = true
             });
 
-           var model = new CarDetailsViewModel()
-           {
-               Id = 1
-           };
+            var model = new CarDetailsViewModel()
+            {
+                Id = 1
+            };
 
             var result = this.carService.Delete(model).GetAwaiter().GetResult();
 

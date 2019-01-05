@@ -1,4 +1,4 @@
-﻿namespace DrivingSchoolWebApp.Web.Models.Account
+﻿namespace DrivingSchoolWebApp.Services.Models.Account
 {
     public class ExternalLoginViewModel
     {

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -71,16 +72,7 @@
 
         public async Task<Lesson> Create(CreateLessonInputModel model)
         {
-            var lesson = new Lesson()
-            {
-                OrderId = model.OrderId,
-                Description = model.Description,
-                Subject = model.Subject,
-                StartTime = model.StartTime,
-                EndTime = model.EndTime,
-                IsFullDay = model.IsFullDay,
-                ThemeColor = model.ThemeColor
-            };
+            var lesson = Mapper.Map<Lesson>(model);
 
             await this.lessonRepository.AddAsync(lesson);
             await this.lessonRepository.SaveChangesAsync();
@@ -90,15 +82,8 @@
 
         public async Task<Lesson> Edit(EditLessonInputModel model)
         {
-            var lesson = this.GetLessonById(model.Id);
-
-            lesson.Status = model.Status;
-            lesson.StartTime = model.StartTime;
-            lesson.EndTime = model.EndTime;
-            lesson.ThemeColor = model.ThemeColor;
-            lesson.IsFullDay = model.IsFullDay;
-            lesson.Description = model.Description;
-
+            var lesson = Mapper.Map<Lesson>(model);
+            
             this.lessonRepository.Update(lesson);
             await this.lessonRepository.SaveChangesAsync();
 
@@ -134,30 +119,13 @@
 
             if (model.Id != 0)
             {
-                var lessonEditModel = new EditLessonInputModel()
-                {
-                    Id = model.Id,
-                    Description = model.Description,
-                    EndTime = model.EndTime,
-                    IsFullDay = model.IsFullDay,
-                    StartTime = model.StartTime,
-                    ThemeColor = model.ThemeColor
-                };
+                var lessonEditModel = Mapper.Map<EditLessonInputModel>(model);
                 var editedLesson = this.Edit(lessonEditModel).GetAwaiter().GetResult();
                 return editedLesson.Id;
             }
             else
             {
-                var lessonCreateModel = new CreateLessonInputModel()
-                {
-                    Description = model.Description,
-                    EndTime = model.EndTime,
-                    IsFullDay = model.IsFullDay,
-                    OrderId = model.OrderId,
-                    StartTime = model.StartTime,
-                    Subject = model.Subject,
-                    ThemeColor = model.ThemeColor
-                };
+                var lessonCreateModel = Mapper.Map<CreateLessonInputModel>(model);
                 var lesson = this.Create(lessonCreateModel).GetAwaiter().GetResult();
 
                 return lesson.Id;

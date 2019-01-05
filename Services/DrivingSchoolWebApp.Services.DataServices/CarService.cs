@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -32,17 +33,8 @@
             var account = Helpers.SetCloudinary();
             var imageUrl = await Helpers.UploadImage(account, model.CarImage, model.VIN);
 
-            var car = new Car
-            {
-                Make = model.Make,
-                CarModel = model.CarModel,
-                OwnerId = model.OwnerId,
-                VIN = model.VIN,
-                Transmission = model.Transmission,
-                ImageUrl = imageUrl
-            };
-
-
+           var car = Mapper.Map<Car>(model);
+            car.ImageUrl = imageUrl;
             await this.carRepository.AddAsync(car);
             await this.carRepository.SaveChangesAsync();
 

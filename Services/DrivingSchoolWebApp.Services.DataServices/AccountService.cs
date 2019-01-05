@@ -57,11 +57,11 @@
             {
                 this.userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
             }
-            else
-            {
-                this.userManager.AddToRoleAsync(user, "User").GetAwaiter().GetResult();
+            //else
+            //{
+            //    this.userManager.AddToRoleAsync(user, "User").GetAwaiter().GetResult();
 
-            }
+            //}
 
             if (user.UserType != UserType.School)
             {

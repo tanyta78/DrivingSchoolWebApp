@@ -29,8 +29,6 @@
 
         public DateTime OrderedOn { get; set; }
 
-        //public decimal PaymentsMade => this.Payments.Sum(p => p.Amount);
-
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
 
         public virtual IEnumerable<Lesson> LessonsTaken { get; set; } = new HashSet<Lesson>();

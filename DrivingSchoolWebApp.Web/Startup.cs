@@ -1,9 +1,9 @@
 ﻿namespace DrivingSchoolWebApp.Web
 {
+    using AutoMapper;
     using Data;
     using Data.Common;
     using Data.Models;
-    using AutoMapper;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -38,7 +38,7 @@
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-               // options.CheckConsentNeeded = context => true;
+                // options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -47,10 +47,10 @@
                     options.UseSqlServer(
                         this.Configuration.GetConnectionString("DefaultConnection"))
                         .UseLazyLoadingProxies();
-            }
+                }
                     );
 
-            services.AddIdentity<AppUser,AppRole>(
+            services.AddIdentity<AppUser, AppRole>(
                     options =>
                     {
                         options.Password.RequiredLength = 6;
@@ -71,7 +71,7 @@
 
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-           
+
             services.AddAutoMapper();
 
             // Identity stores
@@ -129,14 +129,14 @@
                 app.UseHsts();
             }
 
-          
+
             app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();
 
             app.UseMiddleware<SeedUserRolesAndAdminMiddleware>();
-           // app.UseMiddleware<SeedDataMiddleware>();
+            // app.UseMiddleware<SeedDataMiddleware>();
 
             app.UseMvc(routes =>
             {

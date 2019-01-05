@@ -1,18 +1,20 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using Constants;
     using Data.Models;
     using Mapping;
 
     public class LoginViewModel:IMapFrom<AppUser>
     {
-        [Required(ErrorMessage = "You must enter an username")]
-        [RegularExpression(@"[\w-.^~]+", ErrorMessage = "May only contain alphanumeric characters ,dashes and underscores,dots, asterisks and tildes")]
-        [StringLength(50, ErrorMessage = "Username length must between 3 and 50 characters", MinimumLength = 3)]
+        [Required(ErrorMessage = AppUserModelConstants.RequiredUsername)]
+        [RegularExpression(AppUserModelConstants.RegexForValidationNicknameOrUsername, ErrorMessage =
+            AppUserModelConstants.ErrMsgUsernameRGX)]
+        [StringLength(AppUserModelConstants.UserModelUsernameMaxLength, ErrorMessage = AppUserModelConstants.ErrMsgUsernameLength, MinimumLength = AppUserModelConstants.UserModelUsernameMinLength)]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "You must enter an password")]
-        [StringLength(50, ErrorMessage = "Password length must between 5 and 50 characters", MinimumLength = 5)]
+        [Required(ErrorMessage = AppUserModelConstants.RequiredPass)]
+        [StringLength(AppUserModelConstants.UserModelPassMaxLength, ErrorMessage = AppUserModelConstants.ErrMsgPassLength, MinimumLength = AppUserModelConstants.UserModelPassMinLength)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

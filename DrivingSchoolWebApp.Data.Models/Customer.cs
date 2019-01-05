@@ -16,8 +16,6 @@
 
         public EducationLevel EducationLevel { get; set; }
 
-        //public string FullName => this.User.FirstName + " " + this.User.LastName;
-
         public virtual IEnumerable<Order> CoursesOrdered { get; set; } = new HashSet<Order>();
 
         public virtual IEnumerable<Exam> ExamsTaken { get; set; } = new HashSet<Exam>();

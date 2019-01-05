@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -29,16 +30,7 @@
 
         public async Task<Course> Create(CreateCourseInputModel model)
         {
-            var course = new Course
-            {
-                Category = model.Category,
-                Description = model.Description,
-                MinimumLessonsCount = model.MinimumLessonsCount,
-                Price = model.Price,
-                TrainerId = model.TrainerId,
-                CarId = model.CarId,
-                SchoolId = model.SchoolId
-            };
+           var course=Mapper.Map<Course>(model);
 
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
@@ -58,11 +50,9 @@
 
         public async Task<Course> Edit(EditCourseInputModel model)
         {
-            //todo check model validation in controller?!?
-            //todo change price, description, min lessons,trainerId, carId
             var course = this.GetCourseById(model.Id);
 
-           course.CarId = model.CarId;
+            course.CarId = model.CarId;
             course.TrainerId = model.TrainerId;
             course.Price = model.Price;
             course.Description = model.Description;

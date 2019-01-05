@@ -1,6 +1,8 @@
 ﻿namespace DrivingSchoolWebApp.Services.Models.Car
 {
+    using System.ComponentModel.DataAnnotations;
     using AutoMapper;
+    using Constants;
     using Data.Models;
     using Mapping;
     using Microsoft.AspNetCore.Http;
@@ -13,6 +15,7 @@
 
         public bool InUse { get; set; } 
 
+        [Required(ErrorMessage = CarModelConstants.RequiredVIN)]
         public string VIN { get; set; }
 
         public IFormFile CarImage { get; set; }

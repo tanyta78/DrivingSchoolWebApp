@@ -124,7 +124,7 @@
             {
                 if (!this.ModelState.IsValid)
                 {
-                    return this.Json(new { success = false, error = true });
+                    return new JsonResult(this.ValidationProblem());
                 }
 
                 if (!this.HasRights(model.Id))
@@ -155,14 +155,20 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditLessonInputModel model)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                return this.View(model);
+                if (!this.ModelState.IsValid)
+                {
+                    return new JsonResult(this.ValidationProblem());
+                }
+
+                var lesson = this.lessonService.Edit(model);
+                return this.RedirectToAction("Details", "Lessons", new { lessonId = lesson.Id });
             }
-
-            var lesson = this.lessonService.Edit(model);
-            return this.RedirectToAction("Details", "Lessons", new { lessonId = lesson.Id });
-
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         // GET: Lessons/Delete/5
@@ -176,13 +182,20 @@
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            this.lessonService.Delete(id);
-            return this.RedirectToAction(nameof(Index));
+            try
+            {
+                this.lessonService.Delete(id);
+                return this.RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                return this.View("_Error", e.Message);
+            }
         }
 
         private bool HasRights(int lessonId)
         {
-            if (lessonId==0)
+            if (lessonId == 0)
             {
                 return true;
             }

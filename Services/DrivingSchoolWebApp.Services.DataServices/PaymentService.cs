@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -76,12 +77,8 @@
 
         public async Task<Payment> Create(CreatePaymentInputModel model)
         {
-            var payment = new Payment()
-            {
-                OrderId = model.OrderId,
-                PaymentMethod = model.PaymentMethod,
-                Amount = model.Amount
-            };
+            var payment = Mapper.Map<Payment>(model);
+
 
             await this.paymentRepository.AddAsync(payment);
             await this.paymentRepository.SaveChangesAsync();

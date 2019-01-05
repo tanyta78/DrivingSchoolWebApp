@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -26,15 +27,8 @@
 
         public School Create(CreateSchoolInputModel model)
         {
-            //todo check manager is in role school 
-            var school = new School()
-            {
-                ManagerId = model.ManagerId,
-                OfficeAddress = model.OfficeAddress,
-                TradeMark = model.TradeMark,
-                Phone = model.Phone
-            };
-
+            var school = Mapper.Map<School>(model);
+            
             this.schoolRepository.AddAsync(school).GetAwaiter().GetResult();
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
@@ -58,12 +52,7 @@
 
         public School Edit(EditSchoolInputModel model)
         {
-            var school = this.GetSchoolById(model.Id);
-
-            school.IsActive = model.IsActive;
-            school.OfficeAddress = model.OfficeAddress;
-            school.TradeMark = model.TradeMark;
-            school.Phone = model.Phone;
+            var school = Mapper.Map<School>(model);
 
             this.schoolRepository.Update(school);
             this.schoolRepository.SaveChangesAsync().GetAwaiter().GetResult();

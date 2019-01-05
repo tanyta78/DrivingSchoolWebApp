@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -96,15 +97,7 @@
 
         public async Task<Exam> Create(CreateExamInputModel model)
         {
-            var exam = new Exam()
-            {
-                CourseId = model.CourseId,
-                CustomerId = model.CustomerId,
-                Date = model.Date,
-                Time = model.Time,
-                Status = model.Status,
-                Type = model.Type
-            };
+            var exam = Mapper.Map<Exam>(model);
 
             await this.examRepository.AddAsync(exam);
             await this.examRepository.SaveChangesAsync();

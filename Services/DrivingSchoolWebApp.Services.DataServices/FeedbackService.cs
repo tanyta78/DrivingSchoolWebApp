@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
@@ -68,13 +69,7 @@
 
         public async Task<Feedback> Create(CreateFeedbackInputModel model)
         {
-            var feedback = new Feedback
-            {
-                CourseId = model.CourseId,
-                CustomerId = model.CustomerId,
-                Content = model.Content,
-                Rating = model.Rating
-            };
+            var feedback=Mapper.Map<Feedback>(model);
 
             await this.feedbackRepository.AddAsync(feedback);
             await this.feedbackRepository.SaveChangesAsync();

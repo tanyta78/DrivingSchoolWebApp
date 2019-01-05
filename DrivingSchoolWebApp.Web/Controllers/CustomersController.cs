@@ -9,10 +9,12 @@
     public class CustomersController : BaseController
     {
         private readonly ICustomerService customerService;
+        private readonly IAccountService accountService;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService,IAccountService accountService)
         {
             this.customerService = customerService;
+            this.accountService = accountService;
         }
 
         // GET: Customers
@@ -47,6 +49,7 @@
             }
 
             var customer = this.customerService.Create(model);
+            this.accountService.SetRole("User",model.UserId);
 
             return this.RedirectToAction("Index", "Home");
         }

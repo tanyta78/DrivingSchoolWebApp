@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
     using Contracts;
     using Data.Common;
     using Data.Models;
@@ -19,31 +20,15 @@
 
         public Trainer Hire(CreateTrainerInputModel model)
         {
-            var trainer = new Trainer()
-            {
-                UserId = model.UserId,
-                SchoolId = model.SchoolId,
-                HireDate = model.HireDate
-            };
-
+            var trainer = Mapper.Map<Trainer>(model);
+            
             this.trainerRepository.AddAsync(trainer).GetAwaiter().GetResult();
             this.trainerRepository.SaveChangesAsync().GetAwaiter().GetResult();
 
             return trainer;
         }
 
-        //public void Delete(int id)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
-        //public void Edit()
-        //{
-        //    throw new System.NotImplementedException();
-
-        //}
-
-        public TViewModel GetTrainerById<TViewModel>(int id)
+       public TViewModel GetTrainerById<TViewModel>(int id)
         {
             var trainer = this.trainerRepository.All()
                                .Where(x => x.Id == id)

@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data.Common;
     using Data.Models;
     using Data.Models.Enums;
     using Mapping;
+    using Models.Lesson;
     using Models.Order;
 
     public class OrderService : IOrderService
@@ -90,13 +92,8 @@
 
         public async Task<Order> Create(CreateOrderInputModel model)
         {
-            var order = new Order
-            {
-                CustomerId = model.CustomerId,
-                CourseId = model.CourseId,
-                ActualPriceWhenOrder = model.ActualPriceWhenOrder
-            };
-
+            var order = Mapper.Map<Order>(model);
+            
             await this.orderRepository.AddAsync(order);
             await this.orderRepository.SaveChangesAsync();
 

@@ -5,6 +5,5 @@
         School = 1,
         Customer = 2,
         Trainer = 3,
-        Undefined = 0
     }
 }

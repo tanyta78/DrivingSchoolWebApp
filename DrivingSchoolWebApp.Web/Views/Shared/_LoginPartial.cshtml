@@ -1,8 +1,13 @@
 @using DrivingSchoolWebApp.Data.Models
+@using DrivingSchoolWebApp.Data.Models.Enums
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+
+@{
+    var userType = @UserManager.GetUserAsync(User).Result.UserType;
+}
 
 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -18,9 +23,13 @@
             {
                 <partial name="_SchoolNavigation" />
             }
-            else
+            else if(userType==UserType.Customer)
             {
                 <partial name="_UserNavigation" />
+            }
+            else
+            {
+                <partial name="_TrainerNavigation"/>
             }
 
         }

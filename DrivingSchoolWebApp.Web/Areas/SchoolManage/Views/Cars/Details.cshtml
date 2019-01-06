@@ -4,28 +4,41 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-
-<div class="card-deck">
-    <div class="card">
-            <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="@Model.Make _ @Model.CarModel">
-
-            <div class="card-body">
-                <h5 class="card-title">@Model.Make _ @Model.CarModel</h5>
-                <p class="card-text">Car make: @Model.Make</p>
-                <p class="card-text">Car model: @Model.CarModel</p>
-                <p class="card-text">Car transmission: @Model.Transmission.ToString()</p>
-                <p class="card-text"><small class="text-muted">@Model.Owner.TradeMark</small></p>
-                <p class="card-text"><small class="text-muted">@Model.Owner.OfficeAddress</small></p>
-                <p class="card-text"><small class="text-muted">@Model.Owner.Phone</small></p>
-            </div>
-            <div class="card-footer">
-                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Edit</a>
-                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="ChangeOwner" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Change Owner</a>
-                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-dark">Delete</a>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Car Details</h2>
+                </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center w-75">
+    <div class="card">
+        <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="@Model.Make _ @Model.CarModel">
+
+        <div class="card-body">
+            <h5 class="card-title">@Model.Make _ @Model.CarModel</h5>
+            <p class="card-text">Car make: @Model.Make</p>
+            <p class="card-text">Car model: @Model.CarModel</p>
+            <p class="card-text">Car transmission: @Model.Transmission.ToString()</p>
+            <p class="card-text"><small class="text-muted">@Model.Owner.TradeMark</small></p>
+            <p class="card-text"><small class="text-muted">@Model.Owner.OfficeAddress</small></p>
+            <p class="card-text"><small class="text-muted">@Model.Owner.Phone</small></p>
+        </div>
+        <div class="card-footer">
+            <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Edit</a>
+            <a asp-area="SchoolManage" asp-controller="Cars" asp-action="ChangeOwner" asp-route-id="@Model.Id" class="btn btn-warning text-dark">Change Owner</a>
+            <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-dark">Delete</a>
+        </div>
+    </div>
+</div>
+
 <div>
     <a asp-area="SchoolManage" asp-controller="Cars" asp-action="All">Back to All Cars List</a>
 </div>

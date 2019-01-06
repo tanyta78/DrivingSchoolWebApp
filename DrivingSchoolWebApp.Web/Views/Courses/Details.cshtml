@@ -4,10 +4,22 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Course Details</h2>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Course Details</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
 
-<div class="card-deck">
-    <div class="card">
+<div class="container d-flex justify-content-center w-75">
+    <div class="card text-center">
         <img class="card-img-top w-100" src="@Model.CarImageUrl" style="height: 250px; width: 100px" alt="@Model.CarMake _ @Model.CarCarModel">
 
         <div class="card-body">
@@ -23,11 +35,11 @@
             <p class="card-text"><small class="text-muted">Given Feedback Count @Model.AllFeedbacksCount</small></p>
             <p class="card-text"><small class="text-muted">Taken Exams @Model.ExamsTakenCount</small></p>
         </div>
-        <div class="card-footer">
-            <a asp-area="" asp-controller="Schools" asp-action="Details" asp-route-id="@Model.SchoolId" class="btn btn-warning text-dark">School Info</a>
-            <form asp-area="" asp-controller="Orders" asp-action="Create" class="btn btn-success text-dark">
+        <div class="card-footer justify-content-between">
+            <a asp-area="" asp-controller="Schools" asp-action="Details" asp-route-id="@Model.SchoolId" class="btn btn-info">School Info</a>
+            <form asp-area="" asp-controller="Orders" asp-action="Create">
                 <input name="CourseId" type="hidden" value="@Model.Id" />
-                <input type="submit" value="Order course" />
+                <input type="submit" value="Order course" class="btn btn-common btn-lg" />
             </form>
         </div>
     </div>

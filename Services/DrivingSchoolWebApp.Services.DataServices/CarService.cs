@@ -44,8 +44,8 @@
         public async Task<Car> Delete(CarDetailsViewModel model)
         {
             var car = this.GetCarById(model.Id);
-
-            this.carRepository.Delete(car);
+            car.InUse = false;
+            this.carRepository.Update(car);
             await this.carRepository.SaveChangesAsync();
 
             return car;

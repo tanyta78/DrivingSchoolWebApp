@@ -168,9 +168,9 @@
 
                 return this.RedirectToAction(nameof(this.All));
             }
-            catch
+            catch (Exception e)
             {
-                return this.View();
+                return this.View("_Error", e.Message);
             }
         }
 

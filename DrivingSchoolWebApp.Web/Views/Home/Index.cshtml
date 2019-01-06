@@ -4,26 +4,35 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<section >
-    @if (User.Identity.IsAuthenticated)
+<section>
+    @if (@User.Identity.IsAuthenticated)
     {
         <div>
-            @if (User.IsInRole(GlobalDataConstants.SchoolRoleName))
+            @if(User.IsInRole(GlobalDataConstants.AdministratorRoleName))
             {
-                <partial name="_SchoolHomePartialFeatures"/>
+                <partial name="_AdminHomePartial" />
+            }
+            else if(User.IsInRole(GlobalDataConstants.SchoolRoleName))
+            {
+                <partial name="_SchoolHomePartialFeatures" />
             }
             else if (User.IsInRole(GlobalDataConstants.UserRoleName))
             {
-               <partial name="_UserHomePartialServiceBlock"/>
+                <partial name="_UserHomePartialServiceBlock" />
+            }
+            else
+            {
+                <partial name="_NotLoginPartialSplit" />
+
             }
         </div>
 
     }
     else
     {
-        <partial name="_NotLoginPartialSplit"/>
-       
+        <partial name="_NotLoginPartialSplit" />
+
     }
-   
+
 
 </section>

@@ -38,7 +38,10 @@
         [Authorize]
         public ActionResult Create(string userId)
         {
-            this.ViewBag.UserId = userId;
+            if (userId != null)
+            {
+                this.ViewBag.UserId = userId;
+            }
             return this.View();
         }
 
@@ -52,6 +55,7 @@
             {
                 if (!this.ModelState.IsValid)
                 {
+                    this.ViewBag.UserId = model.UserId;
                     return this.View(model);
                 }
 

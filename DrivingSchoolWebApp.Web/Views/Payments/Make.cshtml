@@ -7,71 +7,90 @@
     var realIndex = 0;
 }
 
-<h2>Make payment by order</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Index
-            </th>
-            <th>
-                CourseSchoolTradeMark
-            </th>
-            <th>
-                CourseCategory
-            </th>
-            <th>
-                OrderStatus
-            </th>
-            <th>
-                Remaining amount
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in orders)
-        {
-            realIndex += 1;
-            <tr>
-                <td>
-                    @realIndex
-                </td>
-                <td>
-                    @item.CourseSchoolTradeMark
-                </td>
-                <td>
-                    @item.CourseCategory
-                </td>
-                <td>
-                    @item.OrderStatus
-                </td>
-                <td>
-                    @item.RemainingAmount
-                </td>
-                <td>
-                    <form asp-controller="Payments" asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input asp-for="OrderId" class="form-control" value="@item.Id" type="hidden" />
-                        <div class="form-group">
-                            <label asp-for="Amount" class="control-label"></label>
-                            <input asp-for="Amount" class="form-control" />
-                            <span asp-validation-for="Amount" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="PaymentMethod" class="control-label"></label>
-                            <select asp-for="PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentMethod>()">
-                                <option selected="selected" value="">Please select</option>
-                            </select>
-                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-default" />
-                        </div>
-                    </form>
-                </td>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Make payment by order</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr class="row">
+                <th class="col-md-1" scope="col">
+                    Index
+                </th>
+                <th class="col-md-2" scope="col">
+                    School TradeMark
+                </th>
+                <th class="col-md-1" scope="col">
+                    Course Category
+                </th>
+                <th class="col-md-2" scope="col">
+                    Order Status
+                </th>
+                <th class="col-md-1" scope="col">
+                    Remaining amount
+                </th>
+                <th class="col-md-5" scope="col">
+                    Actions
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in orders)
+            {
+                realIndex += 1;
+                <tr class="row">
+                    <td class="col-md-1">
+                        @realIndex
+                    </td>
+                    <td class="col-md-2">
+                        @item.CourseSchoolTradeMark
+                    </td>
+                    <td class="col-md-1">
+                        @item.CourseCategory
+                    </td>
+                    <td class="col-md-2">
+                        @item.OrderStatus
+                    </td>
+                    <td class="col-md-1">
+                        @item.RemainingAmount
+                    </td>
+                    <td class="col-md-5">
+                        <form asp-controller="Payments" asp-action="Create" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="OrderId" class="form-control" value="@item.Id" type="hidden" />
+                            <div class="form-group">
+                                <label asp-for="Amount" class="control-label"></label>
+                                <input asp-for="Amount" class="form-control" />
+                                <span asp-validation-for="Amount" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PaymentMethod" class="control-label"></label>
+                                <select asp-for="PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentMethod>()">
+                                    <option value="" selected disabled hidden>Please select one</option>
+                                </select>
+                                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-common" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

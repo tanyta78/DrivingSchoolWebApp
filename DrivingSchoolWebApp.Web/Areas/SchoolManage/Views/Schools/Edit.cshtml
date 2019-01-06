@@ -4,43 +4,58 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>EditSchoolInputModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-area="SchoolManage" asp-controller="Schools" asp-action="Edit" asp-route-id="@Model.Id">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TradeMark" class="control-label"></label>
-                <input asp-for="TradeMark" class="form-control" value="@Model.TradeMark" />
-                <span asp-validation-for="TradeMark" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OfficeAddress" class="control-label"></label>
-                <input asp-for="OfficeAddress" class="form-control" value="@Model.OfficeAddress" />
-                <span asp-validation-for="OfficeAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" value="@Model.Phone" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                    </label>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Edit a driving school profile info</h2>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Add new school details</h5>
+        </div>
+        <div class="card-body d-flex ">
+            <form asp-area="SchoolManage" asp-controller="Schools" asp-action="Edit" asp-route-id="@Model.Id" class="mx-auto w-75">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="TradeMark" class="control-label"></label>
+                    <input asp-for="TradeMark" class="form-control" value="@Model.TradeMark" />
+                    <span asp-validation-for="TradeMark" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OfficeAddress" class="control-label"></label>
+                    <input asp-for="OfficeAddress" class="form-control" value="@Model.OfficeAddress" />
+                    <span asp-validation-for="OfficeAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" value="@Model.Phone" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group justify-content-center d-flex">
+                    <input type="submit" value="Save changes" class="btn btn-common btn-lg" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

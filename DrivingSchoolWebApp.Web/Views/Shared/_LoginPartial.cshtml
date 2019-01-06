@@ -20,7 +20,7 @@
             {
                 <partial name="_UserNavigation" />
             }
-            else
+            else if (@UserManager.GetUserAsync(User).Result.UserType == UserType.Trainer)
             {
                 <partial name="_TrainerNavigation" />
             }

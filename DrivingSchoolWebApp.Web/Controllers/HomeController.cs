@@ -20,21 +20,7 @@
            return this.View();
         }
 
-        //public IActionResult About()
-        //{
-        //    this.ViewData["Message"] = "Your application description page.";
-
-        //    return this.View();
-        //}
-
-        //public IActionResult Contact()
-        //{
-        //    this.ViewData["Message"] = "Your contact page.";
-
-        //    return this.View();
-        //}
-
-        public IActionResult Privacy()
+       public IActionResult Privacy()
         {
             return this.View();
         }

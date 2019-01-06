@@ -17,6 +17,7 @@
 
         [Required(ErrorMessage = AppUserModelConstants.RequiredEmail)]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required(ErrorMessage = AppUserModelConstants.RequiredFirstName)]
@@ -45,6 +46,7 @@
 
         [Required(ErrorMessage = AppUserModelConstants.RequiredPhone)]
         [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = AppUserModelConstants.RequiredAddress)]

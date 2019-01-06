@@ -5,84 +5,106 @@
     ViewData["Title"] = "Register";
  }
 
-<h1 class="text-center">Register</h1>
-<hr class="app-bg-color w-50 hr-2" />
-<form asp-controller="Account" asp-action="Register" class="mx-auto w-50 text-center" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="Username" class="control-label"></label>
-            <input asp-for="Username" class="form-control" id="username" placeholder="Username..." name="username" />
-            <span asp-validation-for="Username" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" id="email" placeholder="Email..." name="email" type="email" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Register</h2>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" class="form-control" id="password" placeholder="Password..." name="password" type="password" />
-            <span asp-validation-for="Password" class="text-danger"></span>
+</div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Register</h5>
         </div>
-        <div class="form-group col">
-            <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
-            <input asp-for="ConfirmPassword" class="form-control" type="password" id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <div class="card-body d-flex ">
+            <form asp-controller="Account" asp-action="Register" class="mx-auto text-center" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" id="username" placeholder="Username..." name="username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" id="email" placeholder="Email..." name="email" type="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" id="password" placeholder="Password..." name="password" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="app-bg-color hr-2" />
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="FirstName" class="control-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" id="FirstName" placeholder="First Name..." name="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="LastName" class="control-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" id="LastName" placeholder="Last Name..." name="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="Nickname" class="control-label">Nick Name</label>
+                        <input asp-for="Nickname" class="form-control" id="Nickname" placeholder="Nick Name..." name="Nickname" />
+                        <span asp-validation-for="Nickname" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="UserType" class="control-label">User Type</label>
+                        <select asp-for="UserType" asp-items="Html.GetEnumSelectList<UserType>()" class="form-control">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="UserType" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="app-bg-color hr-2" />
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="Address" class="control-label">Address</label>
+                        <input asp-for="Address" class="form-control" id="Address" placeholder="Address..." name="Address" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="BirthDate" class="control-label">Birth Date</label>
+                        <input asp-for="BirthDate" class="form-control" id="BirthDate" name="BirthDate" type="date" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="PhoneNumber" class="control-label">Phone</label>
+                        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" name="PhoneNumber" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="app-bg-color hr-2" />
+                <div class="form-group d-flex justify-content-center">
+                    <input type="submit" value="Create your profile" class="btn btn-common btn-lg" />
+                </div>
+            </form>
         </div>
     </div>
-    <hr class="app-bg-color hr-2" />
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="FirstName" class="control-label">First Name</label>
-            <input asp-for="FirstName" class="form-control" id="FirstName" placeholder="First Name..." name="FirstName" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="LastName" class="control-label">Last Name</label>
-            <input asp-for="LastName" class="form-control" id="LastName" placeholder="Last Name..." name="LastName" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="Nickname" class="control-label">Nick Name</label>
-            <input asp-for="Nickname" class="form-control" id="Nickname" placeholder="Nick Name..." name="Nickname" />
-            <span asp-validation-for="Nickname" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="UserType" class="control-label">User Type</label>
-            <select asp-for="UserType" asp-items="Html.GetEnumSelectList<UserType>()" class="form-control">
-                <option selected="selected" value="">Please select</option>
-            </select>
-           <span asp-validation-for="UserType" class="text-danger"></span>
-        </div>
-    </div>
-    <hr class="app-bg-color hr-2" />
-    <div class="row">
-        <div class="form-group col">
-            <label asp-for="Address" class="control-label">Address</label>
-            <input asp-for="Address" class="form-control" id="Address" placeholder="Address..." name="Address" />
-            <span asp-validation-for="Address" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="BirthDate" class="control-label">Birth Date</label>
-            <input asp-for="BirthDate" class="form-control" id="BirthDate" name="BirthDate" type="date" />
-            <span asp-validation-for="BirthDate" class="text-danger"></span>
-        </div>
-        <div class="form-group col">
-            <label asp-for="PhoneNumber" class="control-label">Phone</label>
-            <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" name="PhoneNumber" />
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-    </div>
-    <hr class="app-bg-color hr-2" />
-    <div class="button-holder d-flex justify-content-center">
-        <button type="submit" class="btn app-bg-color">Register</button>
-    </div>
-</form>
+</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

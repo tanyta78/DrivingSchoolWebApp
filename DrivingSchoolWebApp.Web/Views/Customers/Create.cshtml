@@ -5,38 +5,57 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>Create Customer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Customers" asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="UserId" class="form-control" hidden value="@ViewBag.UserId" />
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Create customer profile</h2>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="AgeGroup" class="control-label"></label>
-                <select asp-for="AgeGroup" asp-items="Html.GetEnumSelectList<AgeGroup>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="AgeGroup" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EducationLevel" class="control-label"></label>
-                <select asp-for="EducationLevel" asp-items="Html.GetEnumSelectList<EducationLevel>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="EducationLevel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create Customer Profile" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Add profile details</h5>
+        </div>
+        <div class="card-body d-flex ">
+            <form asp-controller="Customers" asp-action="Create" method="post" class="mx-auto">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="UserId" class="form-control" hidden value="@ViewBag.UserId" />
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
+                        <option value="" selected disabled hidden>Please select one</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AgeGroup" class="control-label"></label>
+                    <select asp-for="AgeGroup" asp-items="Html.GetEnumSelectList<AgeGroup>()">
+                        <option value="" selected disabled hidden>Please select one</option>
+                    </select>
+                    <span asp-validation-for="AgeGroup" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EducationLevel" class="control-label"></label>
+                    <select asp-for="EducationLevel" asp-items="Html.GetEnumSelectList<EducationLevel>()">
+                        <option value="" selected disabled hidden>Please select one</option>
+                    </select>
+                    <span asp-validation-for="EducationLevel" class="text-danger"></span>
+                </div>
+                <div class="form-group justify-content-center d-flex">
+                    <input type="submit" value="Create Customer Profile" class="btn btn-lg btn-common" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

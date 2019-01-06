@@ -4,7 +4,7 @@
     ViewData["Title"] = "All";
 }
 
-<h2>All</h2>
+<h2>All feedback</h2>
 
 <table class="table">
     <thead>
@@ -41,6 +41,7 @@
             </td>
             <td>
                 <a asp-controller="Courses" asp-action="Details" asp-route-id="@item.CourseId"> View course info</a>
+               |
                 <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.CustomerId"> Contact with customer</a>
             </td>
         </tr>

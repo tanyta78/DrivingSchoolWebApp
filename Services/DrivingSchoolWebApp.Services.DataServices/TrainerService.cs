@@ -46,6 +46,15 @@
             return trainers;
         }
 
+        public IEnumerable<TViewModel> AvailableTrainersBySchoolId<TViewModel>(int schoolId)
+        {
+            var trainers = this.trainerRepository.All()
+                .Where(x => x.SchoolId == schoolId && x.IsAvailable)
+                .To<TViewModel>()
+                .ToList();
+            return trainers;
+        }
+
         public IEnumerable<TViewModel> TrainersBySchoolId<TViewModel>(int schoolId)
         {
             var trainers = this.trainerRepository.All()

@@ -17,14 +17,15 @@
         LiElementClasses = new string[] { "page-item" },
         PageClasses = new string[] { "page-link" }})
 </div>
-<table class="table">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Trainer Nickname</th>
-        <th>Trainer Address</th>
-        <th>Trainer Phone</th>   
-        <th>Actions</th>
+<table class="table ">
+    <thead class="thead-light">
+    <tr class="row">
+       
+        <th class="col-md-1">#</th>
+        <th class="col-md-1">Trainer Nickname</th>
+        <th class="col-md-2">Trainer Address</th>
+        <th class="col-md-2">Trainer Phone</th>   
+        <th class="col-md-6">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -34,15 +35,17 @@
         var realIndex = index + 1 + (Model.PageNumber - 1) * Model.PageSize;
         <tr>
             <td class="col-md-1">@realIndex</td>
-            <td>@trainer.UserNickname</td>
-            <td>@trainer.UserAddress</td>
-            <td>@trainer.UserPhoneNumber</td>
-           
-            <td>
+            <td class="col-md-1">@trainer.UserNickname</td>
+            <td class="col-md-2">@trainer.UserAddress</td>
+            <td class="col-md-2">@trainer.UserPhoneNumber</td>
+           <td class="col-md-6">
                 <a asp-area="" asp-controller="Courses" asp-action="Create" asp-route-trainerId="@trainer.Id" class="btn btn-info text-dark">Create Course with this trainer</a>
-                <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-warning text-dark">Edit</a>
-                <a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Delete" asp-route-id="@trainer.Id" class="btn btn-danger text-dark">Delete</a>
-                <a asp-area="" asp-controller="Lessons" asp-action="Index" asp-route-trainerId="@trainer.Id" class="btn btn-info text-dark">See schedule for this trainer</a>
+                |
+                @*<a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-warning text-dark">Edit</a>
+                |*@
+                @*<a asp-area="SchoolManage" asp-controller="Trainers" asp-action="Delete" asp-route-id="@trainer.Id" class="btn btn-danger text-dark">Delete</a>
+                |*@
+                <a asp-area="" asp-controller="Lessons" asp-action="Index" asp-route-trainerId="@trainer.Id" class="btn btn-common text-dark">See schedule </a>
 
             </td>
         </tr>

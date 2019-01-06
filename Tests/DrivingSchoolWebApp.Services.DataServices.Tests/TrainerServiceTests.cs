@@ -243,6 +243,75 @@
             Assert.That(result, Is.TypeOf<List<AllTrainerViewModel>>());
         }
 
+         [Test]
+        public void AvailableTrainersBySchoolId_TrainersInDb_ReturnsTrainersWithSchoolIdAvailable()
+        {
+            var returnValue = new List<Trainer>()
+            {
+                new Trainer()
+                {
+                    Id = 1,
+                    User = new AppUser()
+                    {
+                        Nickname = "asd",
+                        Address = "adr",
+                        PhoneNumber = "2232",
+                    },
+                    SchoolId = 1,
+                    CoursesInvolved = new List<Course>(),
+                    IsAvailable = true
+                },
+                new Trainer()
+                {
+                    Id = 2,
+                    User = new AppUser()
+                    {
+                        Nickname = "asd2",
+                        Address = "adr2",
+                        PhoneNumber = "22322",
+                    },
+                    SchoolId = 2,
+                    CoursesInvolved = new List<Course>(),
+                    IsAvailable = false
+                },
+                new Trainer()
+                {
+                    Id = 3,
+                    User = new AppUser()
+                    {
+                        Nickname = "asd3",
+                        Address = "adr3",
+                        PhoneNumber = "22323",
+                    },
+                    SchoolId = 1,
+                    CoursesInvolved = new List<Course>()
+                    {
+                        new Course()
+                    },
+                    IsAvailable = true
+                },
+                new Trainer()
+                {
+                    Id = 4,
+                    User = new AppUser()
+                    {
+                        Nickname = "asd4",
+                        Address = "adr4",
+                        PhoneNumber = "22324",
+                    },
+                    SchoolId = 1,
+                    CoursesInvolved = new List<Course>(),
+                    IsAvailable = false
+                },
+            };
+            this.repository.Setup(r => r.All()).Returns(returnValue.AsQueryable());
+
+            var result = this.trainerService.AvailableTrainersBySchoolId<AllTrainerViewModel>(1).ToList();
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result, Is.TypeOf<List<AllTrainerViewModel>>());
+        }
+
         private void SetMapper()
         {
             try

@@ -43,7 +43,7 @@
         {
             var managerName = this.User.Identity.Name;
             var school = this.schoolService.GetSchoolByManagerName<EditSchoolInputModel>(managerName);
-            var trainers = this.trainerService.AvailableTrainersBySchoolIdNotParticipateInCourse<AvailableTrainerViewModel>(school.Id);
+            var trainers = this.trainerService.AvailableTrainersBySchoolId<AvailableTrainerViewModel>(school.Id);
 
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
             IPagedList<AvailableTrainerViewModel> model = trainers.ToPagedList(pageNumber, 5); // will only contain 5 products max because of the pageSize

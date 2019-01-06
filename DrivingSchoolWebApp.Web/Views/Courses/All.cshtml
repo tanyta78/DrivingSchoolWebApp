@@ -5,7 +5,19 @@
     ViewData["Title"] = "All";
 }
 
-<h2>All Courses</h2>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>All courses</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
 
 <div class="container-fluid">
     <div class="row mt-5 col-md-3">
@@ -26,27 +38,29 @@
         @foreach (var course in Model)
         {
             <div class="col-lg-4 col-md-4 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 text-center">
                     <div class="card-body">
                         <h4 class="card-title d-flex justify-content-between">
-                            <small>School: @course.SchoolTradeMark</small>
-                            <small>Category: @course.Category.ToString()</small>
-                        </h4>
+                           @course.SchoolTradeMark
+                         </h4>
+                        <p class="card-text">
+                            Category: @course.Category.ToString()
+                        </p>
                         <hr />
                         <p class="card-text">@course.Price</p>
                     </div>
-                    <div class="card-footer">
-                        <a small class="text-muted card-link" asp-area=""  asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">Go to Course</a>
-                        <form asp-area="" asp-controller="Orders" asp-action="Create" class="btn btn-success text-dark">
-                           <input name="CourseId" type="hidden" value="@course.Id" />
-                           <input type="submit" value="Order course" />
+                    <div class="card-footer justify-content-between">
+                        <a class="btn btn-common" asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">Go to Course</a>
+                        <form asp-area="" asp-controller="Orders" asp-action="Create" >
+                            <input name="CourseId" type="hidden" value="@course.Id" />
+                            <input type="submit" value="Order course" class="btn btn-success btn-lg" />
                         </form>
                     </div>
                 </div>
             </div>
         }
     </div>
-   
+
 </div>
 @section Scripts{
     <script>

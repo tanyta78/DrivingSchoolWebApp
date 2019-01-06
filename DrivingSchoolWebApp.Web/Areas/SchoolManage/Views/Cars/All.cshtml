@@ -7,10 +7,22 @@
     ViewData["Title"] = "All";
 }
 
-<h2>All</h2>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>All cars</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
 
 <p>
-    <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Create">Create New Car</a>
+    <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Create" class="btn btn-common btn-lg">Do you want to add new car?</a>
 </p>
 
 <div class="container d-flex justify-content-center w-75">
@@ -26,16 +38,17 @@
     {
         var car = Model[index];
 
-        <div class="card">
+        <div class="card text-center">
             <img class="card-img-top w-100" src="@car.ImageUrl" style="height: 250px; width: 100px" alt="@car.Make _ @car.Model">
 
             <div class="card-body">
                 <h5 class="card-title">@car.Title</h5>
                 <p class="card-text"><small class="text-muted">@car.OwnerTradeMark @car.OwnerPhone</small></p>
             </div>
-            <div class="card-footer">
-                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-info text-dark">Details</a>
-                </div>
+            <div class="card-footer justify-content-between">
+                <a asp-area="SchoolManage" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-common btn-lg">Details</a>
+            </div>
         </div>
     }
 </div>
+

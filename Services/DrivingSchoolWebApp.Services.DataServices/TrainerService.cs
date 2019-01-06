@@ -55,5 +55,12 @@
             return trainers;
         }
 
+        public Trainer GetTrainerByUserId(string userId)
+        {
+            var trainer = this.trainerRepository
+                .All()
+                .FirstOrDefault(t => t.UserId == userId);
+            return trainer;
+        }
     }
 }

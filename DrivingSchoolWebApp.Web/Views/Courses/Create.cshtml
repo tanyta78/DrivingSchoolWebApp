@@ -1,77 +1,95 @@
 ﻿@using DrivingSchoolWebApp.Data.Models.Enums
+@using DrivingSchoolWebApp.Services.Models.Car
+@using DrivingSchoolWebApp.Services.Models.Trainer
 @model DrivingSchoolWebApp.Services.Models.Course.CreateCourseInputModel
 
 @{
     ViewData["Title"] = "Create";
-    var trainersList = ViewBag.Trainers;
-    var carsList = ViewBag.Cars;
+    var trainersList = ViewBag.Trainers ?? new List<AvailableTrainerViewModel>();
+    var carsList = ViewBag.Cars ?? new List<CarViewModel>();
 }
-
-<h2>Create</h2>
-
-<h4>CreateCourseInputModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Courses" asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <div class="col-md-10">
-                    <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()">
-                        <option selected="selected" value="">Please select</option>
-                    </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Create new course</h2>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" placeholder="Price..." />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" placeholder="Description..."></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinimumLessonsCount" class="control-label"></label>
-                <input asp-for="MinimumLessonsCount" class="form-control" placeholder="Minimum lessons"/>
-                <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrainerId" class="control-label"></label>
-                @if (ViewBag.TrainerId != null)
-                {
-                    <input asp-for="TrainerId" class="form-control" value="@ViewBag.TrainerId" disabled />
-                }
-                else
-                {
-                    <select asp-for="TrainerId"
-                            asp-items="@(new SelectList(trainersList,"Id","UserNickname"))">
-                        <option>Please select one</option>
-                    </select>
-                }
-                <span asp-validation-for="TrainerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarId" class="control-label"></label>
-                <select asp-for="CarId"
-                        asp-items="@(new SelectList(carsList,"Id","Title"))">
-                    <option>Please select one</option>
-                </select>
-                <span asp-validation-for="CarId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="SchoolId" class="form-control" value="@ViewBag.SchoolId" hidden="hidden" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+<!-- Page Header End -->
+<div class="container">
+    <div style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title"><h4>Insert course data</h4></div>
+            </div>
+            <div class="panel-body">
+                <form asp-controller="Courses" asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Category" class="control-label"></label>
+                        <div class="col-md-10">
+                            <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" placeholder="Price..." />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" placeholder="Description..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MinimumLessonsCount" class="control-label"></label>
+                        <input asp-for="MinimumLessonsCount" class="form-control" placeholder="Minimum lessons" />
+                        <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TrainerId" class="control-label"></label>
+                        @if (ViewBag.TrainerId != null)
+                        {
+                            <input asp-for="TrainerId" class="form-control" value="@ViewBag.TrainerId" disabled />
+                        }
+                        else
+                        {
+                            <select asp-for="TrainerId"
+                                    asp-items="@(new SelectList(trainersList,"Id","UserNickname"))">
+                                <option>Please select one</option>
+                            </select>
+                        }
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CarId" class="control-label"></label>
+                        <select asp-for="CarId"
+                                asp-items="@(new SelectList(carsList,"Id","Title"))">
+                            <option>Please select one</option>
+                        </select>
+                        <span asp-validation-for="CarId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="SchoolId" class="form-control" value="@ViewBag.SchoolId" hidden="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn pull-left btn btn-common btn-lg" />
+                        
+                    </div>
+                </form>
+            </div>
 
+        </div>
+    </div>
+</div>
 <div>
     <a href="javascript:history.go(-1)">Return to previous page</a>
 </div>

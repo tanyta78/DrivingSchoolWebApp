@@ -1,5 +1,17 @@
-﻿<li class="nav-item">
-    <a class="nav-link text-dark font-weight-bold" asp-controller="Lessons" asp-action="Index">Schedule(All Lessons)</a>
+﻿@using DrivingSchoolWebApp.Data.Models
+@using DrivingSchoolWebApp.Services.DataServices
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@inject TrainerService TrainerService
+
+@{
+    var userId = UserManager.GetUserAsync(User).Result.Id;
+    var trainerId = TrainerService.GetTrainerByUserId(userId).Id;
+}
+<li class="nav-item">
+    <a class="nav-link " asp-controller="Lessons" asp-action="Index" asp-route-trainerId="@trainerId">Schedule(All Lessons)</a>
 </li>
 
 

@@ -126,6 +126,14 @@
         {
             if (!this.ModelState.IsValid)
             {
+                var username = this.User.Identity.Name;
+                var schoolId = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(username).Id;
+                this.ViewBag.SchoolId = schoolId;
+               
+                this.ViewBag.Trainers = this.trainerService
+                    .TrainersBySchoolId<AvailableTrainerViewModel>(
+                        schoolId);
+                this.ViewBag.Cars = this.carService.GetCarsBySchoolId<CarViewModel>(schoolId);
                 return this.View(model);
             }
 

@@ -62,6 +62,12 @@
     <Content Update="Views\Lessons\SchoolSchedule.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Home\_SchoolHomePartialFeatures.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Home\_UserHomePartialServiceBlock.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_Error.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -70,6 +76,9 @@
     </Content>
     <Content Update="Views\Shared\_TrainerNavigation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\css\color-switcher.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

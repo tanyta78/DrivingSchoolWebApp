@@ -41,9 +41,17 @@
             {
                 var school = this.schoolService.GetSchoolByManagerName<SchoolViewModel>(this.User.Identity.Name);
                 var trainers = this.trainerService.TrainersBySchoolId<AvailableTrainerViewModel>(school.Id);
-
-                var receivedOrders = this.orderService.GetOrdersBySchoolIdPaymentMadeAndTrainerId<FullCalendarOrdersViewModel>(school.Id, trainerId)
-                    .ToList();
+                var receivedOrders = new List<FullCalendarOrdersViewModel>();
+                if (trainerId == 0)
+                {
+                    receivedOrders =
+                        this.orderService.GetOrdersBySchoolIdAndPaymentMade<FullCalendarOrdersViewModel>(school.Id).ToList();
+                }
+                else
+                {
+                    receivedOrders = this.orderService.GetOrdersBySchoolIdPaymentMadeAndTrainerId<FullCalendarOrdersViewModel>(school.Id, trainerId)
+                        .ToList();
+                }
 
                 this.ViewBag.OrdersList = receivedOrders;
                 this.ViewBag.TrainersList = trainers;
@@ -83,7 +91,7 @@
                 lessons = this.lessonService.GetLessonsByCustomerId<DetailsLessonViewModel>(customerId).ToList();
 
             }
-            else 
+            else
             {
 
             }

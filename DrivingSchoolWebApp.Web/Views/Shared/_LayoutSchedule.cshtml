@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DrivingSchoolWebApp.Web</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/reset-css.css">
+        <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="~/css/style.css">
+        <link rel="stylesheet" type='text/css' href="~/css/fullcalendar.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <!-- Header area wrapper starts -->
+        <header id="header-wrap">
+
+            <!-- Header area starts -->
+            <section id="header">
+
+                <!-- Navbar Starts -->
+                <nav class="navbar navbar-light" data-spy="affix" data-offset-top="50">
+                    <div class="container">
+                        <button class='navbar-toggler hidden-md-up pull-xs-right' data-target='#main-menu' data-toggle='collapse'
+                                type='button'>
+                            ☰
+                        </button>
+                        <!-- Brand -->
+                        <a class="navbar-brand"asp-action="/" asp-controller="Home">
+                            <img src="~/img/logo.png" alt="">
+                        </a>
+
+                        <!-- Navbar Starts -->
+                        <partial name="_LoginPartial" />
+
+                    </div>
+                </nav>
+                <!-- Navbar Ends -->
+                <!-- Carousel Starts -->
+                <!-- Carousel Ends -->
+            </section>
+            <!-- Start Content -->
+            <!-- End Content -->
+        </header>
+
+        <partial name="_CookieConsentPartial" />
+
+        <main class="mt-3 mb-5 ">
+            @RenderBody()
+        </main>
+        <partial name="_FooterPartial" />
+    </div>
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="~/lib/moment/moment.min.js"></script>
+        <script type="text/javascript" src="~/lib/modernizr/modernizr.min.js"></script>
+        <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script type="application/x-javascript">
+            addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+                   function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <script type="text/javascript" src="~/lib/fullcalendar/fullcalendar.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

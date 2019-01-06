@@ -10,6 +10,7 @@
         public const int DescriptionMaxLength = 50;
         
         public const string ErrMsgCoursePrice = "Price must be between {1} and {2}";
+        public const string ErrMsgMinLessons = "Minimum lesson count must be between {1} and {2}";
         public const string ErrMsgDescription = "Description can only contain alphanumeric characters, dashes and underscores, dots, comma.";
         public const string RegexForValidationDescription = "[A-Za-z0-9.,-_]+";
 

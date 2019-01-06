@@ -23,13 +23,16 @@
         public string Description { get; set; }
 
         [Required(ErrorMessage = CourseModelConstants.RequiredMinimumLessonsCount)]
-        [Range(CourseModelConstants.MinimumLessonsCountMin, CourseModelConstants.MinimumLessonsCountMax)]
+        [Range(CourseModelConstants.MinimumLessonsCountMin, CourseModelConstants.MinimumLessonsCountMax,ErrorMessage = CourseModelConstants.ErrMsgMinLessons)]
         public int MinimumLessonsCount { get; set; }
 
+        [Required(ErrorMessage = "Please select!")]
         public int TrainerId { get; set; }
 
+        [Required(ErrorMessage = "Please select!")]
         public int CarId { get; set; }
 
+        [Required(ErrorMessage = "Please select!")]
         public int SchoolId { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)

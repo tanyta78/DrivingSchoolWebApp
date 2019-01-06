@@ -8,6 +8,8 @@
         public const int MinimumLessonsCountMin = 10;
         public const int MinimumLessonsCountMax = 100;
         public const int DescriptionMaxLength = 50;
+        public const int DescriptionMinLength = 10;
+
         
         public const string ErrMsgCoursePrice = "Price must be between {1} and {2}";
         public const string ErrMsgMinLessons = "Minimum lesson count must be between {1} and {2}";

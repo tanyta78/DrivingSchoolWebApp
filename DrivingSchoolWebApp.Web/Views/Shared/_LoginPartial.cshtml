@@ -9,7 +9,7 @@
 <div class="collapse navbar-toggleable-sm pull-xs-left pull-md-right" id="main-menu">
     <!-- Navbar Starts -->
     <ul class="nav nav-inline">
-        
+
         @if (this.User.Identity.IsAuthenticated)
         {
             if (this.User.IsInRole(GlobalDataConstants.SchoolRoleName))
@@ -24,26 +24,30 @@
             {
                 <partial name="_TrainerNavigation" />
             }
+            <li class="nav-item dropdown">
 
-            <li class="nav-item">
-                <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Home" asp-action="Index">Hello @User.Identity.Name!</a>
-            </li>
-            if (this.User.IsInRole("School"))
-             {
-                 <li class="nav-item">
-                     <a class="nav-link " asp-area="SchoolManage" asp-controller="Schools" asp-action="Manage">Manage profile</a>
-                 </li>
-             }
-            if (this.User.IsInRole("Admin"))
-             {
-                 <li class="nav-item">
-                     <a class="nav-link " asp-area="Administration" asp-controller="Users" asp-action="AdminPanel">Admin Panel</a>
-                 </li>
-             }
-            <li class="nav-item">
-                <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-            </li>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                   aria-haspopup="true" aria-expanded="false">
+                    Hello @User.Identity.Name!
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                    @if (this.User.IsInRole("School"))
+                    {
 
+                    <a class="dropdown-item " asp-area="SchoolManage" asp-controller="Schools" asp-action="Manage">Manage profile</a>
+
+                    }
+                    @if (this.User.IsInRole("Admin"))
+                    {
+
+                    <a class="dropdown-item " asp-area="Administration" asp-controller="Users" asp-action="AdminPanel">Admin Panel</a>
+
+                    }
+
+                    <a class="dropdown-item " asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+
+                </div>
+            </li>
         }
         else
         {
@@ -55,6 +59,6 @@
             </li>
         }
     </ul>
-  
+
 </div>
 

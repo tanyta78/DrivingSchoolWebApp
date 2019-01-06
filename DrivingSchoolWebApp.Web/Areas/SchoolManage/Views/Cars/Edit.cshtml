@@ -4,41 +4,58 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>EditCarInputModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-area="SchoolManage" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Username" value="@User.Identity.Name"/>
-            <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="Old car image">
-            <div class="form-group">
-                <label asp-for="CarImage" class="control-label"></label>
-                <input type="file" asp-for="CarImage" class="form-control" />
-                <span asp-validation-for="CarImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="InUse" /> @Html.DisplayNameFor(model => model.InUse)
-                    </label>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Update car info</h2>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="VIN" class="control-label"></label>
-                <input asp-for="VIN" class="form-control" value="@Model.VIN" />
-                <span asp-validation-for="VIN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Edit existing car info</h5>
+        </div>
+        <div class="card-body d-flex ">
+            <form asp-area="SchoolManage" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="mx-auto w-75">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Username" value="@User.Identity.Name" />
+                <img class="card-img-top w-100" src="@Model.ImageUrl" style="height: 250px; width: 100px" alt="Old car image">
+                <div class="form-group">
+                    @*<label asp-for="CarImage" class="control-label"></label>*@
+                    <input type="file" asp-for="CarImage" class="form-control" />
+                    <span asp-validation-for="CarImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="InUse" /> @Html.DisplayNameFor(model => model.InUse)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VIN" class="control-label"></label>
+                    <input asp-for="VIN" class="form-control" value="@Model.VIN" />
+                    <span asp-validation-for="VIN" class="text-danger"></span>
+                </div>
+                <div class="form-group justify-content-center d-flex">
+                    <input type="submit" value="Save changes" class="btn btn-common btn-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Form Container End-->
 <div>
     <a asp-area="SchoolManage" asp-controller="Cars" asp-action="All">Back to All Cars List</a>
 </div>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -27,10 +27,12 @@
 
         public bool InUse { get; set; } = true;
 
-        [Required(ErrorMessage = CarModelConstants.RequiredVIN)]
+        [Required(ErrorMessage = CarModelConstants.RequiredVin)]
+        [StringLength(CarModelConstants.VINLength, ErrorMessage = CarModelConstants.ErrMsgVin, MinimumLength = CarModelConstants.VINLength)]
         public string VIN { get; set; }
 
         [IgnoreMap]
+        [Required(ErrorMessage = CarModelConstants.RequiredImageUrl)]
         public IFormFile CarImage { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)

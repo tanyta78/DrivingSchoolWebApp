@@ -6,8 +6,8 @@
     <title>@ViewData["Title"] - DrivingSchoolWebApp.Web</title>
 
     <environment include="Development">
+       @* <link rel="stylesheet" type="text/css" href="~/css/reset-css.css">*@
         <link rel="stylesheet" href="~/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="~/css/reset-css.css">
         <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css">
 
         <!-- Main Style -->
@@ -41,7 +41,7 @@
     </environment>
 </head>
 <body>
-    <div class="container-fluid ml-35">
+    <div class="container-fluid px-lg-5">
         <!-- Header area wrapper starts -->
         <header id="header-wrap">
 
@@ -74,9 +74,9 @@
         </header>
 
         <partial name="_CookieConsentPartial" />
-        <section>
+        <div class="container ">
             @RenderBody()
-        </section>
+        </div>
         <partial name="_FooterPartial" />
 
         <a href="#" class="back-to-top" style="display: block;">

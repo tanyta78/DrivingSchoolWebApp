@@ -6,52 +6,71 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>Car</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-area="SchoolManage" asp-controller="Cars" asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="OwnerId" class="form-control" hidden="hidden" value="@ViewBag.SchoolId" />
-            <div class="form-group">
-                <label asp-for="CarModel" class="control-label"></label>
-                <input asp-for="CarModel" class="form-control" placeholder="Model..." />
-                <span asp-validation-for="CarModel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" placeholder="Make..." />
-                <span asp-validation-for="Make" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Transmission" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <select asp-for="Transmission" asp-items="Html.GetEnumSelectList<Transmission>()">
-                        <option selected="selected" value="">Please select</option>
-                    </select>
-                    <span asp-validation-for="Transmission" class="text-danger"></span>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Create new car</h2>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CarImage" class="control-label"></label>
-                <input type="file" asp-for="CarImage" class="form-control" />
-                <span asp-validation-for="CarImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VIN" class="control-label"></label>
-                <input asp-for="VIN" class="form-control" placeholder="VIN..." />
-                <span asp-validation-for="VIN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Add new car details</h5>
+        </div>
+        <div class="card-body d-flex ">
+            <form asp-area="SchoolManage" asp-controller="Cars" asp-action="Create" method="post" enctype="multipart/form-data" class="mx-auto w-75">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="OwnerId" class="form-control" hidden="hidden" value="@ViewBag.SchoolId" />
+                <div class="form-group">
+                    @*<label asp-for="CarModel" class="control-label"></label>*@
+                    <input asp-for="CarModel" class="form-control" placeholder="Model..." />
+                    <span asp-validation-for="CarModel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    @*<label asp-for="Make" class="control-label"></label>*@
+                    <input asp-for="Make" class="form-control" placeholder="Make..." />
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group justify-content-between d-flex">
+                    <label asp-for="Transmission" class="col-md-4 control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="Transmission" asp-items="Html.GetEnumSelectList<Transmission>()">
+                            <option value="" selected disabled hidden>Please select one</option>
+                        </select>
+                        <span asp-validation-for="Transmission" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarImage" class="control-label">Please upload yor car image file</label>
+                    <input type="file" asp-for="CarImage" class="form-control" />
+                    <span asp-validation-for="CarImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    @*<label asp-for="VIN" class="control-label"></label>*@
+                    <input asp-for="VIN" class="form-control" placeholder="VIN..." />
+                    <span asp-validation-for="VIN" class="text-danger"></span>
+                </div>
+                <div class="form-group justify-content-center d-flex">
+                    <input type="submit" value="Create" class="btn btn-common btn-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Form Container End-->
 
 <div>
     <a asp-action="All">Back to List</a>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 

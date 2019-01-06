@@ -6,53 +6,73 @@
     var carsList = ViewBag.Cars;
 }
 
-<h2>Edit Course</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-area="" asp-controller="Courses" asp-action="Edit" asp-route-courseId="@Model.Id" method="post">
-           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" value="@Model.Price"/>
-                <span asp-validation-for="Price" class="text-danger"></span>
+<!-- Page Header -->
+<div class="page-header-section">
+    <div class="container">
+        <div class="row">
+            <div class="page-header-area">
+                <div class="page-header-content">
+                    <h2>Edit course</h2>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" >@Model.Description</textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinimumLessonsCount" class="control-label"></label>
-                <input asp-for="MinimumLessonsCount" class="form-control" value="@Model.MinimumLessonsCount"/>
-                <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrainerId" class="control-label"></label>
-                <select asp-for="TrainerId"
-                        asp-items="@(new SelectList(trainersList, "Id", "UserNickname", @Model.TrainerId))">
-                    <option selected="selected" value="@Model.TrainerId">Current trainer</option>
-                    <option>Please select one</option>
-                </select>
-                <span asp-validation-for="TrainerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarId" class="control-label"></label>
-                <select asp-for="CarId"
-                        asp-items="@(new SelectList(carsList, "Id", "Title"))">
-                    <option>Please select one</option>
-                </select>
-                <span asp-validation-for="CarId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default"/>
-            </div>
-        </form>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!--Form Container Start-->
+<div class="container d-flex justify-content-center">
+    <div class="card col-md-8 mt-15 d-flex">
+        <div class="card-header">
+            <h5 class="text-center">Change course details</h5>
+        </div>
+        <div class="card-body d-flex ">
+            <form asp-area="" asp-controller="Courses" asp-action="Edit" asp-route-courseId="@Model.Id" method="post" class="mx-auto w-75">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" value="@Model.Price" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control">@Model.Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MinimumLessonsCount" class="control-label"></label>
+                    <input asp-for="MinimumLessonsCount" class="form-control" value="@Model.MinimumLessonsCount" />
+                    <span asp-validation-for="MinimumLessonsCount" class="text-danger"></span>
+                </div>
+                <div class="form-group justify-content-between d-flex">
+                    <label asp-for="TrainerId" class="control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="TrainerId"
+                                asp-items="@(new SelectList(trainersList, "Id", "UserNickname", @Model.TrainerId))">
+                            <option selected="selected" value="@Model.TrainerId">Current trainer</option>
+                            <option value="" selected disabled hidden>Please select one</option>
+                        </select>
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group justify-content-between d-flex">
+                    <label asp-for="CarId" class="control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="CarId"
+                                asp-items="@(new SelectList(carsList, "Id", "Title"))">
+                            <option value="" selected disabled hidden>Please select one</option>
+                        </select>
+                        <span asp-validation-for="CarId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group justify-content-center d-flex">
+                    <input type="submit" value="Save changes" class="btn btn-common btn-lg" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a href="javascript:history.go(-1)">Return to previous page</a>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 

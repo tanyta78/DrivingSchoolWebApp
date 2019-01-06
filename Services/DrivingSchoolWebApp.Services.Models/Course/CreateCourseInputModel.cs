@@ -18,7 +18,7 @@
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = CourseModelConstants.RequiredDescription)]
-        [StringLength(CourseModelConstants.DescriptionMaxLength)]
+        [StringLength(CourseModelConstants.DescriptionMaxLength, ErrorMessage = CourseModelConstants.ErrMsgDescription, MinimumLength = CourseModelConstants.DescriptionMinLength)]
         [RegularExpression(CourseModelConstants.RegexForValidationDescription, ErrorMessage = CourseModelConstants.ErrMsgDescription)]
         public string Description { get; set; }
 

@@ -10,14 +10,16 @@
     public class EditCarInputModel : IMapFrom<Car>
     {
         public int Id { get; set; }
-        
+
         public string ImageUrl { get; set; }
 
-        public bool InUse { get; set; } 
+        public bool InUse { get; set; }
 
-        [Required(ErrorMessage = CarModelConstants.RequiredVIN)]
+        [Required(ErrorMessage = CarModelConstants.RequiredVin)]
+        [StringLength(CarModelConstants.VINLength, ErrorMessage = CarModelConstants.ErrMsgVin, MinimumLength = CarModelConstants.VINLength)]
         public string VIN { get; set; }
 
+        [IgnoreMap]
         public IFormFile CarImage { get; set; }
 
         [IgnoreMap]
